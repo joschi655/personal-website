@@ -192,7 +192,10 @@ function print(text: string, cls = ""): void {
 
 function execute(cmd: Cmd | null, raw: string): void {
   const echo = document.createElement("div");
-  echo.innerHTML = `<span class="out-cmd">$ ${raw.trim() || (cmd?.name ?? "")}</span>`;
+  const span = document.createElement("span");
+  span.className = "out-cmd";
+  span.textContent = `$ ${raw.trim() || (cmd?.name ?? "")}`;
+  echo.appendChild(span);
   out.appendChild(echo);
   if (cmd) {
     void cmd.run({ print, close });
