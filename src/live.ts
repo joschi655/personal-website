@@ -2,12 +2,14 @@
 // endpoints are RELATIVE (api/…) so they work at /joschi/ and locally
 
 import { $, $$, fetchJSON, getRange, setRange, announceApi, RANGE_LABEL, type MusicRange } from "./state";
+import { staggerIn } from "./motionfx";
 
 type Music = {
   unavailable?: boolean;
   range?: string;
-  artists?: { name: string; url: string }[];
-  tracks?: { name: string; artist: string; url: string }[];
+  source?: string;
+  artists?: { name: string; url: string; streams?: number }[];
+  tracks?: { name: string; artist: string; url: string; streams?: number }[];
 };
 type Status = { uptime_seconds?: number; hostname?: string; unavailable?: boolean };
 type Github = { repo?: string; type?: string; created_at?: string; unavailable?: boolean };
@@ -39,13 +41,21 @@ async function renderMusic(): Promise<void> {
     body.innerHTML = offline("spotify feed offline — honest, at least.");
     return;
   }
+  const plays = (n?: number) => (typeof n === "number" && n > 0 ? ` <span class="by">· ${n.toLocaleString("en-US")} plays</span>` : "");
   const artists = data.artists.slice(0, 3).map((a, i) =>
-    `<li><span class="idx">${i + 1}</span>${esc(a.name)}</li>`).join("");
-  const tracks = (data.tracks ?? []).slice(0, 3).map((t, i) =>
-    `<li><span class="idx">♪</span>${esc(t.name)} <span class="by">— ${esc(t.artist)}</span></li>`).join("");
+    `<li><span class="idx">${i + 1}</span><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.name)}</a>${plays(a.streams)}</li>`).join("");
+  const tracks = (data.tracks ?? []).slice(0, 3).map((t) =>
+    `<li><span class="idx">♪</span><a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.name)}</a> <span class="by">— ${esc(t.artist)}</span>${plays(t.streams)}</li>`).join("");
   body.innerHTML =
     `<div class="lw-title">top artists · ${RANGE_LABEL[getRange()]}</div><ul>${artists}</ul>` +
     (tracks ? `<ul style="margin-top:6px">${tracks}</ul>` : "");
+  const foot = $("[data-music-foot]");
+  if (foot) {
+    foot.innerHTML = data.source === "stats.fm"
+      ? `source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> — full history, real counts. yes, I track everything.`
+      : `source: my actual spotify · cached on my server`;
+  }
+  staggerIn(body);
 }
 
 async function renderServer(): Promise<void> {
@@ -80,8 +90,9 @@ async function renderGithub(): Promise<void> {
   }
   const verb = (data.type ?? "").replace("Event", "").toLowerCase() || "activity";
   body.innerHTML =
-    `<div class="lw-title">${esc(data.repo)}</div>` +
+    `<div class="lw-title"><a href="https://github.com/${esc(data.repo)}" target="_blank" rel="noopener">${esc(data.repo)}</a></div>` +
     `<p class="offline">${esc(verb)} · ${data.created_at ? relTime(data.created_at) : ""}</p>`;
+  staggerIn(body);
 }
 
 export async function pingCoffee(): Promise<string> {

@@ -11,12 +11,14 @@ interface HealthResponse {
 interface ArtistSummary {
   name: string;
   url: string;
+  streams?: number;
 }
 
 interface TrackSummary {
   name: string;
   artist: string;
   url: string;
+  streams?: number;
 }
 
 interface MusicPayload {
@@ -24,6 +26,7 @@ interface MusicPayload {
   artists: ArtistSummary[];
   tracks: TrackSummary[];
   fetched_at: string;
+  source: "stats.fm" | "spotify";
 }
 
 interface StatusPayload {
@@ -89,6 +92,48 @@ interface GitHubEvent {
   created_at: string;
 }
 
+interface StatsFmExternalIds {
+  spotify?: string[];
+}
+
+interface StatsFmArtist {
+  id: number;
+  name: string;
+  externalIds?: StatsFmExternalIds;
+}
+
+interface StatsFmArtistItem {
+  position: number;
+  streams: number;
+  artist: StatsFmArtist;
+}
+
+interface StatsFmArtistsResponse {
+  items: StatsFmArtistItem[];
+}
+
+interface StatsFmTrackArtist {
+  id: number;
+  name: string;
+}
+
+interface StatsFmTrack {
+  id: number;
+  name: string;
+  artists: StatsFmTrackArtist[];
+  externalIds?: StatsFmExternalIds;
+}
+
+interface StatsFmTrackItem {
+  position: number;
+  streams: number;
+  track: StatsFmTrack;
+}
+
+interface StatsFmTracksResponse {
+  items: StatsFmTrackItem[];
+}
+
 interface CachedValue<T> {
   value: T;
   fetchedAtMs: number;
@@ -99,7 +144,7 @@ interface SpotifyTokenCache {
   expiresAtMs: number;
 }
 
-const VERSION = "2.0.0";
+const VERSION = "2.1.0";
 const HOSTNAME = "127.0.0.1";
 const DEFAULT_PORT = 31890;
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -461,6 +506,221 @@ function parseGitHubEventsResponse(payload: unknown): GitHubEvent[] | null {
   }
 }
 
+function parseStatsFmSpotifyIds(payload: unknown): string[] | undefined {
+  if (typeof payload === "object" && payload !== null) {
+    const candidate = payload as Record<string, unknown>;
+    const spotifyIds = candidate.spotify;
+
+    if (typeof spotifyIds === "undefined") {
+      return undefined;
+    } else if (Array.isArray(spotifyIds)) {
+      const normalizedSpotifyIds: string[] = [];
+
+      for (const spotifyId of spotifyIds) {
+        if (typeof spotifyId === "string") {
+          normalizedSpotifyIds.push(spotifyId);
+        } else {
+          return undefined;
+        }
+      }
+
+      return normalizedSpotifyIds;
+    } else {
+      return undefined;
+    }
+  } else {
+    return undefined;
+  }
+}
+
+function parseStatsFmArtistItem(payload: unknown): StatsFmArtistItem | null {
+  if (typeof payload === "object" && payload !== null) {
+    const candidate = payload as Record<string, unknown>;
+    const artistPayload = candidate.artist;
+
+    if (
+      typeof candidate.position === "number" &&
+      typeof candidate.streams === "number" &&
+      typeof artistPayload === "object" &&
+      artistPayload !== null
+    ) {
+      const artist = artistPayload as Record<string, unknown>;
+      const externalIds = parseStatsFmSpotifyIds(artist.externalIds);
+
+      if (typeof artist.id === "number" && typeof artist.name === "string") {
+        if (typeof externalIds === "undefined") {
+          return {
+            position: candidate.position,
+            streams: candidate.streams,
+            artist: {
+              id: artist.id,
+              name: artist.name,
+            },
+          };
+        } else {
+          return {
+            position: candidate.position,
+            streams: candidate.streams,
+            artist: {
+              id: artist.id,
+              name: artist.name,
+              externalIds: {
+                spotify: externalIds,
+              },
+            },
+          };
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+function parseStatsFmArtistsResponse(payload: unknown): StatsFmArtistsResponse | null {
+  if (typeof payload === "object" && payload !== null) {
+    const candidate = payload as Record<string, unknown>;
+
+    if (Array.isArray(candidate.items)) {
+      const normalizedItems: StatsFmArtistItem[] = [];
+
+      for (const item of candidate.items) {
+        const parsedItem = parseStatsFmArtistItem(item);
+
+        if (parsedItem) {
+          normalizedItems.push(parsedItem);
+        } else {
+          // Intentional: malformed stats.fm artist items are skipped.
+        }
+      }
+
+      if (normalizedItems.length >= 1) {
+        return { items: normalizedItems };
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+function parseStatsFmTrackArtist(payload: unknown): StatsFmTrackArtist | null {
+  if (typeof payload === "object" && payload !== null) {
+    const candidate = payload as Record<string, unknown>;
+
+    if (typeof candidate.id === "number" && typeof candidate.name === "string") {
+      return {
+        id: candidate.id,
+        name: candidate.name,
+      };
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+function parseStatsFmTrackItem(payload: unknown): StatsFmTrackItem | null {
+  if (typeof payload === "object" && payload !== null) {
+    const candidate = payload as Record<string, unknown>;
+    const trackPayload = candidate.track;
+
+    if (
+      typeof candidate.position === "number" &&
+      typeof candidate.streams === "number" &&
+      typeof trackPayload === "object" &&
+      trackPayload !== null
+    ) {
+      const track = trackPayload as Record<string, unknown>;
+      const artistsPayload = track.artists;
+      const externalIds = parseStatsFmSpotifyIds(track.externalIds);
+
+      if (
+        typeof track.id === "number" &&
+        typeof track.name === "string" &&
+        Array.isArray(artistsPayload)
+      ) {
+        const normalizedArtists: StatsFmTrackArtist[] = [];
+
+        for (const artistPayload of artistsPayload) {
+          const artist = parseStatsFmTrackArtist(artistPayload);
+
+          if (artist) {
+            normalizedArtists.push(artist);
+          } else {
+            return null;
+          }
+        }
+
+        if (typeof externalIds === "undefined") {
+          return {
+            position: candidate.position,
+            streams: candidate.streams,
+            track: {
+              id: track.id,
+              name: track.name,
+              artists: normalizedArtists,
+            },
+          };
+        } else {
+          return {
+            position: candidate.position,
+            streams: candidate.streams,
+            track: {
+              id: track.id,
+              name: track.name,
+              artists: normalizedArtists,
+              externalIds: {
+                spotify: externalIds,
+              },
+            },
+          };
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+function parseStatsFmTracksResponse(payload: unknown): StatsFmTracksResponse | null {
+  if (typeof payload === "object" && payload !== null) {
+    const candidate = payload as Record<string, unknown>;
+
+    if (Array.isArray(candidate.items)) {
+      const normalizedItems: StatsFmTrackItem[] = [];
+
+      for (const item of candidate.items) {
+        const parsedItem = parseStatsFmTrackItem(item);
+
+        if (parsedItem) {
+          normalizedItems.push(parsedItem);
+        } else {
+          // Intentional: malformed stats.fm track items are skipped.
+        }
+      }
+
+      return { items: normalizedItems };
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
 async function parseJsonSafely(response: Response): Promise<unknown | null> {
   try {
     return await response.json();
@@ -581,6 +841,112 @@ async function fetchSpotifyTracks(accessToken: string, range: SpotifyRange): Pro
   }
 }
 
+function getStatsFmArtistUrl(artist: StatsFmArtist): string {
+  let spotifyIds: string[] | undefined;
+
+  if (artist.externalIds) {
+    spotifyIds = artist.externalIds.spotify;
+  } else {
+    spotifyIds = undefined;
+  }
+
+  let spotifyId: string | undefined;
+
+  if (Array.isArray(spotifyIds)) {
+    spotifyId = spotifyIds[0];
+  } else {
+    spotifyId = undefined;
+  }
+
+  if (typeof spotifyId === "string" && spotifyId.length > 0) {
+    return `https://open.spotify.com/artist/${spotifyId}`;
+  } else {
+    return `https://stats.fm/artist/${artist.id}`;
+  }
+}
+
+function getStatsFmTrackUrl(track: StatsFmTrack): string {
+  let spotifyIds: string[] | undefined;
+
+  if (track.externalIds) {
+    spotifyIds = track.externalIds.spotify;
+  } else {
+    spotifyIds = undefined;
+  }
+
+  let spotifyId: string | undefined;
+
+  if (Array.isArray(spotifyIds)) {
+    spotifyId = spotifyIds[0];
+  } else {
+    spotifyId = undefined;
+  }
+
+  if (typeof spotifyId === "string" && spotifyId.length > 0) {
+    return `https://open.spotify.com/track/${spotifyId}`;
+  } else {
+    return `https://stats.fm/track/${track.id}`;
+  }
+}
+
+function mapRangeToStatsFm(range: SpotifyRange): "weeks" | "months" | "lifetime" {
+  if (range === "short_term") {
+    return "weeks";
+  } else if (range === "medium_term") {
+    return "months";
+  } else {
+    return "lifetime";
+  }
+}
+
+async function fetchStatsFmArtists(user: string, range: SpotifyRange): Promise<StatsFmArtistsResponse | null> {
+  const url = new URL(`https://api.stats.fm/api/v1/users/${encodeURIComponent(user)}/top/artists`);
+  url.searchParams.set("range", mapRangeToStatsFm(range));
+  url.searchParams.set("limit", "3");
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "joschi-api/2.1.0",
+      },
+      signal: AbortSignal.timeout(EXTERNAL_FETCH_TIMEOUT_MS),
+    });
+
+    if (response.ok) {
+      const payload = await parseJsonSafely(response);
+      return parseStatsFmArtistsResponse(payload);
+    } else {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+}
+
+async function fetchStatsFmTracks(user: string, range: SpotifyRange): Promise<StatsFmTracksResponse | null> {
+  const url = new URL(`https://api.stats.fm/api/v1/users/${encodeURIComponent(user)}/top/tracks`);
+  url.searchParams.set("range", mapRangeToStatsFm(range));
+  url.searchParams.set("limit", "3");
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "joschi-api/2.1.0",
+      },
+      signal: AbortSignal.timeout(EXTERNAL_FETCH_TIMEOUT_MS),
+    });
+
+    if (response.ok) {
+      const payload = await parseJsonSafely(response);
+      return parseStatsFmTracksResponse(payload);
+    } else {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+}
+
 function shapeMusicPayload(
   range: SpotifyRange,
   artistsResponse: SpotifyTopArtistsResponse,
@@ -613,6 +979,44 @@ function shapeMusicPayload(
     artists,
     tracks,
     fetched_at: fetchedAtIso,
+    source: "spotify",
+  };
+}
+
+function shapeStatsFmMusicPayload(
+  range: SpotifyRange,
+  artistsResponse: StatsFmArtistsResponse,
+  tracksResponse: StatsFmTracksResponse,
+  fetchedAtIso: string,
+): MusicPayload {
+  const artists: ArtistSummary[] = artistsResponse.items.slice(0, 3).map((item) => ({
+    name: item.artist.name,
+    url: getStatsFmArtistUrl(item.artist),
+    streams: item.streams,
+  }));
+  const tracks: TrackSummary[] = [];
+
+  for (const item of tracksResponse.items.slice(0, 3)) {
+    const primaryArtist = item.track.artists[0];
+
+    if (primaryArtist && typeof primaryArtist.name === "string" && primaryArtist.name.length > 0) {
+      tracks.push({
+        name: item.track.name,
+        artist: primaryArtist.name,
+        url: getStatsFmTrackUrl(item.track),
+        streams: item.streams,
+      });
+    } else {
+      // Intentional: stats.fm tracks without a valid primary artist are skipped.
+    }
+  }
+
+  return {
+    range,
+    artists,
+    tracks,
+    fetched_at: fetchedAtIso,
+    source: "stats.fm",
   };
 }
 
@@ -623,27 +1027,46 @@ async function getMusicPayload(range: SpotifyRange): Promise<MusicPayload | null
   if (freshCache) {
     return freshCache;
   } else {
-    const accessToken = await renewSpotifyAccessToken();
+    let statsFmUser: string;
 
-    if (typeof accessToken === "string" && accessToken.length > 0) {
-      const artistsResponse = await fetchSpotifyArtists(accessToken, range);
-      const tracksResponse = await fetchSpotifyTracks(accessToken, range);
+    if (process.env.STATSFM_USER && process.env.STATSFM_USER.length > 0) {
+      statsFmUser = process.env.STATSFM_USER;
+    } else {
+      statsFmUser = "joschi_oskar";
+    }
 
-      if (artistsResponse && tracksResponse) {
-        const fetchedAtIso = new Date(nowMs).toISOString();
-        const payload = shapeMusicPayload(range, artistsResponse, tracksResponse, fetchedAtIso);
+    const statsFmArtistsResponse = await fetchStatsFmArtists(statsFmUser, range);
+    const statsFmTracksResponse = await fetchStatsFmTracks(statsFmUser, range);
 
-        if (payload) {
-          spotifyMusicCache.set(range, { value: payload, fetchedAtMs: nowMs });
-          return payload;
+    if (statsFmArtistsResponse && statsFmTracksResponse) {
+      const fetchedAtIso = new Date(nowMs).toISOString();
+      const payload = shapeStatsFmMusicPayload(range, statsFmArtistsResponse, statsFmTracksResponse, fetchedAtIso);
+
+      spotifyMusicCache.set(range, { value: payload, fetchedAtMs: nowMs });
+      return payload;
+    } else {
+      const accessToken = await renewSpotifyAccessToken();
+
+      if (typeof accessToken === "string" && accessToken.length > 0) {
+        const artistsResponse = await fetchSpotifyArtists(accessToken, range);
+        const tracksResponse = await fetchSpotifyTracks(accessToken, range);
+
+        if (artistsResponse && tracksResponse) {
+          const fetchedAtIso = new Date(nowMs).toISOString();
+          const payload = shapeMusicPayload(range, artistsResponse, tracksResponse, fetchedAtIso);
+
+          if (payload) {
+            spotifyMusicCache.set(range, { value: payload, fetchedAtMs: nowMs });
+            return payload;
+          } else {
+            return getStaleMusicCache(range);
+          }
         } else {
           return getStaleMusicCache(range);
         }
       } else {
         return getStaleMusicCache(range);
       }
-    } else {
-      return getStaleMusicCache(range);
     }
   }
 }
@@ -676,12 +1099,12 @@ async function getStatusPayload(): Promise<StatusPayload> {
 }
 
 async function fetchLatestGitHubEvent(user: string): Promise<GitHubPayload | null> {
-  const url = `https://api.github.com/users/${encodeURIComponent(user)}/events/public`;
+  const url = `https://api.github.com/users/${encodeURIComponent(user)}/events/public?per_page=100`;
   try {
     const response = await fetch(url, {
       headers: {
         Accept: "application/vnd.github+json",
-        "User-Agent": "joschi-api/2.0.0",
+        "User-Agent": "joschi-api/2.1.0",
       },
       signal: AbortSignal.timeout(EXTERNAL_FETCH_TIMEOUT_MS),
     });
@@ -689,14 +1112,21 @@ async function fetchLatestGitHubEvent(user: string): Promise<GitHubPayload | nul
     if (response.ok) {
       const payload = await parseJsonSafely(response);
       const events = parseGitHubEventsResponse(payload);
-      const latestEvent = events?.[0];
 
-      if (latestEvent) {
-        return {
-          repo: latestEvent.repo.name,
-          type: latestEvent.type,
-          created_at: latestEvent.created_at,
-        };
+      if (events) {
+        for (const event of events) {
+          if (event.type === "PushEvent") {
+            return {
+              repo: event.repo.name,
+              type: event.type,
+              created_at: event.created_at,
+            };
+          } else {
+            // Intentional: non-push GitHub events are ignored.
+          }
+        }
+
+        return null;
       } else {
         return null;
       }

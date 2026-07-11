@@ -3,6 +3,7 @@ import { motionOK, $, $$, initTheme, toggleLab } from "./state";
 import { initCurve } from "./curve";
 import { initLive } from "./live";
 import { initPalette, openPalette } from "./palette";
+import { initMotion } from "./motionfx";
 
 initTheme();
 
@@ -169,6 +170,7 @@ apidot();
 consoleGreeting();
 initPalette();
 initLive();
+initMotion();
 
 const curveEl = document.querySelector<HTMLCanvasElement>("[data-curve]");
 if (curveEl) initCurve(curveEl);

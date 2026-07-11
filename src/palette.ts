@@ -5,6 +5,7 @@ import {
   toggleTheme, toggleLab, labOn, cycleRange, RANGE_LABEL, isApiUp, currentTheme, motionOK,
 } from "./state";
 import { pingCoffee, fetchUptimeLine } from "./live";
+import { springIn } from "./motionfx";
 
 type Ctx = { print: (text: string, cls?: string) => void; close: () => void };
 type Cmd = { name: string; aliases?: string[]; desc: string; keep?: boolean; run: (ctx: Ctx) => void | Promise<void> };
@@ -53,6 +54,18 @@ const COMMANDS: Cmd[] = [
     run: async (c) => c.print(await pingCoffee(), "out-warn") },
   { name: "github", desc: "open github/joschi655", keep: true,
     run: (c) => { open_("https://github.com/joschi655"); c.print("opening github — where the commit messages apologize."); } },
+  { name: "statsfm", aliases: ["stats", "stats.fm"], desc: "my full listening history — I track everything", keep: true,
+    run: (c) => { open_("https://stats.fm/joschi_oskar"); c.print("opening stats.fm — every stream since forever, counted.\nif it can be tracked, I track it."); } },
+  { name: "cloud9", aliases: ["cloud-9"], desc: "open the spot-instance optimizer", keep: true,
+    run: (c) => { open_("https://cloud-9opt.com/"); c.print("opening cloud-9opt.com — spot instances, ranked before they interrupt you."); } },
+  { name: "club", aliases: ["builders club", "claude club"], desc: "open the claude builders club munich", keep: true,
+    run: (c) => { open_("https://claudebuildersclub-muc.github.io/"); c.print("opening the club I founded — students building with claude, not just chatting."); } },
+  { name: "malt", aliases: ["freelance"], desc: "open my malt freelance profile", keep: true,
+    run: (c) => { open_("https://en.malt.de/profile/johannesbreitfeld"); c.print("opening malt — bring an annoying process."); } },
+  { name: "cv", aliases: ["resume", "lebenslauf"], desc: "the formal version of this website (pdf)", keep: true,
+    run: (c) => { open_("assets/cv.pdf?v=2"); c.print("opening the cv — same person, more bullet points."); } },
+  { name: "thesis", aliases: ["pyrolysis"], desc: "semester thesis pdf — graded 1.0", keep: true,
+    run: (c) => { open_("assets/pyrolysis-thesis.pdf?v=2"); c.print("opening the thesis — ML on plastic pyrolysis yields. graded 1.0."); } },
   { name: "linkedin", desc: "open linkedin", keep: true,
     run: (c) => { open_("https://www.linkedin.com/in/johannes-breitfeld/"); c.print("opening linkedin. tie optional."); } },
   { name: "email", aliases: ["mail"], desc: "write me", keep: true,
@@ -214,6 +227,8 @@ export function openPalette(trigger?: HTMLElement): void {
   if (!root) build();
   lastTrigger = trigger ?? (document.activeElement as HTMLElement | null);
   root!.style.display = "flex";
+  const pal = root!.querySelector<HTMLElement>(".pal");
+  if (pal) springIn(pal);
   renderList();
   input.focus();
 }

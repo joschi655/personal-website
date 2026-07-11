@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 
@@ -34,7 +34,7 @@
   <div class="eyebrow mono"><span class="dot" aria-hidden="true"></span>Munich · born in 2000 · energy, processes &amp; machine learning</div>
   <p class="boot" data-boot aria-hidden="true">boot: energy <span class="ok">✓</span> ml <span class="ok">✓</span> automation <span class="ok">✓</span></p>
   <h1>I build fixes for<br>whatever <span class="accent">annoys me.</span></h1>
-  <p class="lede">I’m Oskar Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science — I learn by building.</em> <span class="dim">And I’m lazy enough that automating things became the obvious career.</span></p>
+  <p class="lede">I’m Oskar Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science — I learn by building.</em> <span class="dim">And I genuinely hate stupid repetitive tasks — automating them became the obvious career.</span></p>
 
   <div class="curve">
     <span class="label mono">Measured</span>
@@ -46,7 +46,7 @@
         <path class="trace-future" d="M760,58 C795,64 815,38 855,46 C895,54 915,82 955,70 C975,64 990,58 1000,60"/>
       </svg>
     </noscript>
-    <p class="sub" data-curve-sub>sim: load — move the cursor, be the anomaly</p>
+    <p class="sub" data-curve-sub>sim: load — be the anomaly</p>
   </div>
 
   <div class="status">
@@ -70,7 +70,7 @@
           </span>
         </div>
         <div data-music-body><p class="offline">spotify feed warming up — or offline. judge me later.</p></div>
-        <div class="lw-foot">source: my actual spotify · cached on my server</div>
+        <div class="lw-foot" data-music-foot>source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> — full history, real counts. yes, I track everything.</div>
       </div>
       <div class="lw" data-widget="server">
         <div class="lw-k"><span>⏻ this server</span></div>
@@ -125,6 +125,7 @@
       <h3>Spotify queue bot</h3>
       <p class="nervt">A shared Spotify link hijacks the speaker and kills the queue. Every time.</p>
       <p class="built"><b>Built:</b> forward the song via WhatsApp → the bot appends it cleanly. No interruptions. Most projects start like this.</p>
+      <p class="card-links"><a href="https://www.linkedin.com/posts/johannes-breitfeld_kann-mir-jemand-helfen-ich-hatte-vor-gut-activity-7479938472460595201-40r7" target="_blank" rel="noopener">the n8n flow — LinkedIn ↗</a></p>
     </div>
 
     <div class="card">
@@ -132,13 +133,7 @@
       <h3>Cloud-Instance-Optimizer</h3>
       <p class="nervt">Spot instances are cheap — the wrong pick gets you interrupted or overcharged.</p>
       <p class="built"><b>Built:</b> ranks EC2 spot instances by live price and interruption risk, forecasts prices with ML, generates the Terraform.</p>
-    </div>
-
-    <div class="card">
-      <div class="nag">legal tech</div>
-      <h3>AI for energy law</h3>
-      <p class="nervt">German energy law is complex, fragmented, painful to search.</p>
-      <p class="built"><b>Built:</b> an AI research tool that makes the complexity navigable instead of expert-locked.</p>
+      <p class="card-links"><a href="https://cloud-9opt.com/" target="_blank" rel="noopener">cloud-9opt.com ↗</a></p>
     </div>
 
     <div class="card">
@@ -146,13 +141,15 @@
       <h3>check24-MCP</h3>
       <p class="nervt">Comparison portals: data everywhere, no interface for AI agents.</p>
       <p class="built"><b>Built:</b> an MCP server aggregating CHECK24 verticals on Cloudflare Workers — won the GenDev scholarship.</p>
+      <p class="card-links"><a href="https://github.com/joschi655/check24-MCP" target="_blank" rel="noopener">github ↗</a></p>
     </div>
 
     <div class="card">
-      <div class="nag">research</div>
+      <div class="nag">research · grade 1.0</div>
       <h3>Predicting pyrolysis yields</h3>
       <p class="nervt">Lab experiments are expensive; which conditions give which yields is hard to see.</p>
-      <p class="built"><b>Built:</b> ML models (Random Forest, XGBoost) predicting yields from literature data — validated against leakage.</p>
+      <p class="built"><b>Built:</b> ML models (Random Forest, XGBoost) predicting yields from literature data — validated against leakage. Semester thesis at TUM, graded 1.0.</p>
+      <p class="card-links"><a href="assets/pyrolysis-thesis.pdf?v=2" target="_blank" rel="noopener">read the thesis (pdf) ↗</a></p>
     </div>
 
     <div class="card">
@@ -160,13 +157,15 @@
       <h3>AI tools for clients</h3>
       <p class="nervt">Many teams know AI could help — just not where to start.</p>
       <p class="built"><b>Built:</b> DSGVO-compliant RAG support for KooKoo GmbH, browser automation for a medical practice, n8n/MCP workflows killing repetitive admin.</p>
+      <p class="card-links"><a href="https://en.malt.de/profile/johannesbreitfeld" target="_blank" rel="noopener">malt profile ↗</a></p>
     </div>
 
     <div class="card">
-      <div class="nag">community</div>
-      <h3>Claude Campus Ambassador</h3>
+      <div class="nag">community · founder</div>
+      <h3>Claude Builders Club Munich</h3>
       <p class="nervt">Most students still use AI like a search box.</p>
-      <p class="built"><b>Did:</b> represented Anthropic’s Claude on campus — showing how to build with AI, not just chat with it.</p>
+      <p class="built"><b>Did:</b> founded the Claude Builders Club in Munich and represented Anthropic’s Claude on campus as Campus Ambassador — building with AI, not just chatting with it.</p>
+      <p class="card-links"><a href="https://claudebuildersclub-muc.github.io/" target="_blank" rel="noopener">claudebuildersclub-muc.github.io ↗</a></p>
     </div>
 
     <div class="card full">
@@ -237,6 +236,7 @@
   <div class="links">
     <a href="https://github.com/joschi655" target="_blank" rel="noopener">GitHub →</a>
     <a href="https://www.linkedin.com/in/johannes-breitfeld/" target="_blank" rel="noopener">LinkedIn →</a>
+    <a href="assets/cv.pdf?v=2" target="_blank" rel="noopener">CV (PDF) →</a>
     <a href="mailto:jo.breitfeld@gmail.com">Email →</a>
   </div>
   <p class="foot-note mono">
@@ -249,6 +249,6 @@
 
 <button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
 
-<script type="module" src="dist/app.js?v=3"></script>
+<script type="module" src="dist/app.js?v=5"></script>
 </body>
 </html>
