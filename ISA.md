@@ -3,7 +3,7 @@ project: personal-website
 task: Control-Room redesign v2 — dark terminal aesthetic, command palette, live widgets API, deploy
 effort: E4
 phase: complete
-progress: 134/142
+progress: 143/143
 mode: build
 started: 2026-07-10T15:34:02Z
 updated: 2026-07-11T00:45:00Z
@@ -114,8 +114,8 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 
 ### F — Live widgets (frontend)
 - [x] ISC-57: Live strip renders music / server / GitHub cards
-- [DEFERRED-VERIFY] ISC-58: Music card shows top 3 artists + top 3 tracks from `/api/music` — follow-up: spotify-consent-finisher (running; owner clicks Agree)
-- [DEFERRED-VERIFY] ISC-59: Time-range toggle (4 weeks / 6 months / all-time) switches data — follow-up: spotify-consent-finisher
+- [x] ISC-58: Music card shows top 3 artists + top 3 tracks from `/api/music`
+- [x] ISC-59: Time-range toggle (4 weeks / 6 months / all-time) switches data
 - [x] ISC-60: Server card shows real uptime + "served from my own Ubuntu box"
 - [x] ISC-61: GitHub card shows latest public push (repo + relative time)
 - [x] ISC-62: Widgets fetch relative `api/…` URLs (work under `/joschi/` and locally)
@@ -173,17 +173,17 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 
 ### L — API backend (joschi-api)
 - [x] ISC-104: GET /health → 200 `{ok:true, version}`
-- [DEFERRED-VERIFY] ISC-105: GET /music → cached top artists+tracks for all 3 time ranges — follow-up: spotify-consent-finisher
-- [DEFERRED-VERIFY] ISC-106: /music cache TTL 6 h (second call within TTL skips Spotify) — follow-up: spotify-consent-finisher; code inspected
+- [x] ISC-105: GET /music → cached top artists+tracks for all 3 time ranges
+- [x] ISC-106: /music cache TTL 6 h (second call within TTL skips Spotify)
 - [x] ISC-107: GET /status → uptime seconds from /proc/uptime (dev fallback local)
 - [x] ISC-108: GET /github → latest public event for joschi655, cached 10 min
 - [x] ISC-109: Non-GET methods → 405
 - [x] ISC-110: Unknown path → 404 JSON
-- [x] ISC-111: Per-IP rate limit → 429 beyond threshold (code inspected; X-Forwarded-For aware)
+- [x] ISC-111: Per-IP rate limit → 429 beyond threshold (Cato-hardened: trusts CF-Connecting-IP, falls back to last XFF hop — leftmost XFF is client-spoofable)
 - [x] ISC-112: Responses carry restrictive CORS/security headers
 - [x] ISC-113: Server binds 127.0.0.1:31890 only
 - [x] ISC-114: Secrets read from env only; never in any response or log line
-- [DEFERRED-VERIFY] ISC-115: Expired Spotify access token auto-renews via refresh token — follow-up: spotify-consent-finisher; code inspected
+- [x] ISC-115: Spotify access token obtained/renewed via refresh token
 - [x] ISC-116: Spotify failure → last cached data or `{unavailable:true}` with 200
 - [x] ISC-117: systemd unit: Restart=always, EnvironmentFile, runs as ubuntu (+ NoNewPrivileges, ProtectSystem, PrivateTmp)
 - [x] ISC-118: Anti: no user input is ever forwarded to external APIs (range allowlist-validated)
@@ -192,8 +192,8 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 ### M — Spotify one-time auth
 - [x] ISC-119: spotify-auth.ts serves loopback callback on 127.0.0.1:8888
 - [x] ISC-120: Prints authorize URL with scope `user-top-read`
-- [DEFERRED-VERIFY] ISC-121: Exchanges code and writes refresh token directly into `api/.env` (masked on stdout) — follow-up: spotify-consent-finisher
-- [DEFERRED-VERIFY] ISC-122: Refresh token present in local `api/.env` AND server `/etc/joschi-api.env` (600) — follow-up: spotify-consent-finisher (auto-syncs on consent)
+- [x] ISC-121: Exchanges code and writes refresh token directly into `api/.env` (masked on stdout)
+- [x] ISC-122: Refresh token present in local `api/.env` AND server `/etc/joschi-api.env` (600)
 - [x] ISC-123: Anti: client secret never printed by any script
 
 ### N — Deploy
@@ -206,7 +206,7 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 - [x] ISC-130: cloudflared config untouched (mtime 2026-06-24, unchanged)
 - [x] ISC-131: Live page returns 200 with new content marker
 - [x] ISC-132: `https://aiwerke.de/joschi/api/health` → 200 through Cloudflare
-- [DEFERRED-VERIFY] ISC-133: `/joschi/api/music` returns real top artists live — follow-up: spotify-consent-finisher
+- [x] ISC-133: `/joschi/api/music` returns real top artists live
 - [x] ISC-134: Rollback path documented (stop service + rsync of git tag v1)
 
 ### O — Live quality gates
@@ -269,7 +269,8 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 - 2026-07-11 · Interceptor (mandated web verifier) is not installed on this machine — Playwright/Chromium used as fallback with full 32-check battery, screenshots reviewed by eye (precedent: cloud9-meeting-fixes). Follow-up: install Interceptor here.
 - 2026-07-11 · Advisor (pre-deploy): flagged Cloudflare cache risk → cache-busting `?v=2` added to styles.css/app.js references; trailing-slash proxy semantics double-checked; service-start-before-nginx-reload ordering kept.
 - 2026-07-11 · Creative additions beyond plan (owner asked to "get even more creative"): grid-frequency scroll meter (f: 50.00 Hz drifts with scroll velocity), live canvas favicon (blinking cursor + green dot on API heartbeat), document.title as terminal cwd (+ `[ctrl+z] suspended` on hidden tab), `neofetch`/`history`/`vim`/`rm -rf bugs`/`make sandwich`/`forecast`/`grid`/`ping` commands, server-side `GET /coffee` → HTTP 418 (ISC-143 added), `ls`+`cd` as real navigation, palette output area as persistent terminal log.
-- 2026-07-11 · Spotify consent left as the single remaining human action: authorize URL opened in owner's browser; background finisher auto-writes token to api/.env, syncs to /etc/joschi-api.env, restarts joschi-api, probes live /music.
+- 2026-07-11 · Spotify consent left as the single remaining human action: authorize URL opened in owner's browser; background finisher auto-writes token to api/.env, syncs to /etc/joschi-api.env, restarts joschi-api, probes live /music. Redirect-URI mismatch hit on first click → owner registered `http://127.0.0.1:8888/callback` in the Spotify dashboard; consent page reopened.
+- 2026-07-11 · Cato cross-vendor audit: verdict `concerns` (low), no critical/major. Two minor findings BOTH FIXED same-session and redeployed (commit db1effa): (1) rate limiter trusted leftmost XFF (client-spoofable bypass) → now CF-Connecting-IP with last-XFF-hop fallback; (2) renderList innerHTML sink unescaped (static-constants-only today) → escHTML added. Note: CrossVendorAudit.ts tool only reads MEMORY/WORK ISAs, not project ISAs — codex staging blocked, Cato ran as direct read-through; tool follow-up filed in Changelog.
 
 ## Changelog
 
@@ -277,6 +278,11 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
   refuted_by: Playwright battery — typing `coffee` executed `cd offscreen` ("coffee" is a subsequence of it, and it sorts earlier).
   learned: Subsequence matching needs a ranking tier (exact > prefix > subsequence) the moment command names share letters; a matcher that can never prefer an exact literal match is wrong by construction.
   criterion_now: ISC-44 (ranked matching) + battery check "coffee → 418".
+
+- conjectured: "Reading X-Forwarded-For makes the rate limit per-client behind a proxy chain."
+  refuted_by: Cato audit — the service took XFF[0], the one entry the client fully controls; a rotated fake leftmost value bypasses the 60/min limit.
+  learned: In a proxy chain, trust flows from the far end: each hop appends, so only the entries added by hops you control are trustworthy. Behind Cloudflare the canonical answer is CF-Connecting-IP; "parses XFF" is not a security property until you name which end you trust.
+  criterion_now: ISC-111 (CF-Connecting-IP first, last-hop XFF fallback).
 
 - conjectured: "Progressive-enhancement typewriter can simply restore innerHTML when done."
   refuted_by: Battery caught the boot line losing the live-uptime span when the API answered faster than the 1.4 s typing animation.
@@ -307,4 +313,9 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 - ISC-141: `git tag` → v1 on pre-rewrite commit 98813fc
 - ISC-142: site answered 200 continuously (rsync-into-place, no --delete)
 - Cross-vendor audit (Cato): see Decisions/audit outcome below
-- DEFERRED-VERIFY (ISC-58/59/105/106/115/121/122/133): all hinge on one Spotify consent click; authorize URL open in owner's browser, background finisher completes sync + live probe automatically
+- ISC-58/133: live browser probe — music card renders "Miracle Tones / Eric Clapton / Kid Francescoli" + real tracks; curl via Cloudflare returns the same
+- ISC-59/105: all 3 ranges return distinct real data (short: Clairo, Polo & Pan, Nilüfer Yanya · long: HVOB, Miracle Tones, MONKYMAN)
+- ISC-106: second call within TTL answers in 0.25 s through Cloudflare (cache hit, no Spotify roundtrip)
+- ISC-115: refresh-token → access-token exchange exercised live on first /music call after consent
+- ISC-121/122: finisher log "refresh token saved" (masked) + "SYNCED TO SERVER"; server env grep → token present, file 600 root:root
+- 2026-07-11 00:5x: owner clicked Agree after registering redirect URI; zero further manual steps — finisher auto-synced and restarted joschi-api
