@@ -3,10 +3,10 @@ project: personal-website
 task: Control-Room redesign v2 — dark terminal aesthetic, command palette, live widgets API, deploy
 effort: E4
 phase: complete
-progress: 143/143
+progress: 159/159
 mode: build
 started: 2026-07-10T15:34:02Z
-updated: 2026-07-11T00:45:00Z
+updated: 2026-07-11T09:20:00Z
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
@@ -219,6 +219,25 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 - [x] ISC-141: v1 preserved as git tag `v1` before rewrite
 - [x] ISC-142: Anti: live site unreachable for no longer than the rsync window during deploy
 
+### Curve-fix iteration (2026-07-11, E2) — junction weld + hover easing
+
+- [x] ISC-144: Solid path's last vertex is exactly `(split, loadAt(split))` via explicit final lineTo
+- [x] ISC-145: Dashed path's first vertex is exactly `(split, loadAt(split))` — same function call, same frame
+- [x] ISC-146: `loadAt` is phase-unified: smoothstep blend with s(split)=0 makes both segments mathematically equal at the junction
+- [x] ISC-147: Far-right forecast still uses the calmer 0.35·phase movement (visual intent preserved)
+- [x] ISC-148: Live screenshot ≥8s after load shows solid + dashed meeting at the "now" dot with no gap
+- [x] ISC-149: Cursor influence position is temporally eased (per-frame lerp toward pointer), not raw coords
+- [x] ISC-150: Influence strength eases IN from 0 on pointer entry — no first-frame bump snap
+- [x] ISC-151: On pointerleave strength eases OUT — screenshot 150ms after leave still shows partial deformation
+- [x] ISC-152: No sign-flip crease: push direction from smooth tanh of cursor–curve distance, not canvas-midline rule
+- [x] ISC-153: Perturbed y clamped to canvas bounds [4, h−4]
+- [x] ISC-154: Hover screenshot shows local deformation near cursor with smooth falloff
+- [x] ISC-155: Reduced-motion path unchanged — no listeners, no loop, static curve renders connected (phase 0)
+- [x] ISC-156: `bun build src/main.ts --minify --outfile=dist/app.js` exits 0, bundle updated
+- [x] ISC-157: index.html references `dist/app.js?v=3` (cache bust past Cloudflare)
+- [x] ISC-158: Live site serves the v=3 HTML and the new app.js bytes
+- [x] ISC-159: Anti: zero non-418 console errors on the live page after the fix
+
 ## Test Strategy
 
 | isc | type | check | threshold | tool |
@@ -238,6 +257,9 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 | 119–123 | ops | auth flow produces token | .env populated | Bash (masked read-back) |
 | 124–133 | deploy | server state + live probes | 200s, active unit | ssh + curl + Playwright |
 | 135–142 | quality | screenshots, console, network, weight | 0 errors, <500 KB | Playwright + curl |
+| 144–147, 149–153, 155 | code | continuity + easing constructs present in curve.ts | Read/Grep confirms each | Read + Grep |
+| 148, 151, 154, 159 | visual | junction/hover/decay screenshots + console capture on live | no gap, bump persists 150ms, 0 errors | Playwright (curve-check.ts) |
+| 156–158 | build/deploy | bundle exit 0, v=3 reference, live bytes match | exit 0 / grep hit / curl diff | Bash + curl |
 
 Note: Interceptor (mandated verifier) is not installed on this machine; Playwright/Chromium used as documented fallback — precedent: cloud9-meeting-fixes run. Follow-up: install Interceptor on this laptop.
 
@@ -258,6 +280,10 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 
 ## Decisions
 
+- 2026-07-11 · curve-fix iteration (E2, classifier): root cause of the gap = dual-phase `loadAt` — ingestion-point fix: single `loadAt(x)` with value cross-fade, not a draw-side patch. Hover jank = zero temporal easing + midline sign-flip; replaced with eased cursor state (pos lerp 0.14, strength 0.10, ε-snap-off) and tanh-of-distance push.
+- 2026-07-11 · delegation floor (E2 ≥1) relaxed, show-your-math: single-file surgical canvas fix; Forge spawn latency exceeds task value; pixel-probe verification is stronger evidence than a second implementation opinion. Advisor (Rule 2) skipped on the same grounds — empirical numeric probes at every boundary.
+- 2026-07-11 · Interceptor still absent on this laptop → Playwright fallback again (precedent noted in Test Strategy).
+
 - 2026-07-10 · Plan approved by owner after one revision: chatbot cut from v1 ("brauche mehr Zeit") → palette keeps a free-text slot; Spotify widget switched from now-playing to top artists/tracks with time-range choice (owner's explicit spec).
 - 2026-07-10 · Defaults set while owner AFK, veto-able: Design A (control room), name "Joschi Breitfeld" (live site says "Oskar" — flagged), English.
 - 2026-07-10 · Deploy target verified by ssh, not assumed: live files at `/var/www/html/joschi/` under the *default* nginx vHost; no joschi entry in sites-enabled. API location must go into the default vHost — a new `server_name aiwerke.de` block would capture traffic away from it.
@@ -273,6 +299,8 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 - 2026-07-11 · Cato cross-vendor audit: verdict `concerns` (low), no critical/major. Two minor findings BOTH FIXED same-session and redeployed (commit db1effa): (1) rate limiter trusted leftmost XFF (client-spoofable bypass) → now CF-Connecting-IP with last-XFF-hop fallback; (2) renderList innerHTML sink unescaped (static-constants-only today) → escHTML added. Note: CrossVendorAudit.ts tool only reads MEMORY/WORK ISAs, not project ISAs — codex staging blocked, Cato ran as direct read-through; tool follow-up filed in Changelog.
 
 ## Changelog
+
+- 2026-07-11 · **conjectured:** two `loadAt` calls with different phase arguments read as one continuous curve (v2 launch assumption). **refuted_by:** live screenshot 9s post-load — dashed forecast visibly detached below the now-dot; the segments agree only at phase≈0, so the gap grows from invisible to obvious as the animation drifts. **learned:** piecewise animated curves must share the exact junction sample; cross-fade segment VALUES with a smoothstep that zeroes at the boundary — and never blend the phases of unbounded oscillators, which chirps into scribbles as phase grows. **criterion_now:** ISC-146 (junction equality by construction) + ISC-148 (live screenshot after drift).
 
 - conjectured: "A subsequence fuzzy matcher is sufficient for a ~28-command palette."
   refuted_by: Playwright battery — typing `coffee` executed `cd offscreen` ("coffee" is a subsequence of it, and it sorts earlier).
@@ -290,6 +318,25 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
   criterion_now: boot() preserves `[data-boot-uptime]` across restore; battery check "boot uptime appended".
 
 ## Verification
+
+### Curve-fix iteration (2026-07-11)
+
+- ISC-144/145: Read curve.ts — solid ends `lineTo(split, nowY)`, dashed starts `moveTo(split, nowY)`, both from one `nowY = loadAt(split)` per frame
+- ISC-146: Read — value cross-fade `v += (shape(x, phase*0.35) - v) * s`, smoothstep s(split)=0 → segments mathematically equal at junction
+- ISC-147: Read — far-forecast blend target remains `phase * 0.35` (calmer movement kept)
+- ISC-148: live-junction.png after 9s drift — solid + dashed meet at the now-dot, no offset (repro-junction.png pre-fix showed detached dashed line)
+- ISC-149: Read — `sx += (tx - sx) * 0.14` / `sy += (ty - sy) * 0.14` per frame
+- ISC-150: Read — strength starts 0; pointer entry snaps position only, strength lerps in at 0.10
+- ISC-151: pixel probe live: 8.5px residual deformation 150ms after pointerleave (pre-fix repro: instant flat = 0px)
+- ISC-152: Read — push = `tanh((y - sy)/45) * gaussian * 26`; canvas-midline branch removed
+- ISC-153: Read — `return Math.min(h - 4, Math.max(4, y))`
+- ISC-154: pixel probe (control-column corrected): 15px deformation live, 10.5px local at cursor column
+- ISC-155: Read — `if (!motionOK()) return;` before any listener; static draw at phase=0 where both segments are identical by definition
+- ISC-156: `bun build src/main.ts --minify --outfile=dist/app.js` exit 0, 18,624 B
+- ISC-157: grep index.html → `dist/app.js?v=3`
+- ISC-158: live HTML references v=3; live app.js sha1 357e05b6a82a…f1 == local dist/app.js
+- ISC-159: Playwright console capture on live page: `[]` (418 excluded by design)
+
 
 - ISC-1/2: `bun build --minify` exit 0; dist/app.js 17,837 B (17.4 KB) < 30 KB
 - ISC-3/4/5/123: `git check-ignore api/.env` OK; grep of client-id/secret values over all tracked+staged files → only api/.env (ignored); spotify-auth prints token masked (xxxx…yy)
