@@ -56,3 +56,16 @@ export function staggerIn(container: ParentNode): void {
     );
   });
 }
+
+export function initDetailsMotion(): void {
+  if (!motionOK()) return;
+  const details = $$<HTMLDetailsElement>("details.step-more");
+  for (const item of details) {
+    item.addEventListener("toggle", () => {
+      if (!item.open || !motionOK()) return;
+      const facts = item.querySelector<HTMLElement>(".step-facts");
+      if (!facts) return;
+      staggerIn(facts);
+    });
+  }
+}

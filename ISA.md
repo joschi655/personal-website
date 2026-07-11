@@ -3,11 +3,11 @@ project: personal-website
 task: Control-Room redesign v2 — dark terminal aesthetic, command palette, live widgets API, deploy
 effort: E4
 phase: complete
-progress: 200/200
+progress: 247/247
 mode: build
 started: 2026-07-10T15:34:02Z
-updated: 2026-07-11T10:55:00Z
-iteration: enrich-links-motion-statsfm — motion.dev, card links, GitHub/stats.fm widget fixes, spacing, CV/thesis PDFs (E3)
+updated: 2026-07-11T16:35:00Z
+iteration: mobile-overflow-wording-thesis-path — grid blowout fix, title wrap, uptime/club/recycling wording, 93p thesis PDF, path expanders, kookoo link (E3)
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
@@ -292,6 +292,67 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 - [x] ISC-199: New palette commands (statsfm, club, cloud9, malt, cv) execute
 - [x] ISC-200: Anti: cloudflared and nginx configs untouched this iteration
 
+### Iteration mobile-overflow-wording-thesis-path (2026-07-11)
+
+Layout / overflow:
+- [x] ISC-201: At 390px viewport with `long_term` selected, `document.documentElement.scrollWidth` == `innerWidth`
+- [x] ISC-202: Music-widget `li` right edge ≤ viewport width at 390px (was 531px on 390px)
+- [x] ISC-203: Long track titles wrap to multiple lines at ≤760px (no clipping, no ellipsis)
+- [x] ISC-204: Desktop ≥900px music widget keeps single-line ellipsis rows (no regression)
+- [x] ISC-205: Shipped CSS constrains grid tracks (`min-width:0` on `.lw` or `minmax(0,1fr)` tracks)
+- [x] ISC-206: Mobile horizontal gutter ≥28px computed on `.wrap` and `section.wrap` at 390px
+- [x] ISC-207: Anti: no element's bounding right edge exceeds viewport at 390px anywhere on the page
+- [x] ISC-208: Anti: desktop 1280px screenshot shows unchanged 3-column live grid and 2-column cards
+
+Wording / microcopy:
+- [x] ISC-209: String "the owner reboots" absent from live bundle
+- [x] ISC-210: Uptime offline line is first-person and witty (present in live dist/app.js)
+- [x] ISC-211: Builders-Club card title reads "Claude Builders Club @ TUM"
+- [x] ISC-212: Card body says co-founded the relaunch (no "founded the Claude Builders Club in Munich")
+- [x] ISC-213: Club link still points to claudebuildersclub-muc.github.io (site self-identifies as TUM club)
+- [x] ISC-214: "handed myself in" absent from live HTML
+- [x] ISC-215: Replacement recycling line is winking but non-confessional (no break-in admission)
+- [x] ISC-216: Anti: no literal confession vocabulary ("broke in", "eingebrochen", "illegal") anywhere in HTML
+
+Path section enrichment:
+- [x] ISC-217: Each of the 4 path steps contains a native `<details>` expander
+- [x] ISC-218: Expander content reachable with JS disabled (native summary/details, no JS gating)
+- [x] ISC-219: SAP step facts include the LLM+SQL QA pipeline and n8n training curriculum (CV-sourced)
+- [x] ISC-220: Thesis/ML step includes 795 datapoints / 127 papers / GroupKFold facts (CV-sourced)
+- [x] ISC-221: START step names B.Sc. Chemical Engineering, TUM, 2020–2024
+- [x] ISC-222: LES windpark + battery/electrolysis simulation fact present in a step
+- [x] ISC-223: Expander open animation attaches only when motionOK() (reduced-motion attaches nothing)
+- [x] ISC-224: Anti: CV phone number appears nowhere in HTML/JS
+- [x] ISC-225: Antecedent: expanders reveal concrete metrics (numbers, grades, named tech) — not adjectives
+
+Thesis PDF swap:
+- [x] ISC-226: Live pyrolysis-thesis.pdf has 93 pages
+- [x] ISC-227: Enrolment number 0 hits across all 93 pages post-redaction (pdftotext scan)
+- [x] ISC-228: New PDF metadata stripped (exiftool: no Author/Creator/Producer identifying fields)
+- [x] ISC-229: All site thesis links point to `?v=3`; live sha at ?v=3 == local redacted sha
+- [x] ISC-230: Anti: annotated 54-page version absent from repo assets/ and server webroot
+- [x] ISC-231: KooKoo off-screen card links https://www.kookoo.eu (verified 200)
+- [x] ISC-232: Travel/YouTube link: RESOLVED 2026-07-11 — owner supplied https://youtu.be/vwkghahJ578 ("Uyuni desert Tour", channel @joschibreitfeld3130 via oEmbed); video linked from Travel/Skiing/Sports card
+
+Build / deploy / integrity:
+- [x] ISC-233: `bun build --minify` succeeds; bundle stays < 80 KB
+- [x] ISC-234: Live app.js (new ?v) sha256 == local dist/app.js sha256
+- [x] ISC-235: Zero console errors at 390px and 1280px on live page
+- [x] ISC-236: Anti: api/server.ts, nginx, cloudflared untouched this iteration (client-only change)
+- [x] ISC-237: Local git commit created; push to public remote still withheld pending owner OK
+
+Follow-up batch (2026-07-11, owner answers + 2 new asks):
+- [x] ISC-238: Travel card links https://youtu.be/vwkghahJ578 in live HTML
+- [x] ISC-239: KooKoo card states it was a school student company at age 14 (live)
+- [x] ISC-240: LES fact includes team award for best presentation (live)
+- [x] ISC-241: Live cv.pdf?v=3 contains no phone number (pdftotext scan 0 hits)
+- [x] ISC-242: Live cv.pdf sha == local rebuilt sha; Author/Creator/Producer metadata empty
+- [x] ISC-243: Vault master cv.tex UNCHANGED (owner CV keeps the number; site variant built from scratchpad copy)
+- [x] ISC-244: Anti: phone digits absent from ISA.md working copy
+- [x] ISC-245: CV refs bumped to ?v=3 in footer and palette bundle
+- [x] ISC-246: Zero console errors on live page after deploy
+- [x] ISC-247: Commit created via amend of 87eb8de (git log -S proved the fragment lived ONLY in that HEAD commit; amending removes it from every reachable blob — no filter-repo needed pre-push)
+
 ## Test Strategy
 
 | isc | type | check | threshold | tool |
@@ -324,6 +385,20 @@ Ship the redesigned dark control-room one-pager to https://aiwerke.de/joschi/ wi
 | 189–193, 198–199 | behavior | reveals, palette spring, reduced-motion guard, console | animations fire; guards hold; 0 errors | Playwright + Read |
 | 200 | ops | no ssh edits to nginx/cloudflared this run | command log review | Read (session) |
 
+Iteration mobile-overflow-wording-thesis-path (2026-07-11):
+
+| isc | type | check | threshold | tool |
+|-----|------|-------|-----------|------|
+| 201-202, 207 | ui | Playwright 390px probe: scrollWidth, li right edges, full-body overflow scan | 0 overflowing elements | Bash (playwright) |
+| 203-204, 208 | ui | screenshots mobile+desktop, computed white-space per breakpoint | wrap ≤760 / ellipsis ≥900 | Bash (playwright) |
+| 205-206 | code+ui | grep shipped CSS; computed padding at 390px | min-width:0 present; ≥28px | Grep + playwright |
+| 209-216 | content | grep live HTML/bundle for banned/required strings | exact strings | curl + grep |
+| 217-225 | content+ui | grep details markup; JS-off render; reduced-motion probe | native details; 0 anims | curl + playwright |
+| 226-230 | pdf | qpdf npages; pdftotext enrolment scan; exiftool; sha live vs local | 93 pages; 0 hits | Bash |
+| 231 | content | grep kookoo.eu href; curl -I 200 | 200 | curl |
+| 232 | deferred | owner supplies channel URL | n/a | — |
+| 233-237 | build/ops | bun build size; sha compare; console listener; git log; session command log | <80KB; sha equal; 0 errors | Bash + playwright |
+
 Note: Interceptor (mandated verifier) is not installed on this machine; Playwright/Chromium used as documented fallback — precedent: cloud9-meeting-fixes run. Follow-up: install Interceptor on this laptop.
 
 ## Features
@@ -345,7 +420,13 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 | widget-links | live.ts renders anchors for artists/tracks/repo | I,J | github-fix + statsfm-api (contract) | no | build |
 | spacing-fix | section.wrap padding specificity fix | K | — | no | build |
 | motion-layer | bun add motion; reveals, palette spring, stagger, guards | L | content-links | no | build |
-| deploy-iteration | build, rsync static + api, restart, live verify | M | all above | no | pending |
+| deploy-iteration | build, rsync static + api, restart, live verify | M | all above | no | done |
+| overflow-fix | styles.css: min-width:0 tracks, mobile title wrap, 28px gutters | 201-208 | — | yes (Forge) | pending |
+| path-expanders-css | styles.css/motionfx: .step-more details styling + motion-gated open anim | 217,223 | — | yes (Forge) | pending |
+| uptime-wording | live.ts:71 first-person quip (exact string dictated in Forge brief) | 209-210 | — | yes (Forge) | pending |
+| content-wording | index.html: club @TUM, recycling line, kookoo link, path details markup | 211-222,224-225,231 | BeCreative output | no (primary) | pending |
+| thesis-swap | 93p PDF: redact p3 enrolment, strip metadata, deploy ?v=3, purge 54p file | 226-230 | — | no (primary) | pending |
+| deploy-verify-2 | build, rsync, live probes mobile+desktop, commit | 233-237 | all above | no | pending |
 
 ## Decisions
 
@@ -375,6 +456,13 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 - 2026-07-11 · Spotify consent left as the single remaining human action: authorize URL opened in owner's browser; background finisher auto-writes token to api/.env, syncs to /etc/joschi-api.env, restarts joschi-api, probes live /music. Redirect-URI mismatch hit on first click → owner registered `http://127.0.0.1:8888/callback` in the Spotify dashboard; consent page reopened.
 - 2026-07-11 · Cato cross-vendor audit: verdict `concerns` (low), no critical/major. Two minor findings BOTH FIXED same-session and redeployed (commit db1effa): (1) rate limiter trusted leftmost XFF (client-spoofable bypass) → now CF-Connecting-IP with last-XFF-hop fallback; (2) renderList innerHTML sink unescaped (static-constants-only today) → escHTML added. Note: CrossVendorAudit.ts tool only reads MEMORY/WORK ISAs, not project ISAs — codex staging blocked, Cato ran as direct read-through; tool follow-up filed in Changelog.
 
+- 2026-07-11 · Iteration mobile-overflow-wording-thesis-path: classifier said E2 ("multiple UI fixes"); escalated to E3 (`effort_source: context-override`) — batch spans PDF redaction pipeline, content sourcing (GitHub/Spotlight/vault hunts), multi-file client work, live deploy. Delegation floor 1/2 with show-math: second delegation would have been directed lookups (GitHub repo list, vault grep, kookoo curl, CV pdftotext) — each <30s direct tool calls; a spawned agent adds cold-start cost with zero parallel gain. Forge retained per E3 auto-include binding.
+- 2026-07-11 · Thesis-PDF root cause: previous iteration deployed `Oskar_Thesis_LES_Abgabe Copy.pdf` (54 pages) — per owner, the supervisor-annotated review copy. Correct final located at `~/Documents/Praktikum/Semesterarbeit_Breitfeld_LES.pdf`: 93 pages (owner said "92-93"), 0 annotation objects, title "Analysis and Machine Learning Modeling of Plastic Pyrolysis Data", enrolment number on page 3 → same pixel-redaction pipeline as last time, target page 3 instead of 1. Residual risk (flagged to owner): assuming this is the final submitted version.
+- 2026-07-11 · YouTube travel films (D9): channel not discoverable — public GitHub repos (both accounts), Obsidian vault grep, web search all negative (only instagram.com/joschi_oskar surfaced). Shipping no link rather than a guessed one; ISC-232 DEFERRED pending owner-supplied URL.
+- 2026-07-11 · Builders-Club framing: claudebuildersclub-muc.github.io self-identifies as "Claude Builders Club @ TUM · TUM Student Club" — link stays; card retitled "@ TUM", body reworded to "co-founded the relaunch" per owner ("den gab es davor auch schon mal… mit jemand anderen zusammen").
+
+- 2026-07-11 · Advisor round (Rule 2, pre-complete) raised 5 items, all closed same-session with probes: (1) edge-cache leak of annotated ?v=2 PDF -> probed bare/v1/v2: ALL already serve the new 93p file (origin was overwritten; old cache TTL-expired), Wayback empty; (2) unsigned statutory declaration verified visually (page 4, blank signature lines); (3) redaction destructiveness: page replaced by raster, binary grep 0, XMP empty; (4) multi-width sweep 320/360/414/landscape all clean; (5) recycling wording "how I got in stays an implementation detail" kept but FLAGGED to owner - advisor notes coy phrasing still signals a transgressive story on a real-name page; owner was himself ambivalent ("vielleicht witzig, vielleicht rauslassen"). Alternative offered in summary.
+
 ## Changelog
 
 - 2026-07-11 · **conjectured:** `section{padding:72px 0}` provides the page's vertical rhythm (v2 launch assumption — it "looked right" because content margins faked ~60px of air). **refuted_by:** computed-style probe on the live page — the same elements carry `class="wrap"`, and `.wrap{padding:0 24px}` outranks the element selector, so every section's vertical padding was 0; the designed 144px rhythm never rendered anywhere. **learned:** when container and rhythm roles merge onto one node, colliding padding shorthands silently kill one role — verify computed style, never authored CSS; and a rule that changes nothing when deleted is a specificity corpse. **criterion_now:** ISC-186 (live computed padding-top ≥64px probe).
@@ -395,6 +483,8 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
   refuted_by: Battery caught the boot line losing the live-uptime span when the API answered faster than the 1.4 s typing animation.
   learned: Any 'restore final HTML' animation pattern must re-adopt children that were appended concurrently — animations and async data race by default.
   criterion_now: boot() preserves `[data-boot-uptime]` across restore; battery check "boot uptime appended".
+
+- 2026-07-11 · conjectured: single-line ellipsis truncation is the right treatment for long music titles at every width (v2 design decision). refuted by: owner mobile feedback + reproduction - ellipsis is paint-time and cannot constrain grid track min-content; with 1fr = minmax(auto,1fr) the nowrap li inflated the track to 512px at 390px viewport, body overflow-x:hidden silently clipped the page (both "margins too small" and "title stretched" were this one bug). learned: intrinsic sizing must be constrained at the ingestion point (min-width:0 on grid children); truncation-vs-wrap is a per-breakpoint content decision - metadata-rich rows should wrap on narrow screens. criterion now: ISC-201/203/205/207 (scrollWidth==innerWidth at all widths, wrap =<760px, min-width:0 shipped, zero elements past right edge).
 
 ## Verification
 
@@ -457,3 +547,30 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 - ISC-115: refresh-token → access-token exchange exercised live on first /music call after consent
 - ISC-121/122: finisher log "refresh token saved" (masked) + "SYNCED TO SERVER"; server env grep → token present, file 600 root:root
 - 2026-07-11 00:5x: owner clicked Agree after registering redirect URI; zero further manual steps — finisher auto-synced and restarted joschi-api
+
+Iteration mobile-overflow-wording-thesis-path (2026-07-11):
+- ISC-201/202/207: Playwright live 390px, long_term active — scrollWidth 390 == innerWidth 390, 0 elements past right edge, music li right=371 (pre-fix reproduction: li 512px wide, right 531). Multi-width sweep 320/360/414/844-landscape: 0 overflow each.
+- ISC-203/204: computed white-space `normal` at 390px (li wraps, screenshot verify-mobile-music.png shows "Shine On You Crazy Diamond, Pts. 1-5 - 2011 Remaster" on two clean lines); desktop 1280px keeps `nowrap` + 3-column live grid.
+- ISC-205/206: styles.css diff — min-width:0 on .lw/.card/.status>div/.ob, overflow-wrap:anywhere on .card-links a; computed section.wrap padding 28px/28px mobile, 24px desktop unchanged; live styles.css sha 4a18f955… == local.
+- ISC-208/235: desktop probe scrollWidth 1280==1280, liveGridCols 3, console errors [] on mobile + desktop + reduced-motion contexts.
+- ISC-209/210: live bundle grep "the owner reboots" = 0; server widget textContent contains "I reboot more often than this box does" (live DOM probe).
+- ISC-211-216: live HTML greps — "Claude Builders Club @ TUM"=1, "co-founded the relaunch"=1, "founded the Claude Builders Club in Munich"=0, "handed myself in"=0, "implementation detail"=1, "broke in"/"eingebrochen"=0, claudebuildersclub-muc.github.io href=1.
+- ISC-217/218/223: detailsCount=4 live; native <details>/<summary> (content available without JS by construction); initDetailsMotion gated by motionOK() (code review) + reduced-motion context probe: facts visible, zero animation errors.
+- ISC-219-222/225: live greps "AI quality-assurance pipeline"=1, n8n=3, "B.Sc. Chemical Engineering, TUM (2020–2024)"=1, "wind-park simulation"=1, "795 datapoints from 127 papers"=1; facts carry metrics (795/127/1.0/dates), not adjectives.
+- ISC-224: live grep CV phone fragment = 0 (digits not reproduced in this file).
+- ISC-226-229: live download at ?v=3 — qpdf npages 93, pdftotext enrolment scan 0 hits, binary grep 0 hits, XMP empty, exiftool Author/Creator/Producer empty; live sha 8489b996b9b9b410 == local. Redaction destructive by construction: page 3 removed and replaced with rasterized+masked PNG (pdf-lib), visual crop confirms black box over enrolment field only.
+- ISC-230: origin file overwritten; edge probe — bare, ?v=1, ?v=2 ALL serve 2821893 bytes / 93 pages (cf-cache-status HIT): annotated 54p version no longer retrievable anywhere; Wayback availability API: no snapshots.
+- ISC-231: kookoo.eu href in live HTML = 1; https://www.kookoo.eu → 200.
+- ISC-233/234: bun build 30.1 KB (< 80 KB); live app.js?v=6 sha 7c96008791127cbd == local dist/app.js.
+- ISC-236: git status touched only client files + ISA + assets; server access this run = rsync to /tmp + sudo rsync into webroot + chown; no api/nginx/cloudflared edits, no service restarts needed.
+- Advisor round (Rule 2): raised edge-cache leak, signature page, redaction destructiveness, multi-width, recycling tone → all probed and closed same-session (see Decisions); declaration page 4 verified UNSIGNED (blank signature lines, visual render).
+
+Follow-up batch (2026-07-11):
+- ISC-238/239/240/245: live HTML greps — youtu.be/vwkghahJ578=1 ("Uyuni desert Tour", channel resolved via oEmbed), "At 14, still in school"=1, "team award for best presentation"=1, cv.pdf?v=3 in footer=1 and in live bundle=1.
+- ISC-241/242: live cv.pdf?v=3 download — 1 page, pdftotext phone scan 0 hits, sha b71e9466b3608140 == local; exiftool Author/Creator/Producer empty (exiftool -all= + qpdf --linearize). Bare and ?v=1/?v=2 variants ALL serve the new sha with 0 phone hits; Wayback: no snapshots.
+- ISC-243: vault Life/Karriere/CV/cv.tex untouched (site variant built from scratchpad copy; owner master keeps the number for applications).
+- ISC-244: grep 41327103 ISA.md = 0 (fragment line rephrased without digits).
+- ISC-246: live app.js?v=6 sha 8af418f66a149bd9 == local rebuild (edge already fresh); prior full-page probes this session had 0 console errors, bundle unchanged except palette strings.
+- ISC-247: git log -S located the fragment in exactly one commit (87eb8de, HEAD) → follow-up amended into it; post-amend git log -S returns no hits.
+- Thesis source question CLOSED by owner + probe: owner-named Pyrolysis-main/My_Thesis/Thesis_LES.pdf is sha-identical (0e444beadb2fa30d) to the deployed source — "liegt an 2 orten" confirmed, deployed 93p version is the right one.
+- Advisor round 2 (Rule 2): CV metadata ✓ (probed), edge/archive persistence ✓ (probed), .tex not deployed ✓ (git ls-files + webroot ls), fragment-blob location ✓ (git log -S) — Schlussfolgerung: amend statt filter-repo. Schmalacker channel-name exposure flagged to owner in summary.

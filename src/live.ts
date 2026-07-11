@@ -68,7 +68,7 @@ async function renderServer(): Promise<void> {
   }
   body.innerHTML =
     `<div class="big">${fmtUptime(data.uptime_seconds)} <span class="u">uptime</span></div>` +
-    `<p class="offline">the owner reboots more often.</p>`;
+    `<p class="offline">I reboot more often than this box does.</p>`;
   // feed the boot line its one real number
   const boot = $("[data-boot]");
   if (boot && !$("[data-boot-uptime]", boot)) {
