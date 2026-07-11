@@ -215,13 +215,22 @@ function internalErrorResponse(): Response {
 }
 
 function getClientIp(request: Request, server: Bun.Server): string {
+  // behind Cloudflare: CF-Connecting-IP is set by the edge and not client-spoofable.
+  // XFF leftmost IS client-spoofable (rate-limit bypass) — Cloudflare appends the
+  // real client as the LAST entry before nginx, so fall back to that end.
+  const cfIp = request.headers.get("cf-connecting-ip");
+  if (typeof cfIp === "string" && cfIp.length > 0) {
+    return cfIp.trim();
+  }
+
   const forwardedFor = request.headers.get("x-forwarded-for");
 
   if (typeof forwardedFor === "string" && forwardedFor.length > 0) {
-    const firstValue = forwardedFor.split(",")[0]?.trim();
+    const parts = forwardedFor.split(",").map((p) => p.trim()).filter((p) => p.length > 0);
+    const lastValue = parts[parts.length - 1];
 
-    if (typeof firstValue === "string" && firstValue.length > 0) {
-      return firstValue;
+    if (typeof lastValue === "string" && lastValue.length > 0) {
+      return lastValue;
     } else {
       const remoteAddress = server.requestIP(request);
 

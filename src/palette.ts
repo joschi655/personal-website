@@ -170,12 +170,15 @@ function build(): void {
   });
 }
 
+const escHTML = (s: string) => s.replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
+
 function renderList(): void {
   const items = matches(input.value);
   sel = Math.min(sel, Math.max(0, items.length - 1));
   list.innerHTML = items.map((c, i) =>
     `<li role="option" aria-selected="${i === sel}" data-i="${i}">` +
-    `<span class="c">${c.name}</span><span class="d">${c.desc}</span></li>`).join("") ||
+    `<span class="c">${escHTML(c.name)}</span><span class="d">${escHTML(c.desc)}</span></li>`).join("") ||
     `<li role="option" aria-selected="false"><span class="d">no matching command — hit ↵ anyway</span></li>`;
   list.querySelectorAll("li[data-i]").forEach((li) =>
     li.addEventListener("click", () => execute(items[Number(li.getAttribute("data-i"))], input.value)));
