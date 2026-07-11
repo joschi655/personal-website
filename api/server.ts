@@ -178,7 +178,7 @@ function teapotResponse(): Response {
     {
       error: "I'm a teapot",
       rfc: "2324",
-      hint: "try `sudo hire joschi` instead",
+      hint: "try `sudo hire oskar` instead",
     },
     418,
     "public, max-age=300",

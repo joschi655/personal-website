@@ -58,7 +58,7 @@ const COMMANDS: Cmd[] = [
   { name: "email", aliases: ["mail"], desc: "write me", keep: true,
     run: (c) => { window.location.href = "mailto:jo.breitfeld@gmail.com"; c.print("drafting mail — bring an annoying problem."); } },
   { name: "whoami", desc: "who is this guy", keep: true,
-    run: (c) => c.print("joschi — builds fixes for whatever annoys him.\ncurrently annoyed by: manual work.") },
+    run: (c) => c.print("oskar breitfeld — builds fixes for whatever annoys him.\ncurrently annoyed by: manual work.") },
   { name: "neofetch", desc: "system profile", keep: true,
     run: (c) => c.print([
       "joschi@aiwerke",
@@ -81,7 +81,7 @@ const COMMANDS: Cmd[] = [
     run: (c) => c.print("tomorrow: 60% chance of a new side project.\nconfidence interval: none.") },
   { name: "grid", desc: "grid frequency check", keep: true,
     run: (c) => c.print("frequency nominal at 50.00 Hz. europe may continue.", "out-ok") },
-  { name: "ping joschi", aliases: ["ping"], desc: "reachability check", keep: true,
+  { name: "ping oskar", aliases: ["ping", "ping joschi"], desc: "reachability check", keep: true,
     run: (c) => c.print("pong from munich · latency depends on coffee.") },
   { name: "piano", desc: "switch output device", keep: true,
     run: (c) => c.print("switching output device → 🎹\nthe one interface I play without shortcuts.") },
@@ -92,15 +92,15 @@ const COMMANDS: Cmd[] = [
   { name: "rm -rf bugs", aliases: ["rm bugs"], desc: "remove all bugs", keep: true,
     run: (c) => c.print("removing bugs… done.\n3 new bugs were spawned by the removal script. classic.") },
   { name: "make sandwich", aliases: ["sandwich"], desc: "xkcd 149 compliance check", keep: true,
-    run: (c) => c.print("make: *** no rule to make target 'sandwich'.\ndid you mean `sudo hire joschi`?") },
-  { name: "sudo hire joschi", aliases: ["hire", "sudo hire"], desc: "escalate privileges properly", keep: true,
+    run: (c) => c.print("make: *** no rule to make target 'sandwich'.\ndid you mean `sudo hire oskar`?") },
+  { name: "sudo hire oskar", aliases: ["hire", "sudo hire", "sudo hire joschi"], desc: "escalate privileges properly", keep: true,
     run: (c) => {
       c.print("permission granted.\nopening a channel — bring the most annoying process you own.", "out-ok");
       if (motionOK()) {
         document.body.classList.add("crt-flash");
         setTimeout(() => document.body.classList.remove("crt-flash"), 500);
       }
-      setTimeout(() => { window.location.href = "mailto:jo.breitfeld@gmail.com?subject=sudo%20hire%20joschi"; }, 900);
+      setTimeout(() => { window.location.href = "mailto:jo.breitfeld@gmail.com?subject=sudo%20hire%20oskar"; }, 900);
     } },
   { name: "konami", desc: "a hint", keep: true,
     run: (c) => c.print("↑ ↑ ↓ ↓ ← → ← → B A — or just type `lab`.\nshortcuts are the point.") },

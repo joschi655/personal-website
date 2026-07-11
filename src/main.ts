@@ -91,7 +91,7 @@ function titleCwd(): void {
     Object.keys(map).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
   document.addEventListener("visibilitychange", () => {
-    document.title = document.hidden ? "[ctrl+z] suspended — joschi" : BASE;
+    document.title = document.hidden ? "[ctrl+z] suspended — oskar" : BASE;
   });
 }
 
@@ -149,7 +149,7 @@ function consoleGreeting(): void {
   const s = "font-family:monospace";
   console.log(
     "%cjoschi@aiwerke:~$ %cwhoami\n" +
-    "%cjoschi — builds fixes for whatever annoys him.\n\n" +
+    "%coskar breitfeld — builds fixes for whatever annoys him.\n\n" +
     "you opened dev tools. respect.\n" +
     "things to try:\n" +
     "  ⌘K            command palette\n" +
