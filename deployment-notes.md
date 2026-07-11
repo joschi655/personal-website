@@ -1,133 +1,67 @@
-# Deployment-Notizen: nginx + Cloudflare Tunnel Subdomain
+# Deployment — aiwerke.de/joschi/ (v2, Control Room)
 
-> **Wichtig:** Diese Datei ist eine Schritt-für-Schritt-Anleitung.
-> Führe nichts aus, bevor du jeden Schritt gelesen und verstanden hast.
-> Keine automatischen Skripte — alles manuell prüfen.
+Stand: 2026-07-11. Verifizierter Ist-Zustand des Servers (per ssh geprüft, nicht geraten):
 
----
+- Webroot: **`/var/www/html/joschi/`** — ausgeliefert vom **default nginx vHost**
+  (`/etc/nginx/sites-enabled/default`), es gibt **keinen** eigenen aiwerke.de-vHost.
+- Extern erreichbar über **Cloudflare Tunnel** (`cloudflared`, `/etc/cloudflared/config.yml`) —
+  **an cloudflared wird für diese Seite NICHTS geändert** (pfadbasiert, kein neuer Hostname).
+- API-Service: `joschi-api` (Bun) unter `/opt/joschi-api/`, lauscht **nur auf 127.0.0.1:31890**.
 
-## 1. Zielarchitektur bestätigen
-
-Die aktuelle Umgebung nutzt bereits einen **Cloudflare Tunnel (`cloudflared`)**, der Hostnames
-auf lokale Dienste mapped. Für eine neue persönliche Website-Subdomain ist der sichere Weg daher:
-
-1. statische Dateien lokal via **nginx** ausliefern,
-2. in `cloudflared` eine **neue Ingress-Regel** für die Subdomain ergänzen,
-3. **keine** unüberlegte Änderung am bestehenden Reverse-Proxy-Pfad vornehmen.
-
-> In dieser Umgebung sollten Änderungen an `cloudflared` **nur manuell und mit Freigabe** erfolgen.
-
----
-
-## 2. Dateien auf den Server kopieren
+## 1. Statische Dateien
 
 ```bash
-# Von deiner Entwicklungsmaschine aus (oder lokal auf dem Server):
-sudo mkdir -p /var/www/TODO-subdomain
-
-# TODO: Ersetze den Pfad mit dem tatsächlichen Verzeichnis
-rsync -av --delete \
-  /home/ubuntu/projects/personal-site-aiwerke/ \
-  /var/www/TODO-subdomain/
-
-sudo chown -R www-data:www-data /var/www/TODO-subdomain
-sudo chmod -R 755 /var/www/TODO-subdomain
+rsync -av index.html impressum.html styles.css dist ubuntu-tunnel:/tmp/joschi-stage/
+ssh ubuntu-tunnel 'sudo rsync -av /tmp/joschi-stage/ /var/www/html/joschi/ && sudo chown -R www-data:www-data /var/www/html/joschi/'
 ```
 
----
+Kein `--delete` — alte Assets stören nicht und `git tag v1` ist der Rollback.
 
-## 3. nginx lokal vorbereiten
-
-Die aktuelle Tunnel-Konfiguration leitet Hostnames auf lokale HTTP-Services weiter. Daher reicht
-für diese persönliche Website normalerweise ein **lokaler nginx-vHost auf Port 80**.
-
-Falls du die Architektur später auf origin-seitiges TLS umstellst, kannst du das separat ergänzen.
-Für den ersten Go-Live in dieser Umgebung ist das aber nicht zwingend nötig.
-
----
-
-## 4. nginx-Konfiguration einbinden
+## 2. API-Service
 
 ```bash
-# Snippet nach /etc/nginx/sites-available/ kopieren
-sudo cp /home/ubuntu/projects/personal-site-aiwerke/nginx-snippet.conf \
-        /etc/nginx/sites-available/TODO-subdomain.conf
-
-# TODO: Datei vor dem Aktivieren noch einmal prüfen!
-sudo nano /etc/nginx/sites-available/TODO-subdomain.conf
-
-# Symlink anlegen
-sudo ln -s /etc/nginx/sites-available/TODO-subdomain.conf \
-           /etc/nginx/sites-enabled/TODO-subdomain.conf
-
-# Konfiguration testen (niemals ohne diesen Schritt neuladen!)
-sudo nginx -t
-
-# Bei grünem Licht: nginx neu laden
-sudo systemctl reload nginx
+rsync -av api/server.ts api/joschi-api.service api/.env.example ubuntu-tunnel:/tmp/joschi-api-stage/
+ssh ubuntu-tunnel 'sudo mkdir -p /opt/joschi-api && sudo cp /tmp/joschi-api-stage/server.ts /opt/joschi-api/'
+# Env-Datei NUR auf dem Server, nie im Repo:
+#   /etc/joschi-api.env  (chmod 600, root:root) — Variablen siehe api/.env.example
+ssh ubuntu-tunnel 'sudo cp /tmp/joschi-api-stage/joschi-api.service /etc/systemd/system/ && sudo systemctl daemon-reload && sudo systemctl enable --now joschi-api'
+ssh ubuntu-tunnel 'curl -s 127.0.0.1:31890/health'   # → {"ok":true,...}
 ```
 
----
+## 3. nginx — EIN location-Block im default vHost
 
-## 5. Cloudflared-Ingress-Regel ergänzen (manuell, nur nach Freigabe)
-
-Beispiel für die bestehende Tunnel-Konfiguration:
-
-```yaml
-- hostname: TODO-subdomain.aiwerke.de
-  service: http://localhost:80
-```
-
-Wichtige Hinweise:
-
-- Vorher prüfen, welche Datei der laufende Dienst wirklich nutzt.
-- In dieser Umgebung lief `cloudflared` zuletzt über `/etc/cloudflared/config.yml`.
-- Änderungen an `cloudflared` können die externe Erreichbarkeit beeinflussen und sollten daher
-  **nicht blind** durchgeführt werden.
-- Nach einer Änderung immer Konfiguration prüfen und erst dann den Dienst kontrolliert neu laden.
-
----
-
-## 6. Testen
+In `/etc/nginx/sites-enabled/default` (der Block, der `/var/www/html` ausliefert) ergänzen —
+siehe `nginx-snippet.conf`. **Niemals** einen neuen `server_name aiwerke.de`-Block anlegen
+(würde den bestehenden Traffic kapern).
 
 ```bash
-curl -I https://TODO-subdomain.aiwerke.de
-# Erwartet: 200 OK über Cloudflare
-
-# Überprüfe Security-Header:
-curl -si https://TODO-subdomain.aiwerke.de | grep -i "x-frame\|content-security\|x-content"
+ssh ubuntu-tunnel 'sudo cp /etc/nginx/sites-enabled/default /tmp/nginx-default.bak.$(date +%s)'
+# … Block einfügen …
+ssh ubuntu-tunnel 'sudo nginx -t && sudo systemctl reload nginx'
 ```
 
----
+Vor jedem Reload: `nginx -t` UND Diff gegen das Backup ansehen.
 
-## Checkliste vor dem Go-Live
+## 4. Live-Verifikation (Pflicht)
 
-- [x] Inhalte in `index.html` eingetragen (Werdegang, Projekte, Hobbys)
-- [x] GitHub-Link eingetragen (github.com/joschi655)
-- [x] `og:url` auf https://aiwerke.de/joschi/ gesetzt
-- [ ] LinkedIn-URL eintragen (Footer: `href="#"` → echte URL)
-- [ ] E-Mail-Adresse eintragen (Footer: `href="#"` → `mailto:...`)
-- [ ] Foto optional: `assets/foto.jpg` einfügen + `<img>`-Tag im Hero ergänzen
-- [ ] `og:image` ergänzen, sobald Foto vorhanden
-- [ ] nginx-Location-Block für `/joschi/` im bestehenden aiwerke.de-vHost prüfen
-- [ ] `sudo nginx -t` zeigt keine Fehler
-- [ ] Seite im Browser aufgerufen und visuell geprüft
-- [ ] Mobile Ansicht getestet (Firefox DevTools / Chrome)
+```bash
+curl -sI https://aiwerke.de/joschi/ | head -1                  # 200
+curl -s  https://aiwerke.de/joschi/api/health                  # {"ok":true,...}
+curl -s  "https://aiwerke.de/joschi/api/music?range=medium_term" | head -c 200
+curl -s -o /dev/null -w '%{http_code}' https://aiwerke.de/joschi/api/coffee   # 418
+```
 
----
+Danach echte Browser-Prüfung (Screenshots Desktop + Mobile, Konsole ohne Errors, keine 404s).
 
-## Optionales: Formspree für das Kontaktformular
+## 5. Spotify einmalig autorisieren
 
-Damit das Kontaktformular ohne eigenen Server-Backend funktioniert:
+Lokal `bun api/spotify-auth.ts` → Authorize-URL öffnen → Agree → Refresh-Token landet in
+`api/.env`. Den Wert dann in `/etc/joschi-api.env` nachtragen und `sudo systemctl restart joschi-api`.
+Redirect-URI im Spotify-Dashboard: `http://127.0.0.1:8888/callback`.
 
-1. Account auf [formspree.io](https://formspree.io) anlegen (kostenloser Plan reicht)
-2. Neues Formular anlegen, Endpoint-URL kopieren (z.B. `https://formspree.io/f/XXXXXXXX`)
-3. In `index.html`:
-   ```html
-   <!-- Vorher: -->
-   <form ... action="mailto:TODO@example.com" method="post" enctype="text/plain">
-   <!-- Nachher: -->
-   <form ... action="https://formspree.io/f/XXXXXXXX" method="POST">
-   ```
-4. `enctype="text/plain"` entfernen
-5. In `script.js` den `mailto`-Fallback-Check entfernen oder anpassen
+## Rollback
+
+```bash
+git checkout v1 -- index.html styles.css && rsync … # Statik = ein rsync
+ssh ubuntu-tunnel 'sudo systemctl stop joschi-api'   # Widgets degradieren sauber, Seite läuft
+```

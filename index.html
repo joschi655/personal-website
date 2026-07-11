@@ -1,256 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<title>Joschi — building fixes for annoying problems</title>
-<meta name="description" content="Joschi — energy engineering, AI automation, machine learning, MCP, and side projects built out of curiosity, laziness, and irritation." />
-<meta property="og:title" content="Joschi — building fixes for annoying problems" />
-<meta property="og:description" content="From chemical engineering to SAP AI automation and ML load forecasting — with Spotify bots, Blender levels, MCP, legal tech, and KooKoo in between." />
+<title>Joschi — control room · fixes for annoying problems</title>
+<meta name="description" content="Joschi Breitfeld — energy engineering, AI automation, machine learning. A personal control room with live data from my own server: what I build, what I listen to, what runs." />
+<meta property="og:title" content="Joschi — control room" />
+<meta property="og:description" content="From chemical engineering to SAP AI automation to ML load forecasting. A site that behaves the way I work: press ⌘K." />
 <meta property="og:url" content="https://aiwerke.de/joschi/" />
 <meta property="og:type" content="website" />
+<meta name="theme-color" content="#0A0E12" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E12'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%235E8BFF'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2393A1AB'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#E7EAEA;
-    --surface:#FBFCFB;
-    --ink:#14181A;
-    --muted:#586163;
-    --line:#C7CFCF;
-    --signal:#1B43F0;
-    --signal-soft:#1b43f01a;
-    --maxw:980px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:"IBM Plex Sans",system-ui,sans-serif;
-    font-size:17px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    background-image:
-      linear-gradient(var(--line) 1px,transparent 1px),
-      linear-gradient(90deg,var(--line) 1px,transparent 1px);
-    background-size:28px 28px;
-    background-position:-1px -1px;
-    background-attachment:fixed;
-  }
-  body::before{
-    content:"";position:fixed;inset:0;z-index:-1;
-    background:var(--paper);opacity:.78;pointer-events:none;
-  }
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .mono{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  a{color:var(--signal);text-decoration:none}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px}
-
-  /* ---------- HERO ---------- */
-  header{padding:clamp(64px,12vh,140px) 0 56px}
-  .hero-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:36px;align-items:start}
-  .eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:30px}
-  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 4px var(--signal-soft)}
-  h1{
-    font-family:"Bricolage Grotesque",sans-serif;
-    font-weight:800;
-    font-size:clamp(2.9rem,9vw,5.6rem);
-    line-height:.98;
-    letter-spacing:-.03em;
-    max-width:14ch;
-  }
-  h1 .accent{color:var(--signal)}
-  .lede{margin-top:26px;max-width:52ch;font-size:clamp(1.05rem,2.5vw,1.25rem);color:#2a3133}
-  .lede em{font-style:normal;color:var(--signal);font-weight:500}
-
-  /* forecast curve */
-  .curve{margin-top:48px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;position:relative}
-  .curve svg{display:block;width:100%;height:120px;overflow:visible}
-  .curve .label{position:absolute;top:14px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;color:var(--muted)}
-  .curve .label.now{right:0;color:var(--signal)}
-  .trace-past{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-  .trace-future{fill:none;stroke:var(--signal);stroke-width:2.2;stroke-dasharray:6 6;stroke-linecap:round}
-  .draw{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 2.2s .25s ease forwards}
-  .trace-future.draw{animation:drawF 1.4s 1.6s ease forwards}
-  @keyframes draw{to{stroke-dashoffset:0}}
-  @keyframes drawF{from{stroke-dashoffset:1400}to{stroke-dashoffset:1394}}
-  .pulse{fill:var(--signal)}
-  .pulse-ring{fill:none;stroke:var(--signal);opacity:0;animation:ring 2.4s 1.7s ease-out infinite}
-  @keyframes ring{0%{r:4;opacity:.5}100%{r:20;opacity:0}}
-
-  /* ---------- STATUS STRIP ---------- */
-  .status{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:54px;border-radius:4px;overflow:hidden}
-  .status div{background:var(--surface);padding:16px 18px}
-  .status .k{display:block;margin-bottom:6px}
-  .status .v{font-weight:500;font-size:.96rem;line-height:1.35}
-
-  /* ---------- SECTIONS ---------- */
-  section{padding:72px 0}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:38px}
-  .sec-head h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.02em}
-  .sec-head .num{font-family:"IBM Plex Mono",monospace;color:var(--signal);font-size:.8rem;padding-top:.5em}
-
-  /* timeline */
-  .path-list{border-left:2px solid var(--line);margin-left:6px}
-  .step{position:relative;padding:0 0 30px 28px}
-  .step:last-child{padding-bottom:0}
-  .step::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}
-  .step.live::before{background:var(--signal);border-color:var(--signal);box-shadow:0 0 0 4px var(--signal-soft)}
-  .step .yr{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
-  .step h3{font-size:1.1rem;font-weight:600;margin:2px 0 3px}
-  .step p{color:var(--muted);font-size:.95rem}
-
-  /* project cards */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;display:flex;flex-direction:column}
-  .card.full{grid-column:1/-1;flex-direction:row;align-items:flex-start;gap:32px}
-  .card.full .card-body{flex:1}
-  .card.full .card-aside{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
-  .card .nag{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--signal);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-  .card .nag::before{content:"";width:14px;height:2px;background:var(--signal)}
-  .card h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.01em;margin-bottom:8px}
-  .card .nervt{color:var(--muted);font-size:.92rem;margin-bottom:14px}
-  .card .built{font-size:.96rem}
-  .card .built b{font-weight:600}
-  .tag{align-self:flex-start;margin-top:16px;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;color:var(--signal);border:1px dashed var(--signal);border-radius:99px;padding:3px 9px}
-  .card.full .tag{margin-top:0}
-
-  /* surprise band */
-  .surprise{margin-top:28px;padding:18px 20px;background:var(--signal-soft);border:1px dashed var(--signal);border-radius:6px;font-size:.93rem;color:var(--ink)}
-  .surprise strong{font-weight:600}
-
-  /* offbeat */
-  .offbeat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .ob{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:22px}
-  .ob .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2rem;line-height:1;letter-spacing:-.03em;color:var(--ink)}
-  .ob h3{font-size:1.05rem;font-weight:600;margin:10px 0 6px}
-  .ob p{color:var(--muted);font-size:.9rem}
-
-  /* footer */
-  footer{padding:64px 0 80px;border-top:1px solid var(--line);margin-top:24px}
-  footer h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:-.025em;margin-bottom:18px}
-  .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-  .links a{font-family:"IBM Plex Mono",monospace;font-size:.82rem;border:1px solid var(--line);border-radius:99px;padding:9px 16px;color:var(--ink);transition:border-color .15s,color .15s}
-  .links a:hover{border-color:var(--signal);color:var(--signal)}
-  .foot-note{margin-top:40px}
-
-  @media (max-width:680px){
-    body{font-size:16px}
-    .hero-layout{grid-template-columns:1fr}
-    .hero-aside{justify-content:flex-start}
-    .status{grid-template-columns:1fr}
-    .grid{grid-template-columns:1fr}
-    .card.full{flex-direction:column}
-    .card.full .card-aside{align-items:flex-start}
-    .offbeat{grid-template-columns:1fr}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .draw,.trace-future.draw{animation:none;stroke-dashoffset:0}
-    .pulse-ring{animation:none}
-    html{scroll-behavior:auto}
-  }
-</style>
+<link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 
-<header class="wrap">
-  <div class="hero-layout">
-    <div>
-      <div class="eyebrow mono"><span class="dot"></span>Munich · born in 2000 · energy, processes &amp; machine learning</div>
-      <h1>I build fixes for<br>whatever <span class="accent">annoys me.</span></h1>
-      <p class="lede">I’m Oskar Breitfeld. I’m from Munich, born in 2000, and as a kid I always wanted to become some kind of crazy inventor. Today I connect energy engineering with automation, AI, and machine learning — and my default instinct is still to <em>automate everything.</em></p>
+<a class="skip" href="#main">skip to content</a>
 
-      <p class="lede">From chemical engineering to AI automation at SAP Labs to load forecasting for power grids, there is usually a project somewhere in between because a broken workflow got on my nerves. <em>I did not study computer science, and honestly I can’t really code in the classical sense — I mostly learn by building. I am also lazy enough that teaching myself automation became the obvious solution.</em></p>
-  </div>
+<div class="topbar">
+  <span class="prompt"><b>joschi@aiwerke</b>:~$ <span class="tb-cursor" aria-hidden="true">▮</span> <span class="lab-badge">[LAB]</span></span>
+  <span class="tb-right">
+    <span class="hz" aria-hidden="true" data-hz>f: 50.00 Hz</span>
+    <span class="apidot" data-apidot title="widget api heartbeat" aria-hidden="true">●</span>
+    <button class="kbd-hint" data-open-palette aria-label="Open command palette">⌘K</button>
+  </span>
+</div>
+<div class="scrollmeter" aria-hidden="true"><div class="scrollmeter-fill" data-scrollfill></div></div>
+
+<header class="hero wrap" id="top">
+  <div class="eyebrow mono"><span class="dot" aria-hidden="true"></span>Munich · born in 2000 · energy, processes &amp; machine learning</div>
+  <p class="boot" data-boot aria-hidden="true">boot: energy <span class="ok">✓</span> ml <span class="ok">✓</span> automation <span class="ok">✓</span></p>
+  <h1>I build fixes for<br>whatever <span class="accent">annoys me.</span></h1>
+  <p class="lede">I’m Joschi Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science — I learn by building.</em> <span class="dim">And I’m lazy enough that automating things became the obvious career.</span></p>
 
   <div class="curve">
-    <span class="label mono">Past</span>
+    <span class="label mono">Measured</span>
     <span class="label now mono">Forecast →</span>
-    <svg viewBox="0 0 1000 120" preserveAspectRatio="none" role="img" aria-label="Stylized load curve: measured past, dashed forecast">
-      <path class="trace-past draw" d="M0,78 C40,72 70,40 110,46 C150,52 175,92 215,88 C260,83 285,30 330,38 C375,46 400,84 445,80 C495,75 520,28 565,40 C605,50 625,86 665,82 C705,78 728,52 760,58"/>
-      <path class="trace-future draw" d="M760,58 C795,64 815,38 855,46 C895,54 915,82 955,70 C975,64 990,58 1000,60"/>
-      <circle class="pulse-ring" cx="760" cy="58" r="4"/>
-      <circle class="pulse" cx="760" cy="58" r="4"/>
-    </svg>
+    <canvas data-curve height="120" role="img" aria-label="Stylized electrical load curve: measured past as a solid line, forecast as a dashed line"></canvas>
+    <noscript>
+      <svg viewBox="0 0 1000 120" preserveAspectRatio="none" role="img" aria-label="Stylized load curve">
+        <path class="trace-past" d="M0,78 C40,72 70,40 110,46 C150,52 175,92 215,88 C260,83 285,30 330,38 C375,46 400,84 445,80 C495,75 520,28 565,40 C605,50 625,86 665,82 C705,78 728,52 760,58"/>
+        <path class="trace-future" d="M760,58 C795,64 815,38 855,46 C895,54 915,82 955,70 C975,64 990,58 1000,60"/>
+      </svg>
+    </noscript>
+    <p class="sub" data-curve-sub>sim: load — move the cursor, be the anomaly</p>
   </div>
 
   <div class="status">
     <div><span class="k mono">Current</span><span class="v">M.Sc. Energy and Process Engineering, TUM</span></div>
-    <div><span class="k mono">Work</span><span class="v">SAP Labs — AI automation → power grid forecasting</span></div>
-    <div><span class="k mono">Default state</span><span class="v">I automate things partly out of curiosity and partly because I am too lazy to do them twice.</span></div>
+    <div><span class="k mono">Work</span><span class="v">SAP — AI automation → power grid load forecasting</span></div>
+    <div><span class="k mono">Default state</span><span class="v">Automating things, partly curiosity, partly refusing to do anything twice.</span></div>
+  </div>
+
+  <div class="live">
+    <div class="live-head">
+      <span class="t"><b>●</b> live from my own ubuntu box</span>
+      <span class="sub">real data or nothing — if a card is offline, that’s honest too</span>
+    </div>
+    <div class="live-grid">
+      <div class="lw" data-widget="music">
+        <div class="lw-k"><span>♪ what I actually listen to</span>
+          <span class="range-toggle" data-ranges role="group" aria-label="Spotify time range">
+            <button data-range="short_term" aria-pressed="false">4w</button>
+            <button data-range="medium_term" aria-pressed="true">6m</button>
+            <button data-range="long_term" aria-pressed="false">all</button>
+          </span>
+        </div>
+        <div data-music-body><p class="offline">spotify feed warming up — or offline. judge me later.</p></div>
+        <div class="lw-foot">source: my actual spotify · cached on my server</div>
+      </div>
+      <div class="lw" data-widget="server">
+        <div class="lw-k"><span>⏻ this server</span></div>
+        <div data-server-body><p class="offline">uptime appears when the api answers.</p></div>
+        <div class="lw-foot">served from my own machine, tunneled through cloudflare</div>
+      </div>
+      <div class="lw" data-widget="github">
+        <div class="lw-k"><span>⎇ last seen pushing</span></div>
+        <div data-github-body><p class="offline">recent activity appears when the api answers.</p></div>
+        <div class="lw-foot">github.com/joschi655</div>
+      </div>
+    </div>
   </div>
 </header>
 
-<section class="wrap" id="weg">
+<main id="main">
+
+<section class="wrap" id="path">
   <div class="sec-head"><span class="num">01</span><h2>Path</h2></div>
+  <p class="sec-sub">chemical plants → power grids · software ate the middle</p>
   <div class="path-list">
     <div class="step">
       <div class="yr">START</div>
       <h3>Chemical Engineering</h3>
-      <p>The foundation: understanding processes, materials, energy, and how complex systems actually work — then figuring out how software can improve them.</p>
+      <p>The foundation: processes, materials, energy — and where software can improve complex systems.</p>
     </div>
     <div class="step">
       <div class="yr">NOW</div>
       <h3>M.Sc. Energy and Process Engineering · TUM</h3>
-      <p>Energy and processes, with an increasing focus on what can be predicted, optimized, and understood through data.</p>
+      <p>Energy and processes, with growing focus on what data can predict and optimize.</p>
     </div>
     <div class="step">
       <div class="yr">WORK</div>
-      <h3>SAP Labs — AI Innovation, Connectors &amp; Automations</h3>
-      <p>Building agentic AI workflows with LLMs, Claude, MCP servers, RAG chatbots, and internal automation that people can actually use.</p>
+      <h3>SAP — AI Innovation, Connectors &amp; Automations</h3>
+      <p>Agentic AI workflows with LLMs, Claude, MCP servers, RAG — automation people actually use.</p>
     </div>
-    <div class="step live">
+    <div class="step">
       <div class="yr">NEXT</div>
-      <h3>Power Grid Distribution — Load Forecasting with ML</h3>
-      <p>Forecasting for the grid: the place where energy engineering and machine learning meet. That is exactly the intersection I want to work in.</p>
+      <h3>Power Grid Load Forecasting with ML</h3>
+      <p>Forecasting for the grid: exactly the energy × ML intersection I want to work in.</p>
     </div>
   </div>
 </section>
 
-<section class="wrap" id="baue">
+<section class="wrap" id="projects">
   <div class="sec-head"><span class="num">02</span><h2>What I build</h2></div>
+  <p class="sec-sub">annoyance-driven development, mostly</p>
   <div class="grid">
 
     <div class="card">
       <div class="nag">annoyance → built</div>
       <h3>Spotify queue bot</h3>
-      <p class="nervt">A shared Spotify link instantly starts playing and destroys the whole queue. Every single time.</p>
-      <p class="built"><b>Built:</b> forward the song via WhatsApp → the bot appends it cleanly to the queue → it plays when it is supposed to. No interruptions. A lot of my projects start exactly like this: I get annoyed, then I automate the problem away.</p>
+      <p class="nervt">A shared Spotify link hijacks the speaker and kills the queue. Every time.</p>
+      <p class="built"><b>Built:</b> forward the song via WhatsApp → the bot appends it cleanly. No interruptions. Most projects start like this.</p>
+    </div>
+
+    <div class="card">
+      <div class="nag">cloud costs</div>
+      <h3>Cloud-Instance-Optimizer</h3>
+      <p class="nervt">Spot instances are cheap — the wrong pick gets you interrupted or overcharged.</p>
+      <p class="built"><b>Built:</b> ranks EC2 spot instances by live price and interruption risk, forecasts prices with ML, generates the Terraform.</p>
     </div>
 
     <div class="card">
       <div class="nag">legal tech</div>
       <h3>AI for energy law</h3>
-      <p class="nervt">German energy law is complex, fragmented, and difficult to search through.</p>
-      <p class="built"><b>Built:</b> an AI tool that makes this complexity more navigable instead of leaving it locked behind specialist knowledge.</p>
+      <p class="nervt">German energy law is complex, fragmented, painful to search.</p>
+      <p class="built"><b>Built:</b> an AI research tool that makes the complexity navigable instead of expert-locked.</p>
+    </div>
+
+    <div class="card">
+      <div class="nag">scholarship · won</div>
+      <h3>check24-MCP</h3>
+      <p class="nervt">Comparison portals: data everywhere, no interface for AI agents.</p>
+      <p class="built"><b>Built:</b> an MCP server aggregating CHECK24 verticals on Cloudflare Workers — won the GenDev scholarship.</p>
     </div>
 
     <div class="card">
       <div class="nag">research</div>
       <h3>Predicting pyrolysis yields</h3>
-      <p class="nervt">Lab experiments are expensive, and it is hard to understand which conditions lead to which yields.</p>
-      <p class="built"><b>Built:</b> machine learning models (including Random Forest and XGBoost) that predict yields from literature data — carefully validated against leakage.</p>
+      <p class="nervt">Lab experiments are expensive; which conditions give which yields is hard to see.</p>
+      <p class="built"><b>Built:</b> ML models (Random Forest, XGBoost) predicting yields from literature data — validated against leakage.</p>
     </div>
 
     <div class="card">
       <div class="nag">freelance</div>
       <h3>AI tools for clients</h3>
-      <p class="nervt">A lot of teams know AI could help them — they just do not know where to start.</p>
-      <p class="built"><b>Built:</b> DSGVO-compliant RAG customer support for KooKoo GmbH, browser automations for a medical practice, and n8n/MCP-based workflows that remove repetitive admin work.</p>
+      <p class="nervt">Many teams know AI could help — just not where to start.</p>
+      <p class="built"><b>Built:</b> DSGVO-compliant RAG support for KooKoo GmbH, browser automation for a medical practice, n8n/MCP workflows killing repetitive admin.</p>
     </div>
 
-    <!-- Unexpected: the Blender game -->
+    <div class="card">
+      <div class="nag">community</div>
+      <h3>Claude Campus Ambassador</h3>
+      <p class="nervt">Most students still use AI like a search box.</p>
+      <p class="built"><b>Did:</b> represented Anthropic’s Claude on campus — showing how to build with AI, not just chat with it.</p>
+    </div>
+
     <div class="card full">
       <div class="card-body">
         <div class="nag">unexpected · level 1</div>
         <h3>My first game — a jump-and-run level in Blender</h3>
-        <p class="nervt">I did not study computer science, and honestly I cannot really code in the traditional sense. As a kid, I was already obsessed with computers and once even handed myself in at the recycling center for scavenging PC parts.</p>
-        <p class="built"><b>Still built:</b> a jump-and-run level modeled entirely in Blender. No proper background, no perfect plan — just curiosity, a bit of stubbornness, and the urge to make the thing real. That is probably the most honest short description of me: curious, slightly chaotic, and always building.</p>
+        <p class="nervt">As a kid I was so computer-obsessed I once handed myself in at the recycling center for scavenging PC parts.</p>
+        <p class="built"><b>Still built:</b> a jump-and-run level modeled entirely in Blender. No plan — curiosity, stubbornness, the urge to make it real. The most honest short description of me.</p>
       </div>
       <div class="card-aside">
         <span class="tag">Blender · game design · level 1</span>
@@ -260,37 +184,71 @@
   </div>
 </section>
 
-<section class="wrap" id="abseits">
+<section class="wrap" id="offscreen">
   <div class="sec-head"><span class="num">03</span><h2>Off-screen</h2></div>
+  <p class="sec-sub">processes that survive a reboot</p>
   <div class="offbeat">
     <div class="ob">
-      <div class="big">🕊</div>
+      <div class="big" aria-hidden="true">🕊</div>
       <h3>KooKoo, clocks &amp; songbirds</h3>
-      <p>I founded a student company refurbishing and selling wall clocks long before AI became my thing. KooKoo and its songbird clocks are still part of my story.</p>
+      <p>I ran a student company refurbishing wall clocks long before AI was my thing. KooKoo’s songbird clocks are still part of my story.</p>
     </div>
     <div class="ob">
-      <div class="big">♪</div>
+      <div class="big" aria-hidden="true">♪</div>
       <h3>Music</h3>
-      <p>I love music — and when the screen is off, I usually end up at the piano. I also perform locally from time to time.</p>
+      <p>When the screen is off I’m usually at the piano — the one interface I operate without shortcuts. I perform locally from time to time.</p>
     </div>
     <div class="ob">
-      <div class="big">▲</div>
+      <div class="big" aria-hidden="true">▲</div>
       <h3>Travel, skiing &amp; sports</h3>
-      <p>I love traveling, I enjoy skiing, swimming, and padel, and I need movement as a counterweight to spending too much time in front of an editor.</p>
+      <p>Traveling, skiing, swimming, padel — movement as a counterweight to too many hours in front of an editor.</p>
+    </div>
+  </div>
+  <p class="langs"><b>locales:</b> German · English · Spanish · + learning more</p>
+</section>
+
+<section class="wrap" id="lab" aria-label="Lab mode — experiments">
+  <div class="sec-head"><span class="num">××</span><h2>The Lab</h2></div>
+  <p class="sec-sub">held together with tape · you found the konami code (or typed `lab`)</p>
+  <div class="grid">
+    <div class="card">
+      <div class="nag">experiment 001</div>
+      <h3>The Blender level, revisited</h3>
+      <p class="built">One level. No engine knowledge. An unreasonable number of hours moving vertices. Still counts as my first shipped game.</p>
+    </div>
+    <div class="card">
+      <div class="nag">experiment 002</div>
+      <h3>Queue bot internals</h3>
+      <p class="built">WhatsApp in → my server → Spotify queue out. Runs quietly at parties. The guests never know why the music stays civilized.</p>
+    </div>
+    <div class="card">
+      <div class="nag">experiment 003</div>
+      <h3>Fixie workshop</h3>
+      <p class="built">Buying neglected fixed-gear bikes, rebuilding, reselling. Analog engineering — the only project here with zero uptime monitoring.</p>
     </div>
   </div>
 </section>
 
-<footer class="wrap">
+</main>
+
+<footer class="wrap" id="contact">
   <h2>Say hello.</h2>
-  <p class="lede" style="margin-top:0">If you have a problem that keeps annoying you, or a process that should clearly be automated, that is usually where I am most useful.</p>
+  <p class="lede" style="margin-top:0">If something keeps annoying you, or a process should obviously be automated — that’s where I’m most useful.</p>
   <div class="links">
     <a href="https://github.com/joschi655" target="_blank" rel="noopener">GitHub →</a>
     <a href="https://www.linkedin.com/in/johannes-breitfeld/" target="_blank" rel="noopener">LinkedIn →</a>
     <a href="mailto:jo.breitfeld@gmail.com">Email →</a>
   </div>
-  <p class="foot-note mono">Built with too much attention to detail · Oskar Breitfeld</p>
+  <p class="foot-note mono">
+    <span>Built with too much attention to detail · Joschi Breitfeld</span>
+    <span>no cookies · no trackers · one teapot</span>
+    <a href="impressum.html">Impressum &amp; Datenschutz</a>
+    <span>press <kbd>⌘K</kbd> — this site is operable</span>
+  </p>
 </footer>
 
+<button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
+
+<script type="module" src="dist/app.js?v=2"></script>
 </body>
 </html>

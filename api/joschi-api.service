@@ -1,0 +1,17 @@
+[Unit]
+Description=joschi-api widget backend
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/opt/joschi-api
+EnvironmentFile=/etc/joschi-api.env
+ExecStart=/home/ubuntu/.bun/bin/bun run server.ts
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
