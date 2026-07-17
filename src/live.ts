@@ -73,9 +73,10 @@ async function renderServer(): Promise<void> {
   const boot = $("[data-boot]");
   if (boot && !$("[data-boot-uptime]", boot)) {
     const d = Math.floor(data.uptime_seconds / 86400);
+    const h = Math.floor(data.uptime_seconds / 3600);
     const span = document.createElement("span");
     span.setAttribute("data-boot-uptime", "");
-    span.textContent = ` · uptime ${d}d`;
+    span.textContent = ` · uptime ${d >= 1 ? `${d}d` : `${h}h`}`;
     boot.appendChild(span);
   }
 }

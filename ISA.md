@@ -3,11 +3,11 @@ project: personal-website
 task: Control-Room redesign v2 — dark terminal aesthetic, command palette, live widgets API, deploy
 effort: E4
 phase: complete
-progress: 247/247
+progress: 264/264
 mode: build
 started: 2026-07-10T15:34:02Z
-updated: 2026-07-11T16:35:00Z
-iteration: mobile-overflow-wording-thesis-path — grid blowout fix, title wrap, uptime/club/recycling wording, 93p thesis PDF, path expanders, kookoo link (E3)
+updated: 2026-07-17T14:30:00Z
+iteration: font-detell-craft — Bricolage→self-hosted Archivo expanded, Google-Fonts hotlink raus (GDPR), entropy strip, kinetic h1; NICHT deployed (E2)
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
@@ -353,6 +353,25 @@ Follow-up batch (2026-07-11, owner answers + 2 new asks):
 - [x] ISC-246: Zero console errors on live page after deploy
 - [x] ISC-247: Commit created via amend of 87eb8de (git log -S proved the fragment lived ONLY in that HEAD commit; amending removes it from every reachable blob — no filter-repo needed pre-push)
 
+### Q — Font de-tell + craft elements (2026-07-17, owner: "Schrift genervt … nicht in 2h gevibecoded")
+- [x] ISC-248: Bricolage Grotesque absent from styles.css and index.html (grep 0 hits)
+- [x] ISC-249: Display font = self-hosted Archivo variable (woff2 in assets/fonts/, @font-face declared)
+- [x] ISC-250: Zero fonts.googleapis.com / fonts.gstatic.com references in index.html (GDPR: LG München I 3 O 17493/20)
+- [x] ISC-251: IBM Plex Mono + Sans also self-hosted woff2 (same GDPR rationale)
+- [x] ISC-252: Headlines render expanded (font-stretch ≥115% effective on h1, computed style probe)
+- [x] ISC-253: h1 hover animates the width axis; gated behind prefers-reduced-motion
+- [x] ISC-254: src/entropy.ts exists — own vanilla implementation (chaos left → ordered grid right), no code copied from the pasted React component
+- [x] ISC-255: Entropy canvas placed before #projects with mono caption tying it to "annoyance → built"
+- [x] ISC-256: Entropy pauses when document.hidden or scrolled off-screen (IntersectionObserver)
+- [x] ISC-257: Entropy static (no rAF loop) under prefers-reduced-motion, still renders a complete frame
+- [x] ISC-258: Entropy has role="img" + aria-label
+- [x] ISC-259: bun build --outfile=dist/app.js exit 0; index.html bumps ?v=5/?v=7 cache refs
+- [x] ISC-260: Local page 390px: no horizontal scroll, fonts render (document.fonts.check probe)
+- [x] ISC-261: Local page 1280px: zero console errors
+- [x] ISC-262: Anti: no new external CDN/script/tracker of any kind added
+- [x] ISC-263: Anti: page weight delta from fonts ≤ ~300KB total woff2 (subsetted latin only)
+- [x] ISC-264: Antecedent: dev server 127.0.0.1:3800 reachable for owner live-review
+
 ## Test Strategy
 
 | isc | type | check | threshold | tool |
@@ -462,6 +481,10 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 - 2026-07-11 · Builders-Club framing: claudebuildersclub-muc.github.io self-identifies as "Claude Builders Club @ TUM · TUM Student Club" — link stays; card retitled "@ TUM", body reworded to "co-founded the relaunch" per owner ("den gab es davor auch schon mal… mit jemand anderen zusammen").
 
 - 2026-07-11 · Advisor round (Rule 2, pre-complete) raised 5 items, all closed same-session with probes: (1) edge-cache leak of annotated ?v=2 PDF -> probed bare/v1/v2: ALL already serve the new 93p file (origin was overwritten; old cache TTL-expired), Wayback empty; (2) unsigned statutory declaration verified visually (page 4, blank signature lines); (3) redaction destructiveness: page replaced by raster, binary grep 0, XMP empty; (4) multi-width sweep 320/360/414/landscape all clean; (5) recycling wording "how I got in stays an implementation detail" kept but FLAGGED to owner - advisor notes coy phrasing still signals a transgressive story on a real-name page; owner was himself ambivalent ("vielleicht witzig, vielleicht rauslassen"). Alternative offered in summary.
+
+- 2026-07-17 · Font-de-tell iteration (E2, owner live-reviewing localhost:3800): owner recognized Bricolage Grotesque as the Claude-Code font tell → display now self-hosted Archivo variable (wght+wdth), h1 font-stretch 118% (hover→125% kinetic, no-preference-gated), sec-heads/cards 112%; body/mono self-hosted IBM Plex (Sans variable, Mono 400/500), Google-Fonts hotlink REMOVED — live network audit: zero third-party hosts (GDPR, LG München I 3 O 17493/20); OFL LICENSE.txt in assets/fonts/, 152KB woff2 total, preloads for the two variable fonts. New signature element src/entropy.ts (own vanilla implementation, NOT the pasted React code): particles drift rightward, chaotic left half settles into ordered lanes past midline = "annoyance → built" visualized; IntersectionObserver + visibilitychange pause, reduced-motion → one settled static frame, theme-reactive (MutationObserver on data-theme). Advisor gaps closed same-session: network audit ✓, OFL license ✓, stale preconnects already removed ✓. Residual for deploy checklist: woff2 MIME on nginx, assets/fonts/ inside rsync scope, CPU-throttle spot-check on a real phone. ISC-248–264 all passed. NOT deployed, NOT committed.
+
+- 2026-07-17 · Taste-audit iteration (E3, `/design-taste-frontend` skill, read-mostly): two REAL shipped defects found and fixed locally, NOT yet deployed: (a) `header.hero{padding:… 0 56px}` shorthand (specificity 0,1,1) zeroed `.wrap`'s horizontal padding — hero glued to left edge below ~1030px AND misaligned 24px vs sections on desktop; fix = padding-block only, verified 28px@390 / 24px@1280, h1 now flush with sec-heads; (b) boot-line uptime rendered `0d` when <1 day — now falls back to hours. `dist/app.js` rebuilt (`--outfile=dist/app.js`). Owner-decision findings (NOT auto-applied, advisor-confirmed): 33 em-dashes (skill bans; but they're the owner's voice — signal, not defect; blind find-replace would worsen prose), zero real images sitewide (my stance: hurts — Off-screen claims real life with no proof; 2-3 B&W-treated photos recommended), Off-screen = banned 3-equal-cards pattern. Declined owner-pasted `hero-ascii-one` component: ships UnicornStudio watermark-STRIPPING code (license violation) + third-party CDN script breaking the site's no-trackers promise + requires React/shadcn against the framework-free constraint. `entropy.tsx`: vanilla-TS port offered pending license check + owner OK. Deviations: Interceptor absent on L6KK2H61WP (documented gotcha) → Playwright per v2-run precedent; delegation floor 0/2 show-math: read-only audit + two 2-line fixes, Forge/Cato would re-read the same 636 lines with no write artifact to check.
 
 ## Changelog
 

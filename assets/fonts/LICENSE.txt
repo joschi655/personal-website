@@ -1,0 +1,11 @@
+Self-hosted webfonts, all licensed under the SIL Open Font License 1.1
+(https://openfontlicense.org):
+
+- Archivo (variable: wght 100-900, wdth 62-125)
+  Copyright 2019 The Archivo Project Authors — https://github.com/Omnibus-Type/Archivo
+
+- IBM Plex Mono, IBM Plex Sans (variable)
+  Copyright IBM Corp. — https://github.com/IBM/plex
+
+Subsetted latin woff2 builds as served by Google Fonts; self-hosted here to
+avoid third-party font requests (GDPR).

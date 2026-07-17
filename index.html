@@ -11,10 +11,9 @@
 <meta property="og:type" content="website" />
 <meta name="theme-color" content="#0A0E12" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E12'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%235E8BFF'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2393A1AB'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/plexsans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -143,6 +142,11 @@
       </details>
     </div>
   </div>
+</section>
+
+<section class="wrap entropy-sec" aria-label="Entropy simulation">
+  <canvas data-entropy height="140" role="img" aria-label="Particle simulation: chaotic particles on the left settle into ordered lanes on the right"></canvas>
+  <p class="sub">sim: entropy → order · the whole job, visualized</p>
 </section>
 
 <section class="wrap" id="projects">
@@ -279,6 +283,6 @@
 
 <button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
 
-<script type="module" src="dist/app.js?v=6"></script>
+<script type="module" src="dist/app.js?v=7"></script>
 </body>
 </html>

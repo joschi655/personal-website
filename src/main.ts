@@ -4,6 +4,7 @@ import { initCurve } from "./curve";
 import { initLive } from "./live";
 import { initPalette, openPalette } from "./palette";
 import { initDetailsMotion, initMotion } from "./motionfx";
+import { initEntropy } from "./entropy";
 
 initTheme();
 
@@ -175,6 +176,7 @@ initDetailsMotion();
 
 const curveEl = document.querySelector<HTMLCanvasElement>("[data-curve]");
 if (curveEl) initCurve(curveEl);
+initEntropy();
 
 // no content is gated behind any of this — remove all JS and the page still tells the story
 export { openPalette };
