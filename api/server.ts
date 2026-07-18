@@ -149,7 +149,7 @@ interface SpotifyTokenCache {
   expiresAtMs: number;
 }
 
-const VERSION = "2.2.0";
+const VERSION = "2.3.0";
 const HOSTNAME = "127.0.0.1";
 const DEFAULT_PORT = 31890;
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -1123,7 +1123,7 @@ async function fetchRecentGitHubRepos(user: string): Promise<GitHubPayload | nul
       const repos = parseGitHubReposResponse(payload);
 
       if (repos) {
-        const recent = repos.slice(0, 3);
+        const recent = repos.slice(0, 5);
 
         if (recent.length > 0) {
           return {

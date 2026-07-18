@@ -100,7 +100,7 @@ async function renderGithub(): Promise<void> {
     return;
   }
   const shortName = (full: string) => full.split("/").pop() ?? full;
-  const rows = data.repos.slice(0, 3).map((r) =>
+  const rows = data.repos.slice(0, 5).map((r) =>
     `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(shortName(r.repo))}</a>` +
     (r.description ? ` <span class="by">— ${esc(r.description)}</span>` : "") +
     ` <span class="by">· ${relTime(r.pushed_at)}</span></li>`).join("");

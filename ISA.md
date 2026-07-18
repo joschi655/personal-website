@@ -7,7 +7,7 @@ progress: 285/285
 mode: build
 started: 2026-07-10T15:34:02Z
 updated: 2026-07-18T10:24:00Z
-iteration: github+playlists v2 (owner feedback) — /github now INCLUDES forks; playlists moved out of a toggle → ride along with the all-time ("most listened") range only, portrait 3:4 covers, 4-across (2-col mobile). Local-verified, NOT yet deployed (E2)
+iteration: github+playlists v2 (owner feedback) — /github now INCLUDES forks; playlists ride along with the all-time ("most listened") range only, portrait 3:4 covers, 4-across (2-col mobile). DEPLOYED 2026-07-18 + local commit fc194fa (NOT pushed — owner OK pending) (E2)
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
@@ -396,6 +396,7 @@ Follow-up batch (2026-07-11, owner answers + 2 new asks):
 - [x] ISC-283: opening playlists does NOT stretch server/github siblings (music 492 / server 180 / github 187 @all-time) — align-items:start holds
 - [x] ISC-284: 4-across on desktop, 2-col ≤760px; no horizontal overflow at 390px or 1200px
 - [x] ISC-285: bun build exit 0 (32.7 KB); styles?v=7 + app.js?v=9; 0 console errors; 0 third-party requests (Playwright audit)
+- [x] ISC-286: DEPLOYED — static (sudo-staging) + API (server.ts → /opt/joschi-api, restart); live 2.2.0, SHA parity local==prod on all 5 files (index.html/styles.css/dist/app.js/kabale.jpg/server.ts); live browser: github forks shown, "all" reveals portrait playlists, siblings compact, 0 console errors, 0 non-aiwerke requests
 
 ## Test Strategy
 
