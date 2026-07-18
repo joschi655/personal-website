@@ -12,7 +12,8 @@ type Music = {
   tracks?: { name: string; artist: string; url: string; streams?: number }[];
 };
 type Status = { uptime_seconds?: number; hostname?: string; unavailable?: boolean };
-type Github = { repo?: string; type?: string; created_at?: string; unavailable?: boolean };
+type GithubRepo = { repo: string; description: string | null; pushed_at: string; url: string };
+type Github = { repos?: GithubRepo[]; unavailable?: boolean };
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
@@ -32,6 +33,15 @@ export function relTime(iso: string): string {
 }
 
 const offline = (msg: string) => `<p class="offline">${msg}</p>`;
+
+// playlists ride along with the all-time view — "most listened" is where
+// "the playlists I'm proud of" belongs; other ranges keep the card compact.
+function syncPlaylists(): void {
+  const pl = $("[data-playlists]");
+  if (!pl) return;
+  if (getRange() === "long_term") pl.removeAttribute("hidden");
+  else pl.setAttribute("hidden", "");
+}
 
 async function renderMusic(): Promise<void> {
   const body = $("[data-music-body]");
@@ -85,14 +95,16 @@ async function renderGithub(): Promise<void> {
   const body = $("[data-github-body]");
   if (!body) return;
   const data = await fetchJSON<Github>("api/github");
-  if (!data || data.unavailable || !data.repo) {
+  if (!data || data.unavailable || !data.repos?.length) {
     body.innerHTML = offline("github feed offline — commits still happening, probably.");
     return;
   }
-  const verb = (data.type ?? "").replace("Event", "").toLowerCase() || "activity";
-  body.innerHTML =
-    `<div class="lw-title"><a href="https://github.com/${esc(data.repo)}" target="_blank" rel="noopener">${esc(data.repo)}</a></div>` +
-    `<p class="offline">${esc(verb)} · ${data.created_at ? relTime(data.created_at) : ""}</p>`;
+  const shortName = (full: string) => full.split("/").pop() ?? full;
+  const rows = data.repos.slice(0, 3).map((r) =>
+    `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(shortName(r.repo))}</a>` +
+    (r.description ? ` <span class="by">— ${esc(r.description)}</span>` : "") +
+    ` <span class="by">· ${relTime(r.pushed_at)}</span></li>`).join("");
+  body.innerHTML = `<div class="lw-title">recent public work</div><ul>${rows}</ul>`;
   staggerIn(body);
 }
 
@@ -121,8 +133,12 @@ export function initLive(): void {
   window.addEventListener("joschi:range", () => {
     $$("[data-range]").forEach((b) =>
       b.setAttribute("aria-pressed", String(b.getAttribute("data-range") === getRange())));
+    syncPlaylists();
     void renderMusic();
   });
+
+  // reflect the initial range (medium_term) → playlists start hidden
+  syncPlaylists();
 
   // lazy: fetch after first paint
   const go = async () => {

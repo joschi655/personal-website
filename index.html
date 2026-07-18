@@ -13,7 +13,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E12'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%235E8BFF'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2393A1AB'/%3E%3C/svg%3E">
 <link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/plexsans-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
 
@@ -69,6 +69,27 @@
           </span>
         </div>
         <div data-music-body><p class="offline">spotify feed warming up — or offline. judge me later.</p></div>
+        <div class="playlists" data-playlists hidden>
+          <p class="pl-lead mono">playlists I'm actually proud of</p>
+          <div class="pl-grid">
+            <a class="pl" href="https://open.spotify.com/playlist/4JqeuQiXZ9IVwVREJK4pjJ" target="_blank" rel="noopener">
+              <img src="assets/playlists/kabale.jpg" alt="" width="300" height="300" loading="lazy" decoding="async">
+              <span class="pl-name">Kabale und Liebe</span>
+            </a>
+            <a class="pl" href="https://open.spotify.com/playlist/2rNjwkBwLkkJPTZCk00LBu" target="_blank" rel="noopener">
+              <img src="assets/playlists/alltime.jpg" alt="" width="300" height="239" loading="lazy" decoding="async">
+              <span class="pl-name">most listened — of all time</span>
+            </a>
+            <a class="pl" href="https://open.spotify.com/playlist/3vC6wneh7CpkjTYIqdqzhY" target="_blank" rel="noopener">
+              <img src="assets/playlists/naprocura.jpg" alt="" width="300" height="300" loading="lazy" decoding="async">
+              <span class="pl-name">Na Procura</span>
+            </a>
+            <a class="pl" href="https://open.spotify.com/playlist/53uKmYqdMv76jbJGYMLMPG" target="_blank" rel="noopener">
+              <img src="assets/playlists/space.jpg" alt="" width="300" height="234" loading="lazy" decoding="async">
+              <span class="pl-name">Space Music</span>
+            </a>
+          </div>
+        </div>
         <div class="lw-foot" data-music-foot>source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> — full history, real counts. yes, I track everything.</div>
       </div>
       <div class="lw" data-widget="server">
@@ -283,6 +304,6 @@
 
 <button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
 
-<script type="module" src="dist/app.js?v=7"></script>
+<script type="module" src="dist/app.js?v=9"></script>
 </body>
 </html>

@@ -180,7 +180,7 @@ h1 .accent{color:var(--signal)}
 .live-head .t{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .live-head .t b{color:var(--ok);font-weight:500}
 .live-head .sub{font-family:var(--mono);font-size:.64rem;color:var(--muted);letter-spacing:.04em}
-.live-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.live-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start}
 .lw{
   background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;
   min-height:150px;display:flex;flex-direction:column;gap:8px;min-width:0;
@@ -208,6 +208,19 @@ h1 .accent{color:var(--signal)}
 }
 .range-toggle button[aria-pressed="true"]{color:var(--signal);border-color:var(--signal)}
 .range-toggle button:hover{color:var(--ink)}
+
+/* ---------- playlists (ride along with the all-time view) ---------- */
+.playlists{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.playlists[hidden]{display:none}
+.pl-lead{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--signal);margin-bottom:10px}
+.pl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.pl{display:block;text-decoration:none;color:var(--muted)}
+.pl img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:4px;border:1px solid var(--line);display:block;transition:border-color .2s,transform .2s}
+.pl:hover img{border-color:var(--signal);transform:translateY(-2px)}
+.pl-name{display:block;margin-top:6px;font-size:.72rem;line-height:1.25;color:var(--muted)}
+.pl:hover .pl-name{color:var(--signal)}
+@media (prefers-reduced-motion:reduce){.pl img{transition:none}.pl:hover img{transform:none}}
+@media (max-width:760px){.pl-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* ---------- entropy strip ---------- */
 .entropy-sec{padding-top:0 !important;padding-bottom:0 !important}

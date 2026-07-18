@@ -34,10 +34,15 @@ interface StatusPayload {
   hostname: string;
 }
 
-interface GitHubPayload {
+interface GitHubRepoSummary {
   repo: string;
-  type: string;
-  created_at: string;
+  description: string | null;
+  pushed_at: string;
+  url: string;
+}
+
+interface GitHubPayload {
+  repos: GitHubRepoSummary[];
 }
 
 interface UnavailableResponse {
@@ -84,12 +89,12 @@ interface SpotifyTopTracksResponse {
   items: SpotifyTopTrackItem[];
 }
 
-interface GitHubEvent {
-  repo: {
-    name: string;
-  };
-  type: string;
-  created_at: string;
+interface GitHubRepoItem {
+  full_name: string;
+  html_url: string;
+  description: string | null;
+  fork: boolean;
+  pushed_at: string;
 }
 
 interface StatsFmExternalIds {
@@ -144,7 +149,7 @@ interface SpotifyTokenCache {
   expiresAtMs: number;
 }
 
-const VERSION = "2.1.0";
+const VERSION = "2.2.0";
 const HOSTNAME = "127.0.0.1";
 const DEFAULT_PORT = 31890;
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -471,36 +476,38 @@ function parseSpotifyTracksResponse(payload: unknown): SpotifyTopTracksResponse 
   }
 }
 
-function parseGitHubEventsResponse(payload: unknown): GitHubEvent[] | null {
+function parseGitHubReposResponse(payload: unknown): GitHubRepoItem[] | null {
   if (Array.isArray(payload)) {
-    const normalizedEvents: GitHubEvent[] = [];
+    const normalizedRepos: GitHubRepoItem[] = [];
 
     for (const item of payload) {
       if (typeof item === "object" && item !== null) {
-        const event = item as Record<string, unknown>;
-        const repo = event.repo;
+        const repo = item as Record<string, unknown>;
+        const description = repo.description;
 
         if (
-          typeof event.type === "string" &&
-          typeof event.created_at === "string" &&
-          typeof repo === "object" &&
-          repo !== null &&
-          typeof (repo as Record<string, unknown>).name === "string"
+          typeof repo.full_name === "string" &&
+          typeof repo.html_url === "string" &&
+          typeof repo.fork === "boolean" &&
+          typeof repo.pushed_at === "string" &&
+          (description === null || typeof description === "string")
         ) {
-          normalizedEvents.push({
-            repo: { name: (repo as Record<string, unknown>).name as string },
-            type: event.type,
-            created_at: event.created_at,
+          normalizedRepos.push({
+            full_name: repo.full_name,
+            html_url: repo.html_url,
+            description: description === null ? null : (description as string),
+            fork: repo.fork,
+            pushed_at: repo.pushed_at,
           });
         } else {
-          return null;
+          // Intentional: malformed repo entries are skipped, not fatal.
         }
       } else {
-        return null;
+        // Intentional: non-object entries are skipped.
       }
     }
 
-    return normalizedEvents;
+    return normalizedRepos;
   } else {
     return null;
   }
@@ -1098,8 +1105,10 @@ async function getStatusPayload(): Promise<StatusPayload> {
   }
 }
 
-async function fetchLatestGitHubEvent(user: string): Promise<GitHubPayload | null> {
-  const url = `https://api.github.com/users/${encodeURIComponent(user)}/events/public?per_page=100`;
+async function fetchRecentGitHubRepos(user: string): Promise<GitHubPayload | null> {
+  // owner repos, most-recently-pushed first; forks INCLUDED (owner wants the
+  // public projects he contributed to, upstream or own alike).
+  const url = `https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=pushed&per_page=30&type=owner`;
   try {
     const response = await fetch(url, {
       headers: {
@@ -1111,22 +1120,23 @@ async function fetchLatestGitHubEvent(user: string): Promise<GitHubPayload | nul
 
     if (response.ok) {
       const payload = await parseJsonSafely(response);
-      const events = parseGitHubEventsResponse(payload);
+      const repos = parseGitHubReposResponse(payload);
 
-      if (events) {
-        for (const event of events) {
-          if (event.type === "PushEvent") {
-            return {
-              repo: event.repo.name,
-              type: event.type,
-              created_at: event.created_at,
-            };
-          } else {
-            // Intentional: non-push GitHub events are ignored.
-          }
+      if (repos) {
+        const recent = repos.slice(0, 3);
+
+        if (recent.length > 0) {
+          return {
+            repos: recent.map((repo) => ({
+              repo: repo.full_name,
+              description: repo.description,
+              pushed_at: repo.pushed_at,
+              url: repo.html_url,
+            })),
+          };
+        } else {
+          return null;
         }
-
-        return null;
       } else {
         return null;
       }
@@ -1146,7 +1156,7 @@ async function getGitHubPayload(): Promise<GitHubPayload | null> {
     return freshCache;
   } else {
     const user = process.env.GITHUB_USER && process.env.GITHUB_USER.length > 0 ? process.env.GITHUB_USER : "joschi655";
-    const payload = await fetchLatestGitHubEvent(user);
+    const payload = await fetchRecentGitHubRepos(user);
 
     if (payload) {
       githubCache.set("latest", { value: payload, fetchedAtMs: nowMs });
