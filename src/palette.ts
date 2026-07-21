@@ -1,4 +1,4 @@
-// ⌘K command palette — the signature element.
+// ⌘K command palette - the signature element.
 // everything here is also reachable by plain scrolling; the palette is the fun way.
 
 import {
@@ -38,8 +38,8 @@ const COMMANDS: Cmd[] = [
     run: (c) => c.print(`range → ${RANGE_LABEL[cycleRange()]}. the widget is re-judging me now.`) },
   { name: "lab", aliases: ["lab mode"], desc: "toggle lab mode (experiments)", keep: true,
     run: (c) => c.print(toggleLab()
-      ? "lab mode ON — things in here may be held together with tape."
-      : "lab mode OFF — experiments safely stowed.", "out-warn") },
+      ? "lab mode ON - things in here may be held together with tape."
+      : "lab mode OFF - experiments safely stowed.", "out-warn") },
   { name: "uptime", desc: "real uptime of the box serving this page", keep: true,
     run: async (c) => c.print(await fetchUptimeLine(), "out-ok") },
   { name: "status", desc: "system status report", keep: true,
@@ -47,36 +47,47 @@ const COMMANDS: Cmd[] = [
       `theme:    ${currentTheme()}`,
       `lab:      ${labOn() ? "ON" : "off"}`,
       `api:      ${isApiUp() ? "up (real data)" : "unreachable (honest offline mode)"}`,
-      `motion:   ${motionOK() ? "allowed" : "reduced — everything stays still"}`,
+      `motion:   ${motionOK() ? "allowed" : "reduced - everything stays still"}`,
       `tracking: none. I don't even know you're here.`,
     ].join("\n")) },
   { name: "coffee", aliases: ["make coffee"], desc: "ask the server for coffee", keep: true,
     run: async (c) => c.print(await pingCoffee(), "out-warn") },
   { name: "github", desc: "open github/joschi655", keep: true,
-    run: (c) => { open_("https://github.com/joschi655"); c.print("opening github — where the commit messages apologize."); } },
-  { name: "statsfm", aliases: ["stats", "stats.fm"], desc: "my full listening history — I track everything", keep: true,
-    run: (c) => { open_("https://stats.fm/joschi_oskar"); c.print("opening stats.fm — every stream since forever, counted.\nif it can be tracked, I track it."); } },
+    run: (c) => { open_("https://github.com/joschi655"); c.print("opening github - where the commit messages apologize."); } },
+  { name: "source", aliases: ["view source", "repo"], desc: "open this site's actual source", keep: true,
+    run: (c) => { open_("https://github.com/joschi655/personal-website"); c.print("opening the source - vanilla TypeScript, Bun, no template, no trackers.", "out-ok"); } },
+  { name: "buildlog", aliases: ["stack", "how built"], desc: "how this control room is assembled", keep: true,
+    run: (c) => c.print([
+      "display:   self-hosted Archivo + IBM Plex",
+      "runtime:   vanilla TypeScript bundled by Bun",
+      "signals:   seeded canvas field + two hand-built simulations",
+      "data:      relative API calls to my own Ubuntu box",
+      "tracking:  none - your visit is not a dataset",
+      "fallback:  remove all JS and the story still works",
+    ].join("\n"), "out-ok") },
+  { name: "statsfm", aliases: ["stats", "stats.fm"], desc: "my full listening history - I track everything", keep: true,
+    run: (c) => { open_("https://stats.fm/joschi_oskar"); c.print("opening stats.fm - every stream since forever, counted.\nif it can be tracked, I track it."); } },
   { name: "cloud9", aliases: ["cloud-9"], desc: "open the spot-instance optimizer", keep: true,
-    run: (c) => { open_("https://cloud-9opt.com/"); c.print("opening cloud-9opt.com — spot instances, ranked before they interrupt you."); } },
+    run: (c) => { open_("https://cloud-9opt.com/"); c.print("opening cloud-9opt.com - spot instances, ranked before they interrupt you."); } },
   { name: "club", aliases: ["builders club", "claude club"], desc: "open the claude builders club @ tum", keep: true,
-    run: (c) => { open_("https://claudebuildersclub-muc.github.io/"); c.print("opening the club I co-founded (relaunched, technically) — students building with claude, not just chatting."); } },
+    run: (c) => { open_("https://claudebuildersclub-muc.github.io/"); c.print("opening the club I co-founded (relaunched, technically) - students building with claude, not just chatting."); } },
   { name: "malt", aliases: ["freelance"], desc: "open my malt freelance profile", keep: true,
-    run: (c) => { open_("https://en.malt.de/profile/johannesbreitfeld"); c.print("opening malt — bring an annoying process."); } },
+    run: (c) => { open_("https://en.malt.de/profile/johannesbreitfeld"); c.print("opening malt - bring an annoying process."); } },
   { name: "cv", aliases: ["resume", "lebenslauf"], desc: "the formal version of this website (pdf)", keep: true,
-    run: (c) => { open_("assets/cv.pdf?v=3"); c.print("opening the cv — same person, more bullet points."); } },
-  { name: "thesis", aliases: ["pyrolysis"], desc: "semester thesis pdf — graded 1.0", keep: true,
-    run: (c) => { open_("assets/pyrolysis-thesis.pdf?v=3"); c.print("opening the thesis — ML on plastic pyrolysis yields. graded 1.0."); } },
+    run: (c) => { open_("assets/cv.pdf?v=3"); c.print("opening the cv - same person, more bullet points."); } },
+  { name: "thesis", aliases: ["pyrolysis"], desc: "semester thesis pdf - graded 1.0", keep: true,
+    run: (c) => { open_("assets/pyrolysis-thesis.pdf?v=3"); c.print("opening the thesis - ML on plastic pyrolysis yields. graded 1.0."); } },
   { name: "linkedin", desc: "open linkedin", keep: true,
     run: (c) => { open_("https://www.linkedin.com/in/johannes-breitfeld/"); c.print("opening linkedin. tie optional."); } },
   { name: "email", aliases: ["mail"], desc: "write me", keep: true,
-    run: (c) => { window.location.href = "mailto:jo.breitfeld@gmail.com"; c.print("drafting mail — bring an annoying problem."); } },
+    run: (c) => { window.location.href = "mailto:jo.breitfeld@gmail.com"; c.print("drafting mail - bring an annoying problem."); } },
   { name: "whoami", desc: "who is this guy", keep: true,
-    run: (c) => c.print("oskar breitfeld — builds fixes for whatever annoys him.\ncurrently annoyed by: manual work.") },
+    run: (c) => c.print("oskar breitfeld - builds fixes for whatever annoys him.\ncurrently annoyed by: manual work.") },
   { name: "neofetch", desc: "system profile", keep: true,
     run: (c) => c.print([
       "joschi@aiwerke",
       "──────────────",
-      `OS:        human 1.0 (munich build, 2000) — uptime ${AGE}y`,
+      `OS:        human 1.0 (munich build, 2000) - uptime ${AGE}y`,
       "Host:      TUM · M.Sc. energy & process engineering",
       "Shell:     bash + bun",
       "Packages:  energy, ml, automation, n8n, mcp",
@@ -86,8 +97,8 @@ const COMMANDS: Cmd[] = [
   { name: "history", desc: "how I got here", keep: true,
     run: (c) => c.print([
       "START  chemical engineering",
-      "NOW    TUM — energy & process engineering",
-      "WORK   SAP — ai automation",
+      "NOW    TUM - energy & process engineering",
+      "WORK   SAP - ai automation",
       "NEXT   power grid load forecasting (thesis)",
     ].join("\n")) },
   { name: "forecast", desc: "tomorrow's personal load forecast", keep: true,
@@ -101,14 +112,14 @@ const COMMANDS: Cmd[] = [
   { name: "kookoo", desc: "the clock story", keep: true,
     run: (c) => c.print("before AI there were clocks. real ones, with birds inside.\ntry `cd offscreen` for the full story.") },
   { name: "vim", desc: "open an editor (bad idea)", keep: true,
-    run: (c) => c.print("you're now inside vim. there is no exit.\n(kidding — Esc works here. that's the whole product advantage.)", "out-warn") },
+    run: (c) => c.print("you're now inside vim. there is no exit.\n(kidding - Esc works here. that's the whole product advantage.)", "out-warn") },
   { name: "rm -rf bugs", aliases: ["rm bugs"], desc: "remove all bugs", keep: true,
     run: (c) => c.print("removing bugs… done.\n3 new bugs were spawned by the removal script. classic.") },
   { name: "make sandwich", aliases: ["sandwich"], desc: "xkcd 149 compliance check", keep: true,
     run: (c) => c.print("make: *** no rule to make target 'sandwich'.\ndid you mean `sudo hire oskar`?") },
   { name: "sudo hire oskar", aliases: ["hire", "sudo hire", "sudo hire joschi"], desc: "escalate privileges properly", keep: true,
     run: (c) => {
-      c.print("permission granted.\nopening a channel — bring the most annoying process you own.", "out-ok");
+      c.print("permission granted.\nopening a channel - bring the most annoying process you own.", "out-ok");
       if (motionOK()) {
         document.body.classList.add("crt-flash");
         setTimeout(() => document.body.classList.remove("crt-flash"), 500);
@@ -116,7 +127,7 @@ const COMMANDS: Cmd[] = [
       setTimeout(() => { window.location.href = "mailto:jo.breitfeld@gmail.com?subject=sudo%20hire%20oskar"; }, 900);
     } },
   { name: "konami", desc: "a hint", keep: true,
-    run: (c) => c.print("↑ ↑ ↓ ↓ ← → ← → B A — or just type `lab`.\nshortcuts are the point.") },
+    run: (c) => c.print("↑ ↑ ↓ ↓ ← → ← → B A - or just type `lab`.\nshortcuts are the point.") },
   { name: "exit", aliases: ["quit", ":q", ":q!"], desc: "close the palette", run: (c) => { c.print("logout."); c.close(); } },
 ];
 
@@ -132,7 +143,7 @@ function fuzzy(needle: string, hay: string): boolean {
 function matches(q: string): Cmd[] {
   const n = q.trim().toLowerCase();
   if (!n) return COMMANDS;
-  // rank: exact name/alias > prefix > subsequence — so `coffee` never runs `cd offscreen`
+  // rank: exact name/alias > prefix > subsequence - so `coffee` never runs `cd offscreen`
   const score = (c: Cmd): number => {
     const names = [c.name, ...(c.aliases ?? [])].map((s) => s.toLowerCase());
     if (names.includes(n)) return 0;
@@ -160,7 +171,7 @@ function build(): void {
   root.innerHTML =
     `<div class="pal" role="dialog" aria-modal="true" aria-label="Command palette">` +
     `<div class="pal-inputrow"><span class="ps1" aria-hidden="true">joschi@aiwerke:~$</span>` +
-    `<input type="text" placeholder="type a command — or free text (v2 will answer)" ` +
+    `<input type="text" placeholder="search commands - try source or buildlog" ` +
     `aria-label="Command input" autocapitalize="off" autocomplete="off" spellcheck="false"></div>` +
     `<div class="pal-out" role="log" aria-live="polite"></div>` +
     `<ul class="pal-list" role="listbox" aria-label="Commands"></ul>` +
@@ -192,7 +203,7 @@ function renderList(): void {
   list.innerHTML = items.map((c, i) =>
     `<li role="option" aria-selected="${i === sel}" data-i="${i}">` +
     `<span class="c">${escHTML(c.name)}</span><span class="d">${escHTML(c.desc)}</span></li>`).join("") ||
-    `<li role="option" aria-selected="false"><span class="d">no matching command — hit ↵ anyway</span></li>`;
+    `<li role="option" aria-selected="false"><span class="d">no matching command - hit ↵ anyway</span></li>`;
   list.querySelectorAll("li[data-i]").forEach((li) =>
     li.addEventListener("click", () => execute(items[Number(li.getAttribute("data-i"))], input.value)));
   list.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
@@ -216,7 +227,7 @@ function execute(cmd: Cmd | null, raw: string): void {
   if (cmd) {
     void cmd.run({ print, close });
   } else {
-    print(`command not found: ${raw.trim()}\nAsk-my-AI arrives in v2 — until then I'm just a website.`, "out-warn");
+    print(`command not found: ${raw.trim()}\nthis site doesn't pretend to be a chatbot. try \`help\` instead.`, "out-warn");
   }
   input.value = "";
   sel = 0;

@@ -1,10 +1,12 @@
-// entry — boot line, theme, title, scroll meter, timeline, konami, favicon, console
+// entry - boot line, theme, title, scroll meter, timeline, konami, favicon, console
 import { motionOK, $, $$, initTheme, toggleLab } from "./state";
 import { initCurve } from "./curve";
 import { initLive } from "./live";
 import { initPalette, openPalette } from "./palette";
 import { initDetailsMotion, initMotion } from "./motionfx";
 import { initEntropy } from "./entropy";
+import { initGridfield, type GridLoadDetail } from "./gridfield";
+import { initKookooClock } from "./clock";
 
 initTheme();
 
@@ -41,7 +43,7 @@ function scrollMeter(): void {
   const hz = $("[data-hz]");
   let lastY = window.scrollY;
   let lastT = performance.now();
-  let dev = 0;
+  let impulse = 0;
 
   const update = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -51,15 +53,21 @@ function scrollMeter(): void {
   update();
   window.addEventListener("scroll", update, { passive: true });
 
-  if (!hz || !motionOK()) return; // reduced motion: keep the static 50.00 Hz
-  setInterval(() => {
+  if (!motionOK()) return; // reduced motion: keep the static 50.00 Hz and field
+  const sample = () => {
     const now = performance.now();
     const v = Math.abs(window.scrollY - lastY) / Math.max(1, now - lastT); // px/ms
     lastY = window.scrollY;
     lastT = now;
-    dev = dev * 0.7 + Math.min(0.08, v * 0.06) * 0.3; // scroll “loads the grid”
-    hz.textContent = `f: ${(50 - dev).toFixed(2)} Hz`;
-  }, 250);
+    const target = Math.min(1, v * .9);
+    impulse = impulse * .68 + target * .32; // scroll “loads the grid”
+    if (hz) hz.textContent = `f: ${(50 - impulse * .08).toFixed(2)} Hz`;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const detail: GridLoadDetail = { progress: max > 0 ? Math.min(1, scrollY / max) : 0, impulse };
+    dispatchEvent(new CustomEvent<GridLoadDetail>("joschi:grid-load", { detail }));
+  };
+  sample();
+  setInterval(sample, 180);
 }
 
 // ---- timeline activation ----
@@ -93,7 +101,7 @@ function titleCwd(): void {
     Object.keys(map).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
   document.addEventListener("visibilitychange", () => {
-    document.title = document.hidden ? "[ctrl+z] suspended — oskar" : BASE;
+    document.title = document.hidden ? "[ctrl+z] suspended - oskar" : BASE;
   });
 }
 
@@ -151,7 +159,7 @@ function consoleGreeting(): void {
   const s = "font-family:monospace";
   console.log(
     "%cjoschi@aiwerke:~$ %cwhoami\n" +
-    "%coskar breitfeld — builds fixes for whatever annoys him.\n\n" +
+    "%coskar breitfeld - builds fixes for whatever annoys him.\n\n" +
     "you opened dev tools. respect.\n" +
     "things to try:\n" +
     "  ⌘K            command palette\n" +
@@ -173,10 +181,12 @@ initPalette();
 initLive();
 initMotion();
 initDetailsMotion();
+initGridfield();
+initKookooClock();
 
 const curveEl = document.querySelector<HTMLCanvasElement>("[data-curve]");
 if (curveEl) initCurve(curveEl);
 initEntropy();
 
-// no content is gated behind any of this — remove all JS and the page still tells the story
+// no content is gated behind any of this - remove all JS and the page still tells the story
 export { openPalette };

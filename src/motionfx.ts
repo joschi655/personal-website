@@ -1,6 +1,6 @@
-// motion layer (motion.dev, mini build) — scroll reveals, palette pop, widget stagger
+// motion layer (motion.dev, mini build) - scroll reveals, palette pop, widget stagger
 // every effect is gated by motionOK(); reduced motion attaches nothing.
-// initial hidden states are set HERE in JS, never in CSS — no-JS visitors see everything.
+// initial hidden states are set HERE in JS, never in CSS - no-JS visitors see everything.
 // motion/mini ships only animate(); the in-view trigger is a plain IntersectionObserver,
 // keeping the bundle small while the animations themselves run on motion's WAAPI engine.
 
@@ -8,14 +8,16 @@ import { animate } from "motion/mini";
 import { motionOK, $$ } from "./state";
 
 const springy = "cubic-bezier(.30,1.28,.52,1)"; // back-out ≈ light spring
-const REVEAL = ".sec-head, .sec-sub, .card, .ob, .status > div, .langs"; // .step has its own timeline observer
+const REVEAL = ".sec-head, .sec-sub, .card, .dossier, .channel, .manifest, .clock-story, .record-shelf, .film-frame, .movement-note, .langs"; // .step has its own timeline observer
 
 export function initMotion(): void {
   if (!motionOK() || !("IntersectionObserver" in window)) return;
   const els = $$(REVEAL);
   for (const el of els) {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(16px)";
+    // Keep content visibly present before intersection. This prevents direct
+    // hash navigation, print capture, and slow devices from showing blank bands.
+    el.style.opacity = ".88";
+    el.style.transform = "translateY(9px)";
   }
   const io = new IntersectionObserver(
     (entries) => {
@@ -25,11 +27,11 @@ export function initMotion(): void {
         animate(
           e.target as HTMLElement,
           { opacity: 1, transform: "translateY(0px)" },
-          { duration: 0.55, easing: springy }
+          { duration: 0.44, easing: springy }
         );
       }
     },
-    { rootMargin: "0px 0px -10% 0px" }
+    { rootMargin: "0px 0px -4% 0px" }
   );
   els.forEach((el) => io.observe(el));
 }

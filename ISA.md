@@ -397,6 +397,7 @@ Follow-up batch (2026-07-11, owner answers + 2 new asks):
 - [x] ISC-284: 4-across on desktop, 2-col ≤760px; no horizontal overflow at 390px or 1200px
 - [x] ISC-285: bun build exit 0 (32.7 KB); styles?v=7 + app.js?v=9; 0 console errors; 0 third-party requests (Playwright audit)
 - [x] ISC-286: DEPLOYED — static (sudo-staging) + API (server.ts → /opt/joschi-api, restart); live 2.2.0, SHA parity local==prod on all 5 files (index.html/styles.css/dist/app.js/kabale.jpg/server.ts); live browser: github forks shown, "all" reveals portrait playlists, siblings compact, 0 console errors, 0 non-aiwerke requests
+- [x] ISC-287: github widget shows 5 recent repos (owner 2026-07-18): /github slice 3→5, VERSION 2.3.0, live.ts renders ≤5; DEPLOYED (app.js?v=10), SHA parity index.html/app.js/server.ts, origin returns 5 (browser 5 via cache:no-store; the widget's plain fetch carries public,max-age=300 so a returning visitor within 5min may briefly see the prior count — pre-existing widget-cache behavior, self-heals). Local commit d859944 (NOT pushed).
 
 ## Test Strategy
 

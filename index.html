@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oskar Breitfeld — control room · fixes for annoying problems</title>
-<meta name="description" content="Oskar Breitfeld — energy engineering, AI automation, machine learning. A personal control room with live data from my own server: what I build, what I listen to, what runs." />
-<meta property="og:title" content="Oskar Breitfeld — control room" />
+<title>Oskar Breitfeld - control room · fixes for annoying problems</title>
+<meta name="description" content="Oskar Breitfeld - energy engineering, AI automation, machine learning. A personal control room with live data from my own server: what I build, what I listen to, what runs." />
+<meta property="og:title" content="Oskar Breitfeld - control room" />
 <meta property="og:description" content="From chemical engineering to SAP AI automation to ML load forecasting. A site that behaves the way I work: press ⌘K." />
 <meta property="og:url" content="https://aiwerke.de/joschi/" />
 <meta property="og:type" content="website" />
@@ -13,9 +13,11 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E12'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%235E8BFF'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2393A1AB'/%3E%3C/svg%3E">
 <link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/plexsans-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
+
+<canvas class="gridfield" data-gridfield aria-hidden="true"></canvas>
 
 <a class="skip" href="#main">skip to content</a>
 
@@ -33,7 +35,18 @@
   <div class="eyebrow mono"><span class="dot" aria-hidden="true"></span>Munich · born in 2000 · energy, processes &amp; machine learning</div>
   <p class="boot" data-boot aria-hidden="true">boot: energy <span class="ok">✓</span> ml <span class="ok">✓</span> automation <span class="ok">✓</span></p>
   <h1>I build fixes for<br>whatever <span class="accent">annoys me.</span></h1>
-  <p class="lede">I’m Oskar Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science — I learn by building.</em> <span class="dim">And I genuinely hate stupid repetitive tasks — automating them became the obvious career.</span></p>
+  <div class="hero-intro">
+    <p class="lede">I’m Oskar Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science - I learn by building.</em> <span class="dim">And I genuinely hate stupid repetitive tasks - automating them became the obvious career.</span></p>
+    <aside class="manifest" aria-label="Site and profile manifest">
+      <div class="manifest-head"><span>system.manifest</span><span class="verified">verified</span></div>
+      <dl>
+        <div><dt>current</dt><dd>M.Sc. Energy &amp; Process Engineering · TUM</dd></div>
+        <div><dt>work</dt><dd>AI automation → power-grid forecasting</dd></div>
+        <div><dt>host</dt><dd data-manifest-server>own Ubuntu box · checking heartbeat</dd></div>
+        <div><dt>source</dt><dd><a href="https://github.com/joschi655/personal-website" target="_blank" rel="noopener">vanilla TypeScript ↗</a> · zero trackers</dd></div>
+      </dl>
+    </aside>
+  </div>
 
   <div class="curve">
     <span class="label mono">Measured</span>
@@ -45,19 +58,13 @@
         <path class="trace-future" d="M760,58 C795,64 815,38 855,46 C895,54 915,82 955,70 C975,64 990,58 1000,60"/>
       </svg>
     </noscript>
-    <p class="sub" data-curve-sub>sim: load — be the anomaly</p>
-  </div>
-
-  <div class="status">
-    <div><span class="k mono">Current</span><span class="v">M.Sc. Energy and Process Engineering, TUM</span></div>
-    <div><span class="k mono">Work</span><span class="v">SAP — AI automation → power grid load forecasting</span></div>
-    <div><span class="k mono">Default state</span><span class="v">Automating things, partly curiosity, partly refusing to do anything twice.</span></div>
+    <p class="sub" data-curve-sub>sim: load · move across the line - become the anomaly</p>
   </div>
 
   <div class="live">
     <div class="live-head">
       <span class="t"><b>●</b> live from my own ubuntu box</span>
-      <span class="sub">real data or nothing — if a card is offline, that’s honest too</span>
+      <span class="sub">real data or nothing - if a card is offline, that’s honest too</span>
     </div>
     <div class="live-grid">
       <div class="lw" data-widget="music">
@@ -68,29 +75,8 @@
             <button data-range="long_term" aria-pressed="false">all</button>
           </span>
         </div>
-        <div data-music-body><p class="offline">spotify feed warming up — or offline. judge me later.</p></div>
-        <div class="playlists" data-playlists hidden>
-          <p class="pl-lead mono">playlists I'm actually proud of</p>
-          <div class="pl-grid">
-            <a class="pl" href="https://open.spotify.com/playlist/4JqeuQiXZ9IVwVREJK4pjJ" target="_blank" rel="noopener">
-              <img src="assets/playlists/kabale.jpg" alt="" width="300" height="300" loading="lazy" decoding="async">
-              <span class="pl-name">Kabale und Liebe</span>
-            </a>
-            <a class="pl" href="https://open.spotify.com/playlist/2rNjwkBwLkkJPTZCk00LBu" target="_blank" rel="noopener">
-              <img src="assets/playlists/alltime.jpg" alt="" width="300" height="239" loading="lazy" decoding="async">
-              <span class="pl-name">most listened — of all time</span>
-            </a>
-            <a class="pl" href="https://open.spotify.com/playlist/3vC6wneh7CpkjTYIqdqzhY" target="_blank" rel="noopener">
-              <img src="assets/playlists/naprocura.jpg" alt="" width="300" height="300" loading="lazy" decoding="async">
-              <span class="pl-name">Na Procura</span>
-            </a>
-            <a class="pl" href="https://open.spotify.com/playlist/53uKmYqdMv76jbJGYMLMPG" target="_blank" rel="noopener">
-              <img src="assets/playlists/space.jpg" alt="" width="300" height="234" loading="lazy" decoding="async">
-              <span class="pl-name">Space Music</span>
-            </a>
-          </div>
-        </div>
-        <div class="lw-foot" data-music-foot>source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> — full history, real counts. yes, I track everything.</div>
+        <div data-music-body><p class="offline">spotify feed warming up - or offline. judge me later.</p></div>
+        <div class="lw-foot" data-music-foot>source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> - full history, real counts. yes, I track everything.</div>
       </div>
       <div class="lw" data-widget="server">
         <div class="lw-k"><span>⏻ this server</span></div>
@@ -115,12 +101,12 @@
     <div class="step">
       <div class="yr">START</div>
       <h3>Chemical Engineering</h3>
-      <p>The foundation: processes, materials, energy — and where software can improve complex systems.</p>
+      <p>The foundation: processes, materials, energy - and where software can improve complex systems.</p>
       <details class="step-more">
         <summary class="mono step-sum">--verbose</summary>
         <ul class="step-facts">
-          <li>B.Sc. Chemical Engineering, TUM (2020–2024)</li>
-          <li>LES project: algorithmic wind-park simulation + battery &amp; electrolysis modeling — team award for best presentation</li>
+          <li>B.Sc. Chemical Engineering, TUM (2020 - 2024)</li>
+          <li>LES project: algorithmic wind-park simulation + battery &amp; electrolysis modeling - team award for best presentation</li>
         </ul>
       </details>
     </div>
@@ -131,7 +117,7 @@
       <details class="step-more">
         <summary class="mono step-sum">--verbose</summary>
         <ul class="step-facts">
-          <li>Semester thesis: ML-based prediction of plastic pyrolysis yields — grade 1.0</li>
+          <li>Semester thesis: ML-based prediction of plastic pyrolysis yields - grade 1.0</li>
           <li>795 datapoints from 127 papers; Paper-Level GroupKFold to kill the data leakage prior work shipped with</li>
           <li>SHAP analysis confirming the models agree with the physics</li>
         </ul>
@@ -139,14 +125,14 @@
     </div>
     <div class="step">
       <div class="yr">WORK</div>
-      <h3>SAP — AI Innovation, Connectors &amp; Automations</h3>
-      <p>Agentic AI workflows with LLMs, Claude, MCP servers, RAG — automation people actually use.</p>
+      <h3>SAP - AI Innovation, Connectors &amp; Automations</h3>
+      <p>Agentic AI workflows with LLMs, Claude, MCP servers, RAG - automation people actually use.</p>
       <details class="step-more">
         <summary class="mono step-sum">--verbose</summary>
         <ul class="step-facts">
-          <li>AI quality-assurance pipeline: LLMs + SQL, multi-agent checks on live product-planning data</li>
-          <li>Built and taught an internal AI training curriculum (n8n) — onboarding non-technical colleagues to agentic tools</li>
-          <li>RAG chatbots, knowledge bases &amp; internal web apps in daily department use</li>
+          <li>Deployed an Agents SDK reporting system on SAP BTP Cloud Foundry: live Jira input, deterministic report rendering</li>
+          <li>Built a semester-planning assistant with agentic Jira access and SQL-backed planning context</li>
+          <li>Built and taught an internal AI training curriculum (n8n) - onboarding non-technical colleagues to agentic tools</li>
         </ul>
       </details>
     </div>
@@ -172,96 +158,191 @@
 
 <section class="wrap" id="projects">
   <div class="sec-head"><span class="num">02</span><h2>What I build</h2></div>
-  <p class="sec-sub">annoyance-driven development, mostly</p>
-  <div class="grid">
+  <p class="sec-sub">not a logo wall · open the evidence</p>
+  <div class="dossiers">
+    <article class="dossier">
+      <div class="dossier-copy">
+        <div class="dossier-id"><span>CASE 01</span><span class="case-state">party tested</span></div>
+        <p class="dossier-kicker">annoyance → built</p>
+        <h3>Spotify queue bot</h3>
+        <p class="problem">A shared Spotify link hijacks the speaker and kills the queue. Every time.</p>
+        <p><b>Built:</b> forward the song via WhatsApp → the bot appends it cleanly. No interruptions. The sprawling workflow is the point: this one actually runs.</p>
+        <a class="proof-link" href="https://www.linkedin.com/posts/johannes-breitfeld_kann-mir-jemand-helfen-ich-hatte-vor-gut-activity-7479938472460595201-40r7" target="_blank" rel="noopener">see the LinkedIn post about the flow ↗</a>
+      </div>
+      <figure class="artifact artifact-light">
+        <img src="assets/projects/queue-workflow.webp" alt="The real n8n workflow behind the WhatsApp-to-Spotify queue bot, with dozens of connected processing nodes" width="1200" height="617" loading="lazy" decoding="async">
+        <figcaption><span>artifact 01</span> production workflow · n8n</figcaption>
+      </figure>
+    </article>
 
-    <div class="card">
-      <div class="nag">annoyance → built</div>
-      <h3>Spotify queue bot</h3>
-      <p class="nervt">A shared Spotify link hijacks the speaker and kills the queue. Every time.</p>
-      <p class="built"><b>Built:</b> forward the song via WhatsApp → the bot appends it cleanly. No interruptions. Most projects start like this.</p>
-      <p class="card-links"><a href="https://www.linkedin.com/posts/johannes-breitfeld_kann-mir-jemand-helfen-ich-hatte-vor-gut-activity-7479938472460595201-40r7" target="_blank" rel="noopener">the n8n flow — LinkedIn ↗</a></p>
-    </div>
+    <article class="dossier flip">
+      <div class="dossier-copy">
+        <div class="dossier-id"><span>CASE 02</span><span class="case-state">live product</span></div>
+        <p class="dossier-kicker">cloud costs → ranked</p>
+        <h3>Cloud-9</h3>
+        <p class="problem">Spot instances are cheap - until the wrong choice interrupts a workload or quietly costs more.</p>
+        <p><b>Built:</b> a cloud optimizer ranking EC2 spot instances by price and interruption risk, forecasting prices with ML, and generating deployable infrastructure.</p>
+        <a class="proof-link" href="https://cloud-9opt.com/" target="_blank" rel="noopener">open the live product ↗</a>
+      </div>
+      <figure class="artifact">
+        <img src="assets/projects/cloud9-overview.webp" alt="Cloud-9 product overview showing its AWS cost optimization interface and live platform statistics" width="1200" height="630" loading="lazy" decoding="async">
+        <figcaption><span>artifact 02</span> product surface · cloud-9opt.com</figcaption>
+      </figure>
+    </article>
 
-    <div class="card">
-      <div class="nag">cloud costs</div>
-      <h3>Cloud-Instance-Optimizer</h3>
-      <p class="nervt">Spot instances are cheap — the wrong pick gets you interrupted or overcharged.</p>
-      <p class="built"><b>Built:</b> ranks EC2 spot instances by live price and interruption risk, forecasts prices with ML, generates the Terraform.</p>
-      <p class="card-links"><a href="https://cloud-9opt.com/" target="_blank" rel="noopener">cloud-9opt.com ↗</a></p>
-    </div>
+    <article class="dossier">
+      <div class="dossier-copy">
+        <div class="dossier-id"><span>CASE 03</span><span class="case-state">deployed internally</span></div>
+        <p class="dossier-kicker">live Jira - controlled output</p>
+        <h3>Agentic CX operations reporting</h3>
+        <p class="problem">Management reporting from live planning data is repetitive, time-consuming, and too important to leave to free-form model output.</p>
+        <p><b>My contribution:</b> turned an existing internal prototype into the deployed version on SAP BTP Cloud Foundry with the Agents SDK. Agents retrieve live Jira data; a deterministic pipeline validates and renders the final reports.</p>
+        <span class="proof-private">private by design - scope shown, source and business data stay internal</span>
+      </div>
+      <figure class="artifact private-artifact">
+        <div class="private-system" role="img" aria-label="Public-safe architecture sketch: live Jira data flows through Agents SDK tools into a validated data contract and deterministic report builder on SAP BTP Cloud Foundry">
+          <div class="private-head"><span>agentic retrieval</span><span>deterministic delivery</span></div>
+          <div class="private-flow">
+            <span>live Jira</span><i>→</i><span>Agents SDK</span><i>→</i><span>validated data</span>
+          </div>
+          <div class="private-rail" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="private-output"><span>fixed report contract</span><strong>management report</strong></div>
+          <div class="private-runtime"><span>SAP BTP</span><span>Cloud Foundry</span><span>no portfolio data</span></div>
+        </div>
+        <figcaption><span>artifact 03</span> public-safe system sketch · no internal data</figcaption>
+      </figure>
+    </article>
 
-    <div class="card">
-      <div class="nag">scholarship · won</div>
-      <h3>check24-MCP</h3>
-      <p class="nervt">Comparison portals: data everywhere, no interface for AI agents.</p>
-      <p class="built"><b>Built:</b> an MCP server aggregating CHECK24 verticals on Cloudflare Workers — won the GenDev scholarship.</p>
-      <p class="card-links"><a href="https://github.com/joschi655/check24-MCP" target="_blank" rel="noopener">github ↗</a></p>
-    </div>
+    <article class="dossier flip">
+      <div class="dossier-copy">
+        <div class="dossier-id"><span>CASE 04</span><span class="case-state">internal platform</span></div>
+        <p class="dossier-kicker">semester planning - less dashboard hunting</p>
+        <h3>AI planning assistant</h3>
+        <p class="problem">Portfolio teams need planning context from Jira and databases, but assembling it by hand turns every question into a small research project.</p>
+        <p><b>Built:</b> a semester-planning assistant for the Business Suite Portfolio Management team, combining agentic Jira access with an SQL-backed context layer and purpose-built report and dependency workflows.</p>
+        <span class="proof-private">private by design - architecture only, no screenshots or repository</span>
+      </div>
+      <figure class="artifact private-artifact">
+        <div class="private-system planning-system" role="img" aria-label="Public-safe architecture sketch: Jira and SQL sources feed an agentic planning workflow that creates planning briefs and dependency views">
+          <div class="private-head"><span>planning context</span><span>purpose-built workflows</span></div>
+          <div class="planning-inputs"><span>Jira</span><span>SQL</span></div>
+          <div class="private-rail split" aria-hidden="true"><i></i><i></i></div>
+          <div class="planning-core"><small>agentic retrieval</small><strong>semester planning helper</strong></div>
+          <div class="planning-outputs"><span>planning briefs</span><span>dependency views</span></div>
+          <div class="private-runtime"><span>BTP</span><span>workflow orchestrator</span><span>private data stays private</span></div>
+        </div>
+        <figcaption><span>artifact 04</span> responsibility map · details intentionally omitted</figcaption>
+      </figure>
+    </article>
 
-    <div class="card">
-      <div class="nag">research · grade 1.0</div>
-      <h3>Predicting pyrolysis yields</h3>
-      <p class="nervt">Lab experiments are expensive; which conditions give which yields is hard to see.</p>
-      <p class="built"><b>Built:</b> ML models (Random Forest, XGBoost) predicting yields from literature data — validated against leakage. Semester thesis at TUM, graded 1.0.</p>
-      <p class="card-links"><a href="assets/pyrolysis-thesis.pdf?v=3" target="_blank" rel="noopener">read the thesis (pdf) ↗</a></p>
-    </div>
+    <article class="dossier">
+      <div class="dossier-copy">
+        <div class="dossier-id"><span>CASE 05</span><span class="case-state">scholarship won</span></div>
+        <p class="dossier-kicker">comparison data → one agent interface</p>
+        <h3>check24-MCP</h3>
+        <p class="problem">Comparison portals have data everywhere and no coherent interface for AI agents.</p>
+        <p><b>Built:</b> one MCP surface across CHECK24 verticals, with host-specific adapters, conformance checks, routing, and observability - deployed on Cloudflare Workers.</p>
+        <a class="proof-link" href="https://github.com/joschi655/check24-MCP" target="_blank" rel="noopener">read the repository ↗</a>
+      </div>
+      <figure class="artifact architecture-artifact">
+        <div class="architecture" aria-hidden="true">
+          <div class="arch-row arch-hosts"><span>ChatGPT</span><span>Claude</span></div>
+          <div class="arch-lines"><i></i><i></i></div>
+          <div class="arch-row arch-adapters"><span>Apps SDK adapter</span><span>Claude adapter</span></div>
+          <div class="arch-bus"><span>generic aggregator core</span><small>routing · linting · feedback · tracing</small></div>
+          <div class="arch-lines fan"><i></i><i></i><i></i><i></i></div>
+          <div class="arch-row arch-verticals"><span>hotel</span><span>flight</span><span>cars</span><span>energy</span></div>
+        </div>
+        <figcaption><span>artifact 05</span> architecture · derived from the public README</figcaption>
+      </figure>
+    </article>
 
-    <div class="card">
-      <div class="nag">freelance</div>
+    <article class="dossier flip">
+      <div class="dossier-copy">
+        <div class="dossier-id"><span>CASE 06</span><span class="case-state">grade 1.0</span></div>
+        <p class="dossier-kicker">127 papers → physics-aware ML</p>
+        <h3>Predicting pyrolysis yields</h3>
+        <p class="problem">Lab experiments are expensive; the relationship between process conditions and product yields is hard to see.</p>
+        <p><b>Built:</b> Random Forest and XGBoost models on 795 literature datapoints, grouped by paper to prevent leakage and checked with SHAP against the physics.</p>
+        <a class="proof-link" href="assets/pyrolysis-thesis.pdf?v=3" target="_blank" rel="noopener">read the 93-page thesis ↗</a>
+      </div>
+      <figure class="artifact artifact-light">
+        <img src="assets/projects/pyrolysis-shap.webp" alt="SHAP beeswarm plots from the thesis comparing feature importance for oil, gas, and char yield predictions" width="1200" height="709" loading="lazy" decoding="async">
+        <figcaption><span>artifact 06</span> thesis figure 5.2 · actual model output</figcaption>
+      </figure>
+    </article>
+  </div>
+
+  <div class="sidechannels" aria-label="Additional work and experiments">
+    <article class="channel">
+      <span class="channel-id">SIDE A · private by design</span>
       <h3>AI tools for clients</h3>
-      <p class="nervt">Many teams know AI could help — just not where to start.</p>
-      <p class="built"><b>Built:</b> DSGVO-compliant RAG support for KooKoo GmbH, browser automation for a medical practice, n8n/MCP workflows killing repetitive admin.</p>
-      <p class="card-links"><a href="https://en.malt.de/profile/johannesbreitfeld" target="_blank" rel="noopener">malt profile ↗</a></p>
-    </div>
-
-    <div class="card">
-      <div class="nag">community · co-founder</div>
+      <p>DSGVO-compliant RAG support, browser automation for a medical practice, and n8n/MCP workflows. Client data stays off the portfolio.</p>
+      <a href="https://en.malt.de/profile/johannesbreitfeld" target="_blank" rel="noopener">Malt profile ↗</a>
+    </article>
+    <article class="channel">
+      <span class="channel-id">SIDE B · community</span>
       <h3>Claude Builders Club @ TUM</h3>
-      <p class="nervt">Most students still use AI like a search box.</p>
-      <p class="built"><b>Did:</b> co-founded the relaunch of the Claude Builders Club at TUM and represented Anthropic’s Claude on campus as Campus Ambassador — building with AI, not just chatting with it.</p>
-      <p class="card-links"><a href="https://claudebuildersclub-muc.github.io/" target="_blank" rel="noopener">claudebuildersclub-muc.github.io ↗</a></p>
-    </div>
-
-    <div class="card full">
-      <div class="card-body">
-        <div class="nag">unexpected · level 1</div>
-        <h3>My first game — a jump-and-run level in Blender</h3>
-        <p class="nervt">As a kid I was so computer-obsessed I scavenged PC parts from the recycling center — how I got in stays an implementation detail.</p>
-        <p class="built"><b>Still built:</b> a jump-and-run level modeled entirely in Blender. No plan — curiosity, stubbornness, the urge to make it real. The most honest short description of me.</p>
-      </div>
-      <div class="card-aside">
-        <span class="tag">Blender · game design · level 1</span>
-      </div>
-    </div>
-
+      <p>Co-founded the relaunch and represented Claude on campus - helping students build with AI instead of only chatting with it.</p>
+      <a href="https://claudebuildersclub-muc.github.io/" target="_blank" rel="noopener">club site ↗</a>
+    </article>
+    <article class="channel">
+      <span class="channel-id">SIDE C · origin story</span>
+      <h3>My first Blender game</h3>
+      <p>A jump-and-run level made after scavenging PC parts as a kid. No plan, just curiosity, stubbornness, and far too many moved vertices.</p>
+      <span class="channel-note">Blender · game design · level 1</span>
+    </article>
   </div>
 </section>
 
 <section class="wrap" id="offscreen">
   <div class="sec-head"><span class="num">03</span><h2>Off-screen</h2></div>
-  <p class="sec-sub">processes that survive a reboot</p>
-  <div class="offbeat">
-    <div class="ob">
-      <div class="big" aria-hidden="true">🕊</div>
-      <h3>KooKoo, clocks &amp; songbirds</h3>
-      <p>At 14, still in school, I ran a student company refurbishing wall clocks — long before AI was my thing. <a href="https://www.kookoo.eu" target="_blank" rel="noopener">KooKoo’s songbird clocks</a> are still part of my story.</p>
-    </div>
-    <div class="ob">
-      <div class="big" aria-hidden="true">♪</div>
-      <h3>Music</h3>
-      <p>When the screen is off I’m usually at the piano — the one interface I operate without shortcuts. I perform locally from time to time.</p>
-    </div>
-    <div class="ob">
-      <div class="big" aria-hidden="true">▲</div>
-      <h3>Travel, skiing &amp; sports</h3>
-      <p>Traveling, skiing, swimming, padel — movement as a counterweight to too many hours in front of an editor. Some trips become films — <a href="https://youtu.be/vwkghahJ578" target="_blank" rel="noopener">like the Uyuni desert tour ↗</a>.</p>
+  <p class="sec-sub">analog inputs · processes that survive a reboot</p>
+  <div class="analog-grid">
+    <article class="clock-story">
+      <a class="clock-product" href="https://www.kookoo.eu" target="_blank" rel="noopener" aria-label="KooKoo Singvögel clock - open the KooKoo website">
+        <img src="assets/projects/kookoo-singvoegel-live.webp?v=3" alt="KooKoo Singvögel wall clock with twelve illustrated native songbirds" width="1200" height="1200" loading="lazy" decoding="async">
+        <span class="clock-hands" data-kookoo-clock aria-hidden="true">
+          <i class="hour-hand" data-kookoo-hour></i>
+          <i class="minute-hand" data-kookoo-minute></i>
+          <i class="second-hand" data-kookoo-second></i>
+        </span>
+      </a>
+      <div class="clock-copy">
+        <span class="analog-label">first company · age 14</span>
+        <h3>KooKoo, clocks &amp; songbirds</h3>
+        <p>Still in school, I ran a student company repairing and refurbishing wall clocks - diagnosing faults, soldering, and replacing electrical parts. <a href="https://www.kookoo.eu" target="_blank" rel="noopener">KooKoo’s Singvögel clock ↗</a> is still part of the story.</p>
+      </div>
+    </article>
+
+    <article class="record-shelf">
+      <div class="record-copy">
+        <span class="analog-label">output device · piano</span>
+        <h3>Music I actually keep</h3>
+        <p>The one interface I use without shortcuts. These are playlists I built and still listen to - not placeholder album art.</p>
+        <a class="piano-reel" href="https://www.youtube.com/watch?v=Ip0f5sxtfAQ&amp;t=60s" target="_blank" rel="noopener"><span>01:00</span> School - Supertramp ↗</a>
+      </div>
+      <div class="record-grid">
+        <a href="https://open.spotify.com/playlist/4JqeuQiXZ9IVwVREJK4pjJ" target="_blank" rel="noopener"><img src="assets/playlists/kabale.jpg" alt="Kabale und Liebe playlist cover" width="300" height="300" loading="lazy" decoding="async"><span>Kabale</span></a>
+        <a href="https://open.spotify.com/playlist/2rNjwkBwLkkJPTZCk00LBu" target="_blank" rel="noopener"><img src="assets/playlists/alltime.jpg" alt="Most listened of all time playlist cover" width="300" height="239" loading="lazy" decoding="async"><span>all time</span></a>
+        <a href="https://open.spotify.com/playlist/3vC6wneh7CpkjTYIqdqzhY" target="_blank" rel="noopener"><img src="assets/playlists/naprocura.jpg" alt="Na Procura playlist cover" width="300" height="300" loading="lazy" decoding="async"><span>Na Procura</span></a>
+        <a href="https://open.spotify.com/playlist/53uKmYqdMv76jbJGYMLMPG" target="_blank" rel="noopener"><img src="assets/playlists/space.jpg" alt="Space Music playlist cover" width="300" height="234" loading="lazy" decoding="async"><span>space</span></a>
+      </div>
+    </article>
+
+    <a class="film-frame" href="https://www.youtube.com/watch?v=vwkghahJ578&amp;t=216s" target="_blank" rel="noopener">
+      <img src="assets/projects/uyuni-film.webp" alt="A still from Oskar's Uyuni desert travel film, looking over tall cacti toward the salt flats" width="1200" height="675" loading="lazy" decoding="async">
+      <span class="film-overlay"><b>PLAY / UYUNI</b><small>from 03:36 · Bolivia ↗</small></span>
+    </a>
+    <div class="movement-note">
+      <span class="analog-label">counterweight</span>
+      <p>Traveling, skiing, swimming, hiking&nbsp; - movement after too many hours in front of a monitor.</p>
     </div>
   </div>
   <p class="langs"><b>locales:</b> German · English · Spanish · + learning more</p>
 </section>
 
-<section class="wrap" id="lab" aria-label="Lab mode — experiments">
+<section class="wrap" id="lab" aria-label="Lab mode - experiments">
   <div class="sec-head"><span class="num">××</span><h2>The Lab</h2></div>
   <p class="sec-sub">held together with tape · you found the konami code (or typed `lab`)</p>
   <div class="grid">
@@ -278,7 +359,7 @@
     <div class="card">
       <div class="nag">experiment 003</div>
       <h3>Fixie workshop</h3>
-      <p class="built">Buying neglected fixed-gear bikes, rebuilding, reselling. Analog engineering — the only project here with zero uptime monitoring.</p>
+      <p class="built">Buying neglected fixed-gear bikes, rebuilding, reselling. Analog engineering - the only project here with zero uptime monitoring.</p>
     </div>
   </div>
 </section>
@@ -287,7 +368,7 @@
 
 <footer class="wrap" id="contact">
   <h2>Say hello.</h2>
-  <p class="lede" style="margin-top:0">If something keeps annoying you, or a process should obviously be automated — that’s where I’m most useful.</p>
+  <p class="lede" style="margin-top:0">If something keeps annoying you, or a process should obviously be automated - that’s where I’m most useful.</p>
   <div class="links">
     <a href="https://github.com/joschi655" target="_blank" rel="noopener">GitHub →</a>
     <a href="https://www.linkedin.com/in/johannes-breitfeld/" target="_blank" rel="noopener">LinkedIn →</a>
@@ -298,12 +379,12 @@
     <span>Built with too much attention to detail · Oskar Breitfeld</span>
     <span>no cookies · no trackers · one teapot</span>
     <a href="impressum.html">Impressum &amp; Datenschutz</a>
-    <span>press <kbd>⌘K</kbd> — this site is operable</span>
+    <span>press <kbd>⌘K</kbd> - this site is operable</span>
   </p>
 </footer>
 
 <button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
 
-<script type="module" src="dist/app.js?v=10"></script>
+<script type="module" src="dist/app.js?v=13"></script>
 </body>
 </html>

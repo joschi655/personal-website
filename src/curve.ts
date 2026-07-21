@@ -1,4 +1,4 @@
-// animated load curve — measured past (solid) + forecast (dashed)
+// animated load curve - measured past (solid) + forecast (dashed)
 // honest decoration: it's labeled sim, and the cursor is the anomaly
 
 import { motionOK } from "./state";
@@ -48,7 +48,7 @@ export function initCurve(canvas: HTMLCanvasElement): void {
 
   const loadAt = (x: number): number => {
     // measured curve everywhere; past the split, cross-fade its VALUE toward the
-    // calmer forecast curve (never blend phases — unbounded phase would chirp).
+    // calmer forecast curve (never blend phases - unbounded phase would chirp).
     // smoothstep is 0 with zero slope at the split, so both segments share the
     // junction point and its tangent: no gap, no kink.
     let v = shape(x, phase);
@@ -59,7 +59,7 @@ export function initCurve(canvas: HTMLCanvasElement): void {
     }
     let y = h * 0.52 + v * h * 0.30;
     // cursor repulsion: 2D falloff around the eased cursor, push direction from
-    // tanh of vertical distance (smooth through zero — no crease at the cursor line)
+    // tanh of vertical distance (smooth through zero - no crease at the cursor line)
     if (strength > 0.004) {
       const dx = (x - sx) / 80;
       const dy = (y - sy) / 55;
@@ -75,7 +75,7 @@ export function initCurve(canvas: HTMLCanvasElement): void {
     const signal = css("--signal") || "#5E8BFF";
     const nowY = loadAt(split);
 
-    // past — solid, ending exactly on the junction
+    // past - solid, ending exactly on the junction
     ctx.beginPath();
     ctx.strokeStyle = ink;
     ctx.lineWidth = 2.2;
@@ -88,7 +88,7 @@ export function initCurve(canvas: HTMLCanvasElement): void {
     ctx.lineTo(split, nowY);
     ctx.stroke();
 
-    // forecast — dashed, starting exactly on the junction
+    // forecast - dashed, starting exactly on the junction
     ctx.beginPath();
     ctx.strokeStyle = signal;
     ctx.setLineDash([6, 6]);

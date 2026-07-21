@@ -1,6 +1,5 @@
 // entropy strip: particles drift left→right. left half = chaos (random walk),
-// crossing the midline they lock onto ordered lanes. chaos in, order out —
-// the whole "annoyance → built" pattern as a picture. own implementation,
+// crossing the midline they lock onto ordered lanes. chaos in, order out - // the whole "annoyance → built" pattern as a picture. own implementation,
 // no code taken from the pasted react component.
 
 type P = { x: number; y: number; vy: number; lane: number };

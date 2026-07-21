@@ -1,4 +1,4 @@
-// shared state + tiny utilities — no DOM assembly here
+// shared state + tiny utilities - no DOM assembly here
 
 export const motionOK = (): boolean =>
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -9,7 +9,7 @@ export const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode
 export const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document): T[] =>
   Array.from(root.querySelectorAll<T>(sel));
 
-// all API calls are RELATIVE — works at /joschi/ in prod and / locally
+// all API calls are RELATIVE - works at /joschi/ in prod and / locally
 export async function fetchJSON<T = unknown>(path: string, timeoutMs = 6000): Promise<T | null> {
   try {
     const ctl = new AbortController();
