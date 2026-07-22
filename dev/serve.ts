@@ -16,6 +16,8 @@ const TYPES: Record<string, string> = {
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
   ".pdf": "application/pdf",
+  ".webp": "image/webp",
+  ".mp3": "audio/mpeg",
 };
 
 Bun.serve({

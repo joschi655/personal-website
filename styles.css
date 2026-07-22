@@ -387,11 +387,17 @@ details[open] .step-sum::before{content:"[-] "}
 .analog-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--signal)}
 .clock-story h3,.record-shelf h3{font-family:var(--display);font-size:1.15rem;margin:7px 0 7px}
 .clock-story p,.record-copy p{font-size:.88rem;color:var(--muted)}
+.chime-toggle{margin-top:14px;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;cursor:pointer;transition:border-color .2s,color .2s}
+.chime-toggle:hover{border-color:var(--signal);color:var(--signal)}
+.chime-toggle .chime-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .2s}
+.chime-toggle.on{border-color:var(--signal);color:var(--signal)}
+.chime-toggle.on .chime-dot{background:var(--signal);animation:blink 2s steps(1) infinite}
+.chime-hint{font-family:var(--mono);font-size:.64rem;color:var(--muted);margin-top:8px;letter-spacing:.02em}
 .record-shelf{grid-column:span 5;padding:24px;display:grid;grid-template-columns:1fr;gap:20px;align-items:center}
 .record-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:end}
 .record-grid a{color:var(--muted);font-family:var(--mono);font-size:.58rem;text-decoration:none;min-width:0}
 .record-grid img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;filter:saturate(.76);border:1px solid var(--line);border-radius:4px;transition:filter .2s,transform .2s}
-.record-grid span{display:block;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.record-grid span{display:block;margin-top:5px;line-height:1.25;overflow-wrap:anywhere;hyphens:auto}
 .record-grid a:hover img{filter:saturate(1);transform:translateY(-2px)}
 .piano-reel{display:inline-flex;align-items:center;gap:8px;margin-top:13px;font-family:var(--mono);font-size:.64rem;text-decoration:none}
 .piano-reel span{border:1px solid var(--signal);border-radius:3px;padding:1px 5px;color:var(--signal)}

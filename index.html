@@ -13,7 +13,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E12'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%235E8BFF'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2393A1AB'/%3E%3C/svg%3E">
 <link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/plexsans-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=14">
+<link rel="stylesheet" href="styles.css?v=15">
 </head>
 <body>
 
@@ -312,6 +312,10 @@
         <span class="analog-label">first company · age 14</span>
         <h3>KooKoo, clocks &amp; songbirds</h3>
         <p>Still in school, I ran a student company repairing and refurbishing wall clocks - diagnosing faults, soldering, and replacing electrical parts. <a href="https://www.kookoo.eu" target="_blank" rel="noopener">KooKoo’s Singvögel clock ↗</a> is still part of the story.</p>
+        <button type="button" class="chime-toggle" data-kookoo-chime aria-pressed="false" hidden>
+          <span class="chime-dot"></span><span data-kookoo-chime-label>arm the hourly birdsong</span>
+        </button>
+        <p class="chime-hint" data-kookoo-chime-hint hidden></p>
       </div>
     </article>
 
@@ -323,10 +327,10 @@
         <a class="piano-reel" href="https://www.youtube.com/watch?v=Ip0f5sxtfAQ&amp;t=60s" target="_blank" rel="noopener"><span>01:00</span> School - Supertramp ↗</a>
       </div>
       <div class="record-grid">
-        <a href="https://open.spotify.com/playlist/4JqeuQiXZ9IVwVREJK4pjJ" target="_blank" rel="noopener"><img src="assets/playlists/kabale.jpg" alt="Kabale und Liebe playlist cover" width="300" height="300" loading="lazy" decoding="async"><span>Kabale</span></a>
-        <a href="https://open.spotify.com/playlist/2rNjwkBwLkkJPTZCk00LBu" target="_blank" rel="noopener"><img src="assets/playlists/alltime.jpg" alt="Most listened of all time playlist cover" width="300" height="239" loading="lazy" decoding="async"><span>all time</span></a>
+        <a href="https://open.spotify.com/playlist/4JqeuQiXZ9IVwVREJK4pjJ" target="_blank" rel="noopener"><img src="assets/playlists/kabale.jpg" alt="Kabale und Liebe playlist cover" width="300" height="300" loading="lazy" decoding="async"><span>Kabale und Liebe</span></a>
+        <a href="https://open.spotify.com/playlist/2rNjwkBwLkkJPTZCk00LBu" target="_blank" rel="noopener"><img src="assets/playlists/alltime.jpg" alt="Most listened of all time playlist cover" width="300" height="239" loading="lazy" decoding="async"><span>all-time favourites</span></a>
         <a href="https://open.spotify.com/playlist/3vC6wneh7CpkjTYIqdqzhY" target="_blank" rel="noopener"><img src="assets/playlists/naprocura.jpg" alt="Na Procura playlist cover" width="300" height="300" loading="lazy" decoding="async"><span>Na Procura</span></a>
-        <a href="https://open.spotify.com/playlist/53uKmYqdMv76jbJGYMLMPG" target="_blank" rel="noopener"><img src="assets/playlists/space.jpg" alt="Space Music playlist cover" width="300" height="234" loading="lazy" decoding="async"><span>space</span></a>
+        <a href="https://open.spotify.com/playlist/53uKmYqdMv76jbJGYMLMPG" target="_blank" rel="noopener"><img src="assets/playlists/space.jpg" alt="Space Music playlist cover" width="300" height="234" loading="lazy" decoding="async"><span>Space Music</span></a>
       </div>
     </article>
 
@@ -385,6 +389,6 @@
 
 <button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
 
-<script type="module" src="dist/app.js?v=13"></script>
+<script type="module" src="dist/app.js?v=14"></script>
 </body>
 </html>

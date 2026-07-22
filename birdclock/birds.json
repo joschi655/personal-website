@@ -1,0 +1,28 @@
+{
+  "name": "KooKoo Singvögel — hourly birdsong clock",
+  "description": "Twelve native German songbirds, one per hour. On each full hour the matching bird's recorded song plays. Reusable data manifest for embedding the clock in other apps.",
+  "source": "KooKoo Singvögel (kookoo.eu) — illustrations & field recordings © KooKoo",
+  "hourCycle": 12,
+  "mapping": "sequential",
+  "notes": "hour N (1..12) → bird N. 12:00 and 24:00 both play bird 12 (Pirol). Trimmed chimes are ~8s mono @48kbps for a hourly chime; full recordings are the originals (30s–5min).",
+  "assets": {
+    "chimeDir": "assets/audio",
+    "illusDir": "assets/illus",
+    "chimeFormat": "mp3 (mono, 32kHz, ~48kbps, 8s, fade in/out, loudnorm)",
+    "illusFormat": "webp (max 480px wide, q74)"
+  },
+  "birds": [
+    { "hour": 1,  "de": "Amsel",             "en": "Blackbird",           "la": "Turdus merula",         "chime": "assets/audio/01.mp3", "illus": "assets/illus/01.webp", "fullRecording": "SV 01 Amsel.mp3",             "fullSeconds": 191 },
+    { "hour": 2,  "de": "Singdrossel",       "en": "Song Thrush",         "la": "Turdus philomelos",     "chime": "assets/audio/02.mp3", "illus": "assets/illus/02.webp", "fullRecording": "SV 02 Singdrossel.mp3",       "fullSeconds": 302 },
+    { "hour": 3,  "de": "Mönchsgrasmücke",   "en": "Blackcap",            "la": "Sylvia atricapilla",    "chime": "assets/audio/03.mp3", "illus": "assets/illus/03.webp", "fullRecording": "SV 03 Mönchsgrasmücke.mp3",   "fullSeconds": 190 },
+    { "hour": 4,  "de": "Gartengrasmücke",   "en": "Garden Warbler",      "la": "Sylvia borin",          "chime": "assets/audio/04.mp3", "illus": "assets/illus/04.webp", "fullRecording": "SV 04 Gartengrasmücke.mp3",   "fullSeconds": 58 },
+    { "hour": 5,  "de": "Rotkehlchen",       "en": "European Robin",      "la": "Erithacus rubecula",    "chime": "assets/audio/05.mp3", "illus": "assets/illus/05.webp", "fullRecording": "SV 05 Rotkelchen.mp3",        "fullSeconds": 181 },
+    { "hour": 6,  "de": "Nachtigall",        "en": "Nightingale",         "la": "Luscinia megarhynchos", "chime": "assets/audio/06.mp3", "illus": "assets/illus/06.webp", "fullRecording": "SV 06 Nachtigall.mp3",        "fullSeconds": 193 },
+    { "hour": 7,  "de": "Blaukehlchen",      "en": "Bluethroat",          "la": "Luscinia svecica",      "chime": "assets/audio/07.mp3", "illus": "assets/illus/07.webp", "fullRecording": "SV 07 Blaukehlchen.mp3",      "fullSeconds": 51 },
+    { "hour": 8,  "de": "Gartenrotschwanz",  "en": "Common Redstart",     "la": "Phoenicurus phoenicurus","chime": "assets/audio/08.mp3", "illus": "assets/illus/08.webp", "fullRecording": "SV 08 Gartenrotschwanz.mp3",  "fullSeconds": 191 },
+    { "hour": 9,  "de": "Halsbandschnäpper", "en": "Collared Flycatcher", "la": "Ficedula albicollis",   "chime": "assets/audio/09.mp3", "illus": "assets/illus/09.webp", "fullRecording": "SV 09 Halsbandschnäpper.mp3", "fullSeconds": 59 },
+    { "hour": 10, "de": "Fitis",             "en": "Willow Warbler",      "la": "Phylloscopus trochilus","chime": "assets/audio/10.mp3", "illus": "assets/illus/10.webp", "fullRecording": "SV 10 Fitis.mp3",             "fullSeconds": 49 },
+    { "hour": 11, "de": "Heidelerche",       "en": "Woodlark",            "la": "Lullula arborea",       "chime": "assets/audio/11.mp3", "illus": "assets/illus/11.webp", "fullRecording": "SV 11 Heidelerche.mp3",       "fullSeconds": 53 },
+    { "hour": 12, "de": "Pirol",             "en": "Golden Oriole",       "la": "Oriolus oriolus",       "chime": "assets/audio/12.mp3", "illus": "assets/illus/12.webp", "fullRecording": "SV 12 Pirol.mp3",             "fullSeconds": 62 }
+  ]
+}
