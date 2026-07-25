@@ -37,7 +37,7 @@ Bun.serve({
       }
     }
 
-    if (path === "/") path = "/index.html";
+    if (path.endsWith("/")) path += "index.html";
     const file = Bun.file(join(ROOT, normalize(path).replace(/^(\.\.[/\\])+/, "")));
     if (!(await file.exists())) return new Response("404", { status: 404 });
     const ext = path.slice(path.lastIndexOf("."));

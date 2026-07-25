@@ -8,10 +8,11 @@ recorded song plays — the real recording, the real illustration, just like the
 
 | Path | What |
 |---|---|
-| `index.html` | **Standalone artifact** — fully self-contained, every song + drawing inlined as base64 data URIs. Works offline. Open it in any browser. |
+| `index.html` | **Standalone clock** — the real KooKoo product photo with live analog hands (same treatment as aiwerke.de/joschi/), an arm-toggle for the hourly chime, and a click-to-hear hour index. Loads assets by relative path — serve the folder from anywhere (`bun dev/serve.ts` → http://127.0.0.1:3800/birdclock/), works offline. |
 | `birds.json` | Reusable data manifest — hour → bird mapping, names (DE/EN/Latin), and asset paths. Use this to embed the clock in other apps. |
+| `assets/kookoo.webp` | The product photo the hands are overlaid on. |
 | `assets/audio/NN.mp3` | Trimmed ~8s chime clips (mono, ~48 kbps) — light enough for an hourly chime. |
-| `assets/illus/NN.webp` | Optimized bird illustrations (≤480px, WebP). |
+| `assets/illus/NN.webp` | Optimized bird illustrations (≤480px, WebP) — not used by `index.html`, kept for other apps. |
 
 The full-length original recordings (30s–5min) are **not** committed here — they total 25 MB.
 `birds.json` names each one under `fullRecording` so you can wire them up when you host
@@ -25,20 +26,14 @@ in `index.html`).
 
 ## Using it in another app
 
-The clock reads a global `window.BIRDS` array of `{ hour, de, en, la, img, audio }` where
-`img`/`audio` are data URIs (or swap them for real file URLs when you host the assets).
-`birds.json` mirrors the same shape with file paths instead of inlined data.
+Everything is plain files — copy the folder and serve it statically, or lift the pieces:
+`birds.json` gives you the hour → bird mapping plus asset paths; the chime files are
+`assets/audio/NN.mp3` where `NN` = hour (01–12).
 
-Core logic, in brief:
+Core logic, in brief (all inside `index.html`, ~60 lines):
 - one shared `Audio` element, unlocked on the first user gesture (browsers block surprise audio)
-- `setInterval` tick updates the hands; on hour rollover it plays `byHour(newHour)` if armed
-- click any bird (on the dial or in the index) to hear it and bloom its illustration
-
-## Regenerating the inlined data
-
-The `index.html` embeds `assets/` as base64. To rebuild after changing assets, re-run the
-data-generation step (see the personal-website ISA / commit that introduced this) — it reads
-`assets/audio/*` + `assets/illus/*` and writes the `window.BIRDS = […]` blob.
+- `setInterval` tick updates the hands; on hour rollover it plays hour `N`'s clip if armed
+- click any row in the hour index to hear that bird immediately
 
 ## Credit
 
