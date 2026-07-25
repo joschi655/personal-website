@@ -10,4 +10,4 @@ Owner request: "make the website not look AI generated" — uniqueness through v
 - **Motion:** bounce easing → expo-out everywhere; reveals narrowed to section level; ⌘K palette opens instantly (keyboard-initiated); topbar cursor blinks 4x then rests; fake Hz readout removed; scrollmeter animates transform, scroll listener rAF-batched. Reduced motion still fully static.
 - **Copy:** light trim of the most LLM-sounding quips; voice and easter eggs kept.
 - **Verified:** bun build clean; impeccable detector 0 findings (4 before); Playwright screenshots desktop+mobile+both themes; 0 console errors. Interceptor CLI not installed on this Mac — Playwright MCP used instead.
-- **Status:** NOT deployed, NOT committed. Cache-busts: styles.css?v=16, app.js?v=15. ISA.md follow-up batch appended.
+- **Status:** committed + pushed to `origin/main` (`6d3e293`) on owner request. **Not yet deployed** — the live site at aiwerke.de/joschi/ still serves the previous build until the rsync to `/var/www/html/joschi/` runs. Cache-busts: styles.css?v=16, app.js?v=15. ISA.md follow-up batch appended.

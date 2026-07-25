@@ -7,7 +7,7 @@ progress: 285/285
 mode: build
 started: 2026-07-10T15:34:02Z
 updated: 2026-07-25T13:00:00Z
-iteration: de-AI-ification pass (owner request 2026-07-25) — visual-first de-slop: amber/graphite palette (paper mode now DEFAULT per owner), label/dot/kicker cull, SVG schematics replace div sketches, hero curve enlarged with live local-time marker, expo-out easing everywhere, Hz readout removed, palette opens instantly. Detector clean (0 findings). NOT deployed, NOT committed (E3)
+iteration: de-AI-ification pass (owner request 2026-07-25) — visual-first de-slop: amber/graphite palette (paper mode now DEFAULT per owner), label/dot/kicker cull, SVG schematics replace div sketches, hero curve enlarged with live local-time marker, expo-out easing everywhere, Hz readout removed, palette opens instantly. Detector clean (0 findings). Committed + pushed to origin/main as 6d3e293; NOT yet rsynced to the live webroot (E3)
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
