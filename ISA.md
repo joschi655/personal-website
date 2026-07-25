@@ -7,7 +7,7 @@ progress: 285/285
 mode: build
 started: 2026-07-10T15:34:02Z
 updated: 2026-07-25T13:00:00Z
-iteration: de-AI-ification pass (owner request 2026-07-25) — visual-first de-slop: amber/graphite palette (paper mode now DEFAULT per owner), label/dot/kicker cull, SVG schematics replace div sketches, hero curve enlarged with live local-time marker, expo-out easing everywhere, Hz readout removed, palette opens instantly. Detector clean (0 findings). Committed + pushed to origin/main as 6d3e293; NOT yet rsynced to the live webroot (E3)
+iteration: deploy automation + webroot leak fix (2026-07-25, E2) — deploy.ts ships an allowlist over ssh and verifies against the live site; preflight found deployment-notes.md + nginx-snippet.conf publicly served and pruned them. De-AI-ification pass (6d3e293) is now LIVE on aiwerke.de/joschi/ with paper mode as default
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
@@ -635,4 +635,42 @@ Follow-up batch (2026-07-25) — de-AI-ification pass (owner: "make the website 
 - Motion: bounce easing cubic-bezier(.30,1.28,.52,1) → expo-out (.16,1,.3,1) site-wide; REVEAL narrowed to section-level blocks; palette open animation removed (keyboard-initiated = instant, springIn deleted); topbar cursor blinks 4x then rests; chime-dot no longer loops; scrollmeter width transition → transform:scaleX + rAF-batched scroll listener; fake "f: 50.00 Hz" readout removed (impulse event for the canvas field kept). prefers-reduced-motion path unchanged (fully static).
 - Copy (light trim): "judge me later", "honest, at least", "the box may be thinking", "honestly offline", "software ate the middle", "this site is operable", "the widget is re-judging me now", 🎹 emoji, one em-dash in clock.ts removed/flattened. Kept: one teapot, sudo hire oskar, vim/neofetch/sandwich, "I reboot more often than this box does". check24 scholarship fact moved into body copy.
 - Verification: bun build clean (38.9 KB — over the old 30 KB note, motion lib included since v2 already); impeccable detector 0 findings (was: bounce-easing, side-tab, layout-transition, grid-background); Playwright screenshots desktop+mobile, both themes, all images load, 0 console errors. Interceptor CLI absent on this Mac — Playwright MCP substituted for visual verification this session.
-- NOT deployed, NOT committed. Cache-bust bumped: styles.css?v=16, app.js?v=15.
+- NOT deployed, NOT committed. Cache-bust bumped: styles.css?v=16, app.js?v=15. **[superseded 2026-07-25: committed 6d3e293, pushed, deployed — see next batch]**
+
+### T — Deploy automation + webroot leak fix (2026-07-25, E2, owner: "create a script that deploys the website on my server automatically")
+
+- [x] ISC-274: `deploy.ts` at repo root, `bun run deploy --help` exits 0
+- [x] ISC-275: upload set is an explicit allowlist (index.html, impressum.html, styles.css, dist, assets) — never the repo root
+- [x] ISC-276: Anti: `api/.env`, `src/`, `ISA.md`, `WORKLOG.md`, `deployment-notes.md`, `package.json` never reach the webroot
+- [x] ISC-277: script rebuilds `dist/app.js` and aborts before any remote write if the build fails
+- [x] ISC-278: script warns when the rebuild changes the committed bundle (stale-dist guard)
+- [x] ISC-279: `--dry-run` prints the full plan and performs zero remote writes
+- [x] ISC-280: staging rsync uses `--delete` on `/tmp/joschi-stage` only, never on the webroot
+- [x] ISC-281: install step chowns `www-data` and normalises perms to 644/755
+- [x] ISC-282: `--prune` removes top-level webroot entries outside the manifest; without the flag nothing is deleted
+- [x] ISC-283: prune guard refuses any entry containing `/`, `.` or `..`
+- [x] ISC-284: post-deploy probe asserts `https://aiwerke.de/joschi/` → 200
+- [x] ISC-285: post-deploy probe hashes live vs local for styles.css and dist/app.js (byte-identical)
+- [x] ISC-286: HTML comparison normalises Cloudflare Email-Obfuscation rewrites before hashing
+- [x] ISC-287: probe asserts the live HTML carries the local cache-bust values (`?v=16` / `?v=15`)
+- [x] ISC-288: probe asserts `api/health` → `ok:true` and `api/coffee` → 418
+- [x] ISC-289: leak probe asserts no repo doc is served from origin; distinguishes a stale Cloudflare edge HIT from a real origin leak
+- [x] ISC-290: script exits non-zero when any probe fails
+- [x] ISC-291: `--api` mode installs `api/server.ts` to `/opt/joschi-api/` and restarts the unit
+- [x] ISC-292: Anti: `--api` never uploads `api/.env` and never touches `/etc/joschi-api.env`
+- [x] ISC-293: Anti: script never modifies nginx or cloudflared config
+- [x] ISC-294: `package.json` exposes `build`, `dev`, `api`, `deploy` scripts
+- [x] ISC-295: README + deployment-notes.md document the script as the deploy path
+- [x] ISC-296: `deployment-notes.md` no longer publicly served (was 200, infra disclosure)
+- [x] ISC-297: `nginx-snippet.conf` no longer publicly served (was 200)
+- [x] ISC-298: `README.md` no longer publicly served (was 200)
+- [x] ISC-299: `script.js` (v1 leftover) removed from origin
+- [x] ISC-300: live site serves the de-AI-ification build (paper default, `data-theme="light"`)
+- [x] ISC-301: live widgets return real data end to end (music, status, github)
+- [x] ISC-302: Anti: zero console errors on the live page after deploy
+
+**Preflight finding (the reason this batch matters more than the script):** the webroot had accumulated four repo files from earlier hand-run `rsync` calls. `deployment-notes.md` and `nginx-snippet.conf` were publicly readable and disclosed the webroot path, the systemd unit name, the API bind port 127.0.0.1:31890, the nginx vHost file and `/etc/joschi-api.env`. No secrets leaked (those live only in `/etc/joschi-api.env`, chmod 600), but the map did. Root cause: hand-typed rsync with an implicit file list drifts; an allowlist in code does not. This is the ingestion-point fix, not an output-side patch.
+
+**Cloudflare transform discovered:** the zone has Email Obfuscation on, so live HTML is never byte-identical to what was uploaded (`mailto:` → `/cdn-cgi/l/email-protection#…` plus an injected `email-decode.min.js`). The verifier normalises both sides rather than weakening the check.
+
+Verification evidence: `bun run deploy --prune` → staged, installed, `pruned: deployment-notes.md, nginx-snippet.conf, README.md, script.js`; `bun run deploy --verify` → 10/10 probes green. Origin `ls /var/www/html/joschi/` = exactly the 5 manifest entries. `curl` on the four strays → 404 (script.js served one more edge HIT with `age: 260`, `max-age=14400`, gone at origin). Live `api/status` → `uptime_seconds: 732856`; `api/music` → real Spotify artists; `api/github` → today's push. Playwright on the live URL: 0 console errors, greeting renders in the new amber.

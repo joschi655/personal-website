@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "build": "bun build src/main.ts --minify --outfile=dist/app.js",
+    "dev": "bun dev/serve.ts",
+    "api": "bun api/server.ts",
+    "deploy": "bun deploy.ts"
+  },
   "dependencies": {
     "motion": "^12.42.2"
   }

@@ -50,7 +50,21 @@ refresh token into `api/.env`, scope `user-top-read` only).
 
 ## Deploy
 
-See `deployment-notes.md`. Short version: rsync static files to `/var/www/html/joschi/`,
-`api/` to `/opt/joschi-api/` with a systemd unit, one `location /joschi/api/` block in the
-default nginx vHost. Rollback: `git tag v1` holds the previous site; API off = widgets degrade
-honestly, page still works.
+```bash
+bun run deploy              # build → rsync → verify against the live site
+bun run deploy --dry-run    # print every action, write nothing
+bun run deploy --prune      # also remove webroot files not in the manifest
+bun run deploy --all        # static + api/server.ts + systemctl restart
+bun run deploy --verify     # probes only
+```
+
+`deploy.ts` uploads an **allowlist** (`index.html`, `impressum.html`, `styles.css`, `dist/`,
+`assets/`) — never the repo root, so `api/.env`, `src/`, `ISA.md` and the deployment notes
+cannot reach a public webroot. It stages over ssh, installs with sudo as `www-data`, then
+verifies by hashing what the live site actually serves (HTML normalised for Cloudflare's
+email obfuscation) plus `api/health` and the 418. Any failed probe exits non-zero.
+
+It never touches nginx, cloudflared, or `/etc/joschi-api.env`.
+
+Server layout and the one-time setup live in `deployment-notes.md`. Rollback: `git tag v1`
+holds the previous site; API off = widgets degrade honestly, page still works.

@@ -8,14 +8,30 @@ Stand: 2026-07-11. Verifizierter Ist-Zustand des Servers (per ssh geprüft, nich
   **an cloudflared wird für diese Seite NICHTS geändert** (pfadbasiert, kein neuer Hostname).
 - API-Service: `joschi-api` (Bun) unter `/opt/joschi-api/`, lauscht **nur auf 127.0.0.1:31890**.
 
+> **Seit 2026-07-25 ist das alles in `deploy.ts` automatisiert:** `bun run deploy`.
+> Die Handbefehle unten bleiben als Referenz und für den Notfall stehen.
+>
+> **Diese Datei darf nie im Webroot landen** — sie nennt Webroot, Service-Name, API-Port,
+> vHost-Datei und `/etc/joschi-api.env`. Bis 2026-07-25 war sie unter
+> `https://aiwerke.de/joschi/deployment-notes.md` öffentlich abrufbar (mit
+> `nginx-snippet.conf`, `README.md`, `script.js`). `deploy.ts` deployed deshalb nur noch
+> eine Allowlist und prüft nach jedem Deploy, dass keine Repo-Doku erreichbar ist.
+
 ## 1. Statische Dateien
 
 ```bash
-rsync -av index.html impressum.html styles.css dist ubuntu-tunnel:/tmp/joschi-stage/
+bun run deploy            # build + rsync (Allowlist) + Live-Verifikation
+bun run deploy --prune    # zusätzlich: Fremddateien aus dem Webroot entfernen
+```
+
+Manuell (Referenz):
+
+```bash
+rsync -av index.html impressum.html styles.css dist assets ubuntu-tunnel:/tmp/joschi-stage/
 ssh ubuntu-tunnel 'sudo rsync -av /tmp/joschi-stage/ /var/www/html/joschi/ && sudo chown -R www-data:www-data /var/www/html/joschi/'
 ```
 
-Kein `--delete` — alte Assets stören nicht und `git tag v1` ist der Rollback.
+Kein `--delete` gegen den Webroot — `git tag v1` ist der Rollback.
 
 ## 2. API-Service
 
