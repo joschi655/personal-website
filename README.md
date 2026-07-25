@@ -58,6 +58,9 @@ bun run deploy --all        # static + api/server.ts + systemctl restart
 bun run deploy --verify     # probes only
 ```
 
+In VS Code: **⇧⌘B** runs *Deploy site (live)*. `Deploy — dry run`, `Deploy — verify live` and
+`Deploy site + API` sit next to it in the task list (`.vscode/tasks.json`).
+
 `deploy.ts` uploads an **allowlist** (`index.html`, `impressum.html`, `styles.css`, `dist/`,
 `assets/`) — never the repo root, so `api/.env`, `src/`, `ISA.md` and the deployment notes
 cannot reach a public webroot. It stages over ssh, installs with sudo as `www-data`, then

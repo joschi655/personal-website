@@ -1,0 +1,54 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Deploy site (live)",
+      "detail": "Build, rsync to ubuntu-tunnel:/var/www/html/joschi/, verify against aiwerke.de/joschi/",
+      "type": "shell",
+      "command": "bun run deploy",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": [],
+      "runOptions": { "instanceLimit": 1 },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "Deploy — dry run",
+      "detail": "Print every action (incl. what --prune would remove). Writes nothing to the server.",
+      "type": "shell",
+      "command": "bun run deploy --dry-run --prune",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "runOptions": { "instanceLimit": 1 },
+      "presentation": { "reveal": "always", "focus": true, "panel": "dedicated", "clear": true, "showReuseMessage": false }
+    },
+    {
+      "label": "Deploy — verify live",
+      "detail": "Probes only: live hashes vs local, cache-busts, api/health, 418, no leaked repo docs.",
+      "type": "shell",
+      "command": "bun run deploy --verify",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "test",
+      "problemMatcher": [],
+      "runOptions": { "instanceLimit": 1 },
+      "presentation": { "reveal": "always", "focus": true, "panel": "dedicated", "clear": true, "showReuseMessage": false }
+    },
+    {
+      "label": "Deploy site + API",
+      "detail": "Static deploy plus api/server.ts to /opt/joschi-api/ and a joschi-api restart.",
+      "type": "shell",
+      "command": "bun run deploy --all",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "runOptions": { "instanceLimit": 1 },
+      "presentation": { "reveal": "always", "focus": true, "panel": "dedicated", "clear": true, "showReuseMessage": false }
+    }
+  ]
+}
