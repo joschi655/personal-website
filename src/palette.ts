@@ -5,7 +5,6 @@ import {
   toggleTheme, toggleLab, labOn, cycleRange, RANGE_LABEL, isApiUp, currentTheme, motionOK,
 } from "./state";
 import { pingCoffee, fetchUptimeLine } from "./live";
-import { springIn } from "./motionfx";
 
 type Ctx = { print: (text: string, cls?: string) => void; close: () => void };
 type Cmd = { name: string; aliases?: string[]; desc: string; keep?: boolean; run: (ctx: Ctx) => void | Promise<void> };
@@ -35,7 +34,7 @@ const COMMANDS: Cmd[] = [
       ? "switched to paper mode. easy on the eyes, hard on the vibe."
       : "welcome back to the control room.", "out-ok") },
   { name: "music", aliases: ["range"], desc: "cycle the spotify time range", keep: true,
-    run: (c) => c.print(`range → ${RANGE_LABEL[cycleRange()]}. the widget is re-judging me now.`) },
+    run: (c) => c.print(`range → ${RANGE_LABEL[cycleRange()]}`) },
   { name: "lab", aliases: ["lab mode"], desc: "toggle lab mode (experiments)", keep: true,
     run: (c) => c.print(toggleLab()
       ? "lab mode ON - things in here may be held together with tape."
@@ -108,7 +107,7 @@ const COMMANDS: Cmd[] = [
   { name: "ping oskar", aliases: ["ping", "ping joschi"], desc: "reachability check", keep: true,
     run: (c) => c.print("pong from munich · latency depends on coffee.") },
   { name: "piano", desc: "switch output device", keep: true,
-    run: (c) => c.print("switching output device → 🎹\nthe one interface I play without shortcuts.") },
+    run: (c) => c.print("switching output device → piano\nthe one interface I play without shortcuts.") },
   { name: "kookoo", desc: "the clock story", keep: true,
     run: (c) => c.print("before AI there were clocks. real ones, with birds inside.\ntry `cd offscreen` for the full story.") },
   { name: "vim", desc: "open an editor (bad idea)", keep: true,
@@ -234,12 +233,11 @@ function execute(cmd: Cmd | null, raw: string): void {
   renderList();
 }
 
+// no open animation: the palette is keyboard-initiated, speed IS the feel
 export function openPalette(trigger?: HTMLElement): void {
   if (!root) build();
   lastTrigger = trigger ?? (document.activeElement as HTMLElement | null);
   root!.style.display = "flex";
-  const pal = root!.querySelector<HTMLElement>(".pal");
-  if (pal) springIn(pal);
   renderList();
   input.focus();
 }

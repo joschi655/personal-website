@@ -6,8 +6,8 @@ phase: complete
 progress: 285/285
 mode: build
 started: 2026-07-10T15:34:02Z
-updated: 2026-07-18T10:24:00Z
-iteration: github+playlists v2 (owner feedback) — /github now INCLUDES forks; playlists ride along with the all-time ("most listened") range only, portrait 3:4 covers, 4-across (2-col mobile). DEPLOYED 2026-07-18 + local commit fc194fa (NOT pushed — owner OK pending) (E2)
+updated: 2026-07-25T13:00:00Z
+iteration: de-AI-ification pass (owner request 2026-07-25) — visual-first de-slop: amber/graphite palette (paper mode now DEFAULT per owner), label/dot/kicker cull, SVG schematics replace div sketches, hero curve enlarged with live local-time marker, expo-out easing everywhere, Hz readout removed, palette opens instantly. Detector clean (0 findings). NOT deployed, NOT committed (E3)
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
@@ -626,3 +626,13 @@ Follow-up batch (2026-07-11):
 - ISC-247: git log -S located the fragment in exactly one commit (87eb8de, HEAD) → follow-up amended into it; post-amend git log -S returns no hits.
 - Thesis source question CLOSED by owner + probe: owner-named Pyrolysis-main/My_Thesis/Thesis_LES.pdf is sha-identical (0e444beadb2fa30d) to the deployed source — "liegt an 2 orten" confirmed, deployed 93p version is the right one.
 - Advisor round 2 (Rule 2): CV metadata ✓ (probed), edge/archive persistence ✓ (probed), .tex not deployed ✓ (git ls-files + webroot ls), fragment-blob location ✓ (git log -S) — Schlussfolgerung: amend statt filter-repo. Schmalacker channel-name exposure flagged to owner in summary.
+
+Follow-up batch (2026-07-25) — de-AI-ification pass (owner: "make the website not look AI generated", visual > text):
+- Palette: dark = warm graphite #0E100D + control-panel amber #E8A33D (off the near-black+blue AI-default cluster); paper mode signal #8A5200. Owner decision same session: paper mode becomes the DEFAULT theme (supersedes ISC-11; data-theme="light" ships in HTML, theme-color #E7EAEA). Contrast verified: amber on graphite 8.8:1, light signal on paper 5.2:1.
+- ISC-12 superseded: static 32px CSS grid background removed; the seeded gridfield canvas alone owns the background (presence raised ~+0.04 alpha), scrim simplified to one horizontal gradient.
+- Label cull: numbered section eyebrows (01/02/03/××), CASE nn + status dots, "artifact nn" figcaption prefixes, dossier kickers (X → Y arrow lines), SIDE A/B/C, experiment nnn, system.manifest/verified header, decorative ● dots all removed. Kept: apidot (real heartbeat), chime dot (real armed state), START/NOW/WORK/NEXT (real sequence).
+- Visual amplification: three div-built architecture sketches (CX reporting, planning assistant, check24-MCP) replaced by inline SVG schematics in the site's trace language (solid ink strokes in, dashed signal strokes out, node squares). Hero curve grown to clamp(150px,22vh,210px) with a real local-time (HH:MM) marker + hairline at the measured→forecast junction (curve.ts reads CSS height).
+- Motion: bounce easing cubic-bezier(.30,1.28,.52,1) → expo-out (.16,1,.3,1) site-wide; REVEAL narrowed to section-level blocks; palette open animation removed (keyboard-initiated = instant, springIn deleted); topbar cursor blinks 4x then rests; chime-dot no longer loops; scrollmeter width transition → transform:scaleX + rAF-batched scroll listener; fake "f: 50.00 Hz" readout removed (impulse event for the canvas field kept). prefers-reduced-motion path unchanged (fully static).
+- Copy (light trim): "judge me later", "honest, at least", "the box may be thinking", "honestly offline", "software ate the middle", "this site is operable", "the widget is re-judging me now", 🎹 emoji, one em-dash in clock.ts removed/flattened. Kept: one teapot, sudo hire oskar, vim/neofetch/sandwich, "I reboot more often than this box does". check24 scholarship fact moved into body copy.
+- Verification: bun build clean (38.9 KB — over the old 30 KB note, motion lib included since v2 already); impeccable detector 0 findings (was: bounce-easing, side-tab, layout-transition, grid-background); Playwright screenshots desktop+mobile, both themes, all images load, 0 console errors. Interceptor CLI absent on this Mac — Playwright MCP substituted for visual verification this session.
+- NOT deployed, NOT committed. Cache-bust bumped: styles.css?v=16, app.js?v=15.

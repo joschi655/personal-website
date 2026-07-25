@@ -40,7 +40,7 @@ export function toggleTheme(): string {
   return next;
 }
 
-export const currentTheme = (): string => document.documentElement.dataset.theme ?? "dark";
+export const currentTheme = (): string => document.documentElement.dataset.theme ?? "light";
 
 // ---- lab mode ----
 export function toggleLab(force?: boolean): boolean {

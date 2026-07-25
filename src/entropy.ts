@@ -21,7 +21,7 @@ export function initEntropy(): void {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let w = 0, h = 0, dpr = 1;
   let parts: P[] = [];
-  let colors = { muted: "#93A1AB", signal: "#5E8BFF", line: "#1E2830" };
+  let colors = { muted: "#99A092", signal: "#E8A33D", line: "#242921" };
   let raf = 0, last = 0, visible = false;
 
   const readColors = () => {

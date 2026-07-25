@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +9,11 @@
 <meta property="og:description" content="From chemical engineering to SAP AI automation to ML load forecasting. A site that behaves the way I work: press ⌘K." />
 <meta property="og:url" content="https://aiwerke.de/joschi/" />
 <meta property="og:type" content="website" />
-<meta name="theme-color" content="#0A0E12" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E12'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%235E8BFF'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2393A1AB'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#E7EAEA" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230E100D'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%23E8A33D'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2399A092'/%3E%3C/svg%3E">
 <link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/plexsans-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=15">
+<link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
 
@@ -24,7 +24,6 @@
 <div class="topbar">
   <span class="prompt"><b>joschi@aiwerke</b>:~$ <span class="tb-cursor" aria-hidden="true">▮</span> <span class="lab-badge">[LAB]</span></span>
   <span class="tb-right">
-    <span class="hz" aria-hidden="true" data-hz>f: 50.00 Hz</span>
     <span class="apidot" data-apidot title="widget api heartbeat" aria-hidden="true">●</span>
     <button class="kbd-hint" data-open-palette aria-label="Open command palette">⌘K</button>
   </span>
@@ -32,13 +31,12 @@
 <div class="scrollmeter" aria-hidden="true"><div class="scrollmeter-fill" data-scrollfill></div></div>
 
 <header class="hero wrap" id="top">
-  <div class="eyebrow mono"><span class="dot" aria-hidden="true"></span>Munich · born in 2000 · energy, processes &amp; machine learning</div>
+  <div class="eyebrow mono">Munich · energy, processes &amp; machine learning</div>
   <p class="boot" data-boot aria-hidden="true">boot: energy <span class="ok">✓</span> ml <span class="ok">✓</span> automation <span class="ok">✓</span></p>
   <h1>I build fixes for<br>whatever <span class="accent">annoys me.</span></h1>
   <div class="hero-intro">
     <p class="lede">I’m Oskar Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science - I learn by building.</em> <span class="dim">And I genuinely hate stupid repetitive tasks - automating them became the obvious career.</span></p>
     <aside class="manifest" aria-label="Site and profile manifest">
-      <div class="manifest-head"><span>system.manifest</span><span class="verified">verified</span></div>
       <dl>
         <div><dt>current</dt><dd>M.Sc. Energy &amp; Process Engineering · TUM</dd></div>
         <div><dt>work</dt><dd>AI automation → power-grid forecasting</dd></div>
@@ -58,33 +56,33 @@
         <path class="trace-future" d="M760,58 C795,64 815,38 855,46 C895,54 915,82 955,70 C975,64 990,58 1000,60"/>
       </svg>
     </noscript>
-    <p class="sub" data-curve-sub>sim: load · move across the line - become the anomaly</p>
+    <p class="sub" data-curve-sub>sim: a day of load · move your cursor to disturb it</p>
   </div>
 
   <div class="live">
     <div class="live-head">
-      <span class="t"><b>●</b> live from my own ubuntu box</span>
-      <span class="sub">real data or nothing - if a card is offline, that’s honest too</span>
+      <span class="t">live from my own ubuntu box</span>
+      <span class="sub">real data, or an offline card</span>
     </div>
     <div class="live-grid">
       <div class="lw" data-widget="music">
-        <div class="lw-k"><span>♪ what I actually listen to</span>
+        <div class="lw-k"><span>what I actually listen to</span>
           <span class="range-toggle" data-ranges role="group" aria-label="Spotify time range">
             <button data-range="short_term" aria-pressed="false">4w</button>
             <button data-range="medium_term" aria-pressed="true">6m</button>
             <button data-range="long_term" aria-pressed="false">all</button>
           </span>
         </div>
-        <div data-music-body><p class="offline">spotify feed warming up - or offline. judge me later.</p></div>
-        <div class="lw-foot" data-music-foot>source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> - full history, real counts. yes, I track everything.</div>
+        <div data-music-body><p class="offline">spotify feed warming up, or offline.</p></div>
+        <div class="lw-foot" data-music-foot>source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> · full listening history, real counts</div>
       </div>
       <div class="lw" data-widget="server">
-        <div class="lw-k"><span>⏻ this server</span></div>
+        <div class="lw-k"><span>this server</span></div>
         <div data-server-body><p class="offline">uptime appears when the api answers.</p></div>
         <div class="lw-foot">served from my own machine, tunneled through cloudflare</div>
       </div>
       <div class="lw" data-widget="github">
-        <div class="lw-k"><span>⎇ last seen pushing</span></div>
+        <div class="lw-k"><span>last seen pushing</span></div>
         <div data-github-body><p class="offline">recent activity appears when the api answers.</p></div>
         <div class="lw-foot">github.com/joschi655</div>
       </div>
@@ -95,8 +93,7 @@
 <main id="main">
 
 <section class="wrap" id="path">
-  <div class="sec-head"><span class="num">01</span><h2>Path</h2></div>
-  <p class="sec-sub">chemical plants → power grids · software ate the middle</p>
+  <div class="sec-head"><h2>Path</h2></div>
   <div class="path-list">
     <div class="step">
       <div class="yr">START</div>
@@ -153,32 +150,27 @@
 
 <section class="wrap entropy-sec" aria-label="Entropy simulation">
   <canvas data-entropy height="140" role="img" aria-label="Particle simulation: chaotic particles on the left settle into ordered lanes on the right"></canvas>
-  <p class="sub">sim: entropy → order · the whole job, visualized</p>
+  <p class="sub">sim: entropy settling into order</p>
 </section>
 
 <section class="wrap" id="projects">
-  <div class="sec-head"><span class="num">02</span><h2>What I build</h2></div>
-  <p class="sec-sub">not a logo wall · open the evidence</p>
+  <div class="sec-head"><h2>What I build</h2></div>
   <div class="dossiers">
     <article class="dossier">
       <div class="dossier-copy">
-        <div class="dossier-id"><span>CASE 01</span><span class="case-state">party tested</span></div>
-        <p class="dossier-kicker">annoyance → built</p>
         <h3>Spotify queue bot</h3>
         <p class="problem">A shared Spotify link hijacks the speaker and kills the queue. Every time.</p>
-        <p><b>Built:</b> forward the song via WhatsApp → the bot appends it cleanly. No interruptions. The sprawling workflow is the point: this one actually runs.</p>
+        <p><b>Built:</b> forward the song via WhatsApp and the bot appends it cleanly. No interruptions. The sprawling workflow is the point: this one actually runs.</p>
         <a class="proof-link" href="https://www.linkedin.com/posts/johannes-breitfeld_kann-mir-jemand-helfen-ich-hatte-vor-gut-activity-7479938472460595201-40r7" target="_blank" rel="noopener">see the LinkedIn post about the flow ↗</a>
       </div>
       <figure class="artifact artifact-light">
         <img src="assets/projects/queue-workflow.webp" alt="The real n8n workflow behind the WhatsApp-to-Spotify queue bot, with dozens of connected processing nodes" width="1200" height="617" loading="lazy" decoding="async">
-        <figcaption><span>artifact 01</span> production workflow · n8n</figcaption>
+        <figcaption>production workflow · n8n</figcaption>
       </figure>
     </article>
 
     <article class="dossier flip">
       <div class="dossier-copy">
-        <div class="dossier-id"><span>CASE 02</span><span class="case-state">live product</span></div>
-        <p class="dossier-kicker">cloud costs → ranked</p>
         <h3>Cloud-9</h3>
         <p class="problem">Spot instances are cheap - until the wrong choice interrupts a workload or quietly costs more.</p>
         <p><b>Built:</b> a cloud optimizer ranking EC2 spot instances by price and interruption risk, forecasting prices with ML, and generating deployable infrastructure.</p>
@@ -186,81 +178,125 @@
       </div>
       <figure class="artifact">
         <img src="assets/projects/cloud9-overview.webp" alt="Cloud-9 product overview showing its AWS cost optimization interface and live platform statistics" width="1200" height="630" loading="lazy" decoding="async">
-        <figcaption><span>artifact 02</span> product surface · cloud-9opt.com</figcaption>
+        <figcaption>product surface · cloud-9opt.com</figcaption>
       </figure>
     </article>
 
     <article class="dossier">
       <div class="dossier-copy">
-        <div class="dossier-id"><span>CASE 03</span><span class="case-state">deployed internally</span></div>
-        <p class="dossier-kicker">live Jira - controlled output</p>
         <h3>Agentic CX operations reporting</h3>
         <p class="problem">Management reporting from live planning data is repetitive, time-consuming, and too important to leave to free-form model output.</p>
         <p><b>My contribution:</b> turned an existing internal prototype into the deployed version on SAP BTP Cloud Foundry with the Agents SDK. Agents retrieve live Jira data; a deterministic pipeline validates and renders the final reports.</p>
         <span class="proof-private">private by design - scope shown, source and business data stay internal</span>
       </div>
-      <figure class="artifact private-artifact">
-        <div class="private-system" role="img" aria-label="Public-safe architecture sketch: live Jira data flows through Agents SDK tools into a validated data contract and deterministic report builder on SAP BTP Cloud Foundry">
-          <div class="private-head"><span>agentic retrieval</span><span>deterministic delivery</span></div>
-          <div class="private-flow">
-            <span>live Jira</span><i>→</i><span>Agents SDK</span><i>→</i><span>validated data</span>
-          </div>
-          <div class="private-rail" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="private-output"><span>fixed report contract</span><strong>management report</strong></div>
-          <div class="private-runtime"><span>SAP BTP</span><span>Cloud Foundry</span><span>no portfolio data</span></div>
-        </div>
-        <figcaption><span>artifact 03</span> public-safe system sketch · no internal data</figcaption>
+      <figure class="artifact schematic-artifact">
+        <svg class="schematic" viewBox="0 0 400 300" role="img" aria-label="Public-safe architecture sketch: live Jira data flows through Agents SDK tools into a validated data contract and deterministic report builder on SAP BTP Cloud Foundry">
+          <text class="sch-t-small" x="20" y="24">agentic retrieval</text>
+          <text class="sch-t-small sch-t-sig" x="380" y="24" text-anchor="end">deterministic delivery</text>
+          <line class="sch-rail" x1="20" y1="34" x2="380" y2="34"/>
+          <rect class="sch-box" x="20" y="78" width="78" height="34"/>
+          <text class="sch-t-ink" x="59" y="99" text-anchor="middle">Jira</text>
+          <rect class="sch-box" x="128" y="78" width="96" height="34"/>
+          <text class="sch-t-ink" x="176" y="99" text-anchor="middle">Agents SDK</text>
+          <rect class="sch-box" x="254" y="78" width="126" height="34"/>
+          <text class="sch-t-ink" x="317" y="99" text-anchor="middle">validated data</text>
+          <line class="sch-line" x1="98" y1="95" x2="128" y2="95"/>
+          <line class="sch-line" x1="224" y1="95" x2="254" y2="95"/>
+          <rect class="sch-node" x="110" y="92" width="6" height="6"/>
+          <rect class="sch-node" x="236" y="92" width="6" height="6"/>
+          <path class="sch-flow" d="M317,112 C317,152 200,148 200,186"/>
+          <rect class="sch-node" x="314" y="109" width="6" height="6"/>
+          <rect class="sch-box sig" x="110" y="186" width="180" height="48"/>
+          <text class="sch-t-small" x="200" y="206" text-anchor="middle">fixed report contract</text>
+          <text class="sch-t-ink" x="200" y="224" text-anchor="middle">management report</text>
+          <line class="sch-rail" x1="20" y1="264" x2="380" y2="264"/>
+          <text class="sch-t-small" x="200" y="286" text-anchor="middle">runtime: SAP BTP Cloud Foundry</text>
+        </svg>
+        <figcaption>public-safe system sketch</figcaption>
       </figure>
     </article>
 
     <article class="dossier flip">
       <div class="dossier-copy">
-        <div class="dossier-id"><span>CASE 04</span><span class="case-state">internal platform</span></div>
-        <p class="dossier-kicker">semester planning - less dashboard hunting</p>
         <h3>AI planning assistant</h3>
         <p class="problem">Portfolio teams need planning context from Jira and databases, but assembling it by hand turns every question into a small research project.</p>
         <p><b>Built:</b> a semester-planning assistant for the Business Suite Portfolio Management team, combining agentic Jira access with an SQL-backed context layer and purpose-built report and dependency workflows.</p>
         <span class="proof-private">private by design - architecture only, no screenshots or repository</span>
       </div>
-      <figure class="artifact private-artifact">
-        <div class="private-system planning-system" role="img" aria-label="Public-safe architecture sketch: Jira and SQL sources feed an agentic planning workflow that creates planning briefs and dependency views">
-          <div class="private-head"><span>planning context</span><span>purpose-built workflows</span></div>
-          <div class="planning-inputs"><span>Jira</span><span>SQL</span></div>
-          <div class="private-rail split" aria-hidden="true"><i></i><i></i></div>
-          <div class="planning-core"><small>agentic retrieval</small><strong>semester planning helper</strong></div>
-          <div class="planning-outputs"><span>planning briefs</span><span>dependency views</span></div>
-          <div class="private-runtime"><span>BTP</span><span>workflow orchestrator</span><span>private data stays private</span></div>
-        </div>
-        <figcaption><span>artifact 04</span> responsibility map · details intentionally omitted</figcaption>
+      <figure class="artifact schematic-artifact">
+        <svg class="schematic" viewBox="0 0 400 300" role="img" aria-label="Public-safe architecture sketch: Jira and SQL sources feed an agentic planning workflow that creates planning briefs and dependency views">
+          <text class="sch-t-small" x="20" y="24">planning context</text>
+          <text class="sch-t-small sch-t-sig" x="380" y="24" text-anchor="end">purpose-built workflows</text>
+          <line class="sch-rail" x1="20" y1="34" x2="380" y2="34"/>
+          <rect class="sch-box" x="60" y="64" width="70" height="32"/>
+          <text class="sch-t-ink" x="95" y="84" text-anchor="middle">Jira</text>
+          <rect class="sch-box" x="270" y="64" width="70" height="32"/>
+          <text class="sch-t-ink" x="305" y="84" text-anchor="middle">SQL</text>
+          <path class="sch-line" d="M95,96 C95,130 200,112 200,142"/>
+          <path class="sch-line" d="M305,96 C305,130 200,112 200,142"/>
+          <rect class="sch-node" x="92" y="93" width="6" height="6"/>
+          <rect class="sch-node" x="302" y="93" width="6" height="6"/>
+          <rect class="sch-box sig" x="105" y="142" width="190" height="50"/>
+          <text class="sch-t-small" x="200" y="162" text-anchor="middle">agentic retrieval</text>
+          <text class="sch-t-ink" x="200" y="181" text-anchor="middle">planning helper</text>
+          <path class="sch-flow" d="M200,192 C200,224 100,218 100,246"/>
+          <path class="sch-flow" d="M200,192 C200,224 300,218 300,246"/>
+          <rect class="sch-node" x="97" y="243" width="6" height="6"/>
+          <rect class="sch-node" x="297" y="243" width="6" height="6"/>
+          <text x="100" y="268" text-anchor="middle">planning briefs</text>
+          <text x="300" y="268" text-anchor="middle">dependency views</text>
+          <text class="sch-t-small" x="200" y="292" text-anchor="middle">runtime: SAP BTP</text>
+        </svg>
+        <figcaption>public-safe responsibility map</figcaption>
       </figure>
     </article>
 
     <article class="dossier">
       <div class="dossier-copy">
-        <div class="dossier-id"><span>CASE 05</span><span class="case-state">scholarship won</span></div>
-        <p class="dossier-kicker">comparison data → one agent interface</p>
         <h3>check24-MCP</h3>
         <p class="problem">Comparison portals have data everywhere and no coherent interface for AI agents.</p>
-        <p><b>Built:</b> one MCP surface across CHECK24 verticals, with host-specific adapters, conformance checks, routing, and observability - deployed on Cloudflare Workers.</p>
+        <p><b>Built:</b> one MCP surface across CHECK24 verticals, with host-specific adapters, conformance checks, routing, and observability - deployed on Cloudflare Workers. Won the CHECK24 GenDev scholarship.</p>
         <a class="proof-link" href="https://github.com/joschi655/check24-MCP" target="_blank" rel="noopener">read the repository ↗</a>
       </div>
-      <figure class="artifact architecture-artifact">
-        <div class="architecture" aria-hidden="true">
-          <div class="arch-row arch-hosts"><span>ChatGPT</span><span>Claude</span></div>
-          <div class="arch-lines"><i></i><i></i></div>
-          <div class="arch-row arch-adapters"><span>Apps SDK adapter</span><span>Claude adapter</span></div>
-          <div class="arch-bus"><span>generic aggregator core</span><small>routing · linting · feedback · tracing</small></div>
-          <div class="arch-lines fan"><i></i><i></i><i></i><i></i></div>
-          <div class="arch-row arch-verticals"><span>hotel</span><span>flight</span><span>cars</span><span>energy</span></div>
-        </div>
-        <figcaption><span>artifact 05</span> architecture · derived from the public README</figcaption>
+      <figure class="artifact schematic-artifact">
+        <svg class="schematic" viewBox="0 0 400 340" role="img" aria-label="Architecture sketch: ChatGPT and Claude connect through host adapters to a generic aggregator core that routes to hotel, flight, cars, and energy verticals">
+          <rect class="sch-box" x="75" y="18" width="90" height="30"/>
+          <text class="sch-t-ink" x="120" y="37" text-anchor="middle">ChatGPT</text>
+          <rect class="sch-box" x="235" y="18" width="90" height="30"/>
+          <text class="sch-t-ink" x="280" y="37" text-anchor="middle">Claude</text>
+          <line class="sch-line" x1="120" y1="48" x2="115" y2="88"/>
+          <line class="sch-line" x1="280" y1="48" x2="285" y2="88"/>
+          <rect class="sch-box" x="40" y="88" width="150" height="30"/>
+          <text x="115" y="107" text-anchor="middle">Apps SDK adapter</text>
+          <rect class="sch-box" x="210" y="88" width="150" height="30"/>
+          <text x="285" y="107" text-anchor="middle">Claude adapter</text>
+          <line class="sch-line" x1="115" y1="118" x2="115" y2="152"/>
+          <line class="sch-line" x1="285" y1="118" x2="285" y2="152"/>
+          <rect class="sch-node" x="112" y="132" width="6" height="6"/>
+          <rect class="sch-node" x="282" y="132" width="6" height="6"/>
+          <rect class="sch-box sig" x="40" y="152" width="320" height="54"/>
+          <text class="sch-t-ink" x="200" y="176" text-anchor="middle">generic aggregator core</text>
+          <text class="sch-t-small" x="200" y="194" text-anchor="middle">routing, linting, tracing</text>
+          <path class="sch-flow" d="M90,206 C90,236 70,240 70,268"/>
+          <path class="sch-flow" d="M165,206 C165,236 160,240 160,268"/>
+          <path class="sch-flow" d="M235,206 C235,236 240,240 240,268"/>
+          <path class="sch-flow" d="M310,206 C310,236 330,240 330,268"/>
+          <rect class="sch-node" x="67" y="265" width="6" height="6"/>
+          <rect class="sch-node" x="157" y="265" width="6" height="6"/>
+          <rect class="sch-node" x="237" y="265" width="6" height="6"/>
+          <rect class="sch-node" x="327" y="265" width="6" height="6"/>
+          <text x="70" y="290" text-anchor="middle">hotel</text>
+          <text x="160" y="290" text-anchor="middle">flight</text>
+          <text x="240" y="290" text-anchor="middle">cars</text>
+          <text x="330" y="290" text-anchor="middle">energy</text>
+          <text class="sch-t-small" x="200" y="322" text-anchor="middle">deployed on Cloudflare Workers</text>
+        </svg>
+        <figcaption>architecture, from the public README</figcaption>
       </figure>
     </article>
 
     <article class="dossier flip">
       <div class="dossier-copy">
-        <div class="dossier-id"><span>CASE 06</span><span class="case-state">grade 1.0</span></div>
-        <p class="dossier-kicker">127 papers → physics-aware ML</p>
         <h3>Predicting pyrolysis yields</h3>
         <p class="problem">Lab experiments are expensive; the relationship between process conditions and product yields is hard to see.</p>
         <p><b>Built:</b> Random Forest and XGBoost models on 795 literature datapoints, grouped by paper to prevent leakage and checked with SHAP against the physics.</p>
@@ -268,36 +304,31 @@
       </div>
       <figure class="artifact artifact-light">
         <img src="assets/projects/pyrolysis-shap.webp" alt="SHAP beeswarm plots from the thesis comparing feature importance for oil, gas, and char yield predictions" width="1200" height="709" loading="lazy" decoding="async">
-        <figcaption><span>artifact 06</span> thesis figure 5.2 · actual model output</figcaption>
+        <figcaption>thesis figure 5.2 · real model output</figcaption>
       </figure>
     </article>
   </div>
 
   <div class="sidechannels" aria-label="Additional work and experiments">
     <article class="channel">
-      <span class="channel-id">SIDE A · private by design</span>
       <h3>AI tools for clients</h3>
       <p>DSGVO-compliant RAG support, browser automation for a medical practice, and n8n/MCP workflows. Client data stays off the portfolio.</p>
       <a href="https://en.malt.de/profile/johannesbreitfeld" target="_blank" rel="noopener">Malt profile ↗</a>
     </article>
     <article class="channel">
-      <span class="channel-id">SIDE B · community</span>
       <h3>Claude Builders Club @ TUM</h3>
       <p>Co-founded the relaunch and represented Claude on campus - helping students build with AI instead of only chatting with it.</p>
       <a href="https://claudebuildersclub-muc.github.io/" target="_blank" rel="noopener">club site ↗</a>
     </article>
     <article class="channel">
-      <span class="channel-id">SIDE C · origin story</span>
       <h3>My first Blender game</h3>
       <p>A jump-and-run level made after scavenging PC parts as a kid. No plan, just curiosity, stubbornness, and far too many moved vertices.</p>
-      <span class="channel-note">Blender · game design · level 1</span>
     </article>
   </div>
 </section>
 
 <section class="wrap" id="offscreen">
-  <div class="sec-head"><span class="num">03</span><h2>Off-screen</h2></div>
-  <p class="sec-sub">analog inputs · processes that survive a reboot</p>
+  <div class="sec-head"><h2>Off-screen</h2></div>
   <div class="analog-grid">
     <article class="clock-story">
       <a class="clock-product" href="https://www.kookoo.eu" target="_blank" rel="noopener" aria-label="KooKoo Singvögel clock - open the KooKoo website">
@@ -321,7 +352,6 @@
 
     <article class="record-shelf">
       <div class="record-copy">
-        <span class="analog-label">output device · piano</span>
         <h3>Music I actually keep</h3>
         <p>The one interface I use without shortcuts. These are playlists I built and still listen to - not placeholder album art.</p>
         <a class="piano-reel" href="https://www.youtube.com/watch?v=Ip0f5sxtfAQ&amp;t=60s" target="_blank" rel="noopener"><span>01:00</span> School - Supertramp ↗</a>
@@ -339,29 +369,25 @@
       <span class="film-overlay"><b>PLAY / UYUNI</b><small>from 03:36 · Bolivia ↗</small></span>
     </a>
     <div class="movement-note">
-      <span class="analog-label">counterweight</span>
       <p>Traveling, skiing, swimming, hiking&nbsp; - movement after too many hours in front of a monitor.</p>
     </div>
   </div>
-  <p class="langs"><b>locales:</b> German · English · Spanish · + learning more</p>
+  <p class="langs"><b>languages:</b> German, English, Spanish - and collecting more</p>
 </section>
 
 <section class="wrap" id="lab" aria-label="Lab mode - experiments">
-  <div class="sec-head"><span class="num">××</span><h2>The Lab</h2></div>
-  <p class="sec-sub">held together with tape · you found the konami code (or typed `lab`)</p>
+  <div class="sec-head"><h2>The Lab</h2></div>
+  <p class="sec-sub">you found the konami code (or typed `lab`) · things in here are held together with tape</p>
   <div class="grid">
     <div class="card">
-      <div class="nag">experiment 001</div>
       <h3>The Blender level, revisited</h3>
       <p class="built">One level. No engine knowledge. An unreasonable number of hours moving vertices. Still counts as my first shipped game.</p>
     </div>
     <div class="card">
-      <div class="nag">experiment 002</div>
       <h3>Queue bot internals</h3>
-      <p class="built">WhatsApp in → my server → Spotify queue out. Runs quietly at parties. The guests never know why the music stays civilized.</p>
+      <p class="built">WhatsApp in, my server in the middle, Spotify queue out. Runs quietly at parties. The guests never know why the music stays civilized.</p>
     </div>
     <div class="card">
-      <div class="nag">experiment 003</div>
       <h3>Fixie workshop</h3>
       <p class="built">Buying neglected fixed-gear bikes, rebuilding, reselling. Analog engineering - the only project here with zero uptime monitoring.</p>
     </div>
@@ -380,15 +406,15 @@
     <a href="mailto:jo.breitfeld@gmail.com">Email →</a>
   </div>
   <p class="foot-note mono">
-    <span>Built with too much attention to detail · Oskar Breitfeld</span>
-    <span>no cookies · no trackers · one teapot</span>
+    <span>Oskar Breitfeld · Munich</span>
+    <span>no cookies, no trackers, one teapot</span>
     <a href="impressum.html">Impressum &amp; Datenschutz</a>
-    <span>press <kbd>⌘K</kbd> - this site is operable</span>
+    <span>press <kbd>⌘K</kbd></span>
   </p>
 </footer>
 
 <button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
 
-<script type="module" src="dist/app.js?v=14"></script>
+<script type="module" src="dist/app.js?v=15"></script>
 </body>
 </html>

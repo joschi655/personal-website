@@ -37,23 +37,26 @@ function boot(): void {
   setTimeout(tick, 120);
 }
 
-// ---- scroll meter + fake-honest grid frequency readout ----
+// ---- scroll meter + scroll impulse for the canvas field ----
 function scrollMeter(): void {
   const fill = $("[data-scrollfill]");
-  const hz = $("[data-hz]");
   let lastY = window.scrollY;
   let lastT = performance.now();
   let impulse = 0;
+  let ticking = false;
 
   const update = () => {
+    ticking = false;
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
-    if (fill) fill.style.width = `${(p * 100).toFixed(1)}%`;
+    if (fill) fill.style.transform = `scaleX(${p.toFixed(4)})`;
   };
   update();
-  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("scroll", () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
 
-  if (!motionOK()) return; // reduced motion: keep the static 50.00 Hz and field
+  if (!motionOK()) return; // reduced motion: the field stays static
   const sample = () => {
     const now = performance.now();
     const v = Math.abs(window.scrollY - lastY) / Math.max(1, now - lastT); // px/ms
@@ -61,7 +64,6 @@ function scrollMeter(): void {
     lastT = now;
     const target = Math.min(1, v * .9);
     impulse = impulse * .68 + target * .32; // scroll “loads the grid”
-    if (hz) hz.textContent = `f: ${(50 - impulse * .08).toFixed(2)} Hz`;
     const max = document.documentElement.scrollHeight - innerHeight;
     const detail: GridLoadDetail = { progress: max > 0 ? Math.min(1, scrollY / max) : 0, impulse };
     dispatchEvent(new CustomEvent<GridLoadDetail>("joschi:grid-load", { detail }));
@@ -132,14 +134,14 @@ function favicon(): void {
   let apiUp = false;
   const draw = () => {
     ctx.clearRect(0, 0, 64, 64);
-    ctx.fillStyle = "#0A0E12";
+    ctx.fillStyle = "#0E100D";
     ctx.beginPath();
     // @ts-expect-error roundRect is widely available; fallback below
     ctx.roundRect ? ctx.roundRect(0, 0, 64, 64, 12) : ctx.rect(0, 0, 64, 64);
     ctx.fill();
-    if (on) { ctx.fillStyle = "#5E8BFF"; ctx.fillRect(14, 18, 14, 28); }
-    ctx.fillStyle = "#93A1AB"; ctx.fillRect(34, 38, 16, 8);
-    if (apiUp) { ctx.fillStyle = "#2EE59D"; ctx.beginPath(); ctx.arc(52, 14, 6, 0, Math.PI * 2); ctx.fill(); }
+    if (on) { ctx.fillStyle = "#E8A33D"; ctx.fillRect(14, 18, 14, 28); }
+    ctx.fillStyle = "#99A092"; ctx.fillRect(34, 38, 16, 8);
+    if (apiUp) { ctx.fillStyle = "#46B87E"; ctx.beginPath(); ctx.arc(52, 14, 6, 0, Math.PI * 2); ctx.fill(); }
     link.href = c.toDataURL("image/png");
   };
   window.addEventListener("joschi:api", (e) => { apiUp = Boolean((e as CustomEvent).detail); draw(); });
@@ -165,7 +167,7 @@ function consoleGreeting(): void {
     "  ⌘K            command palette\n" +
     "  ↑↑↓↓←→←→BA    lab mode\n" +
     "  curl -i https://aiwerke.de/joschi/api/coffee\n",
-    `${s};color:#5E8BFF`, `${s};color:#E8EDF2`, `${s};color:#93A1AB`
+    `${s};color:#E8A33D`, `${s};color:#E9E9E0`, `${s};color:#99A092`
   );
 }
 

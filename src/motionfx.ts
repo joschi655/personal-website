@@ -1,4 +1,4 @@
-// motion layer (motion.dev, mini build) - scroll reveals, palette pop, widget stagger
+// motion layer (motion.dev, mini build) - scroll reveals, widget stagger
 // every effect is gated by motionOK(); reduced motion attaches nothing.
 // initial hidden states are set HERE in JS, never in CSS - no-JS visitors see everything.
 // motion/mini ships only animate(); the in-view trigger is a plain IntersectionObserver,
@@ -7,8 +7,9 @@
 import { animate } from "motion/mini";
 import { motionOK, $$ } from "./state";
 
-const springy = "cubic-bezier(.30,1.28,.52,1)"; // back-out ≈ light spring
-const REVEAL = ".sec-head, .sec-sub, .card, .dossier, .channel, .manifest, .clock-story, .record-shelf, .film-frame, .movement-note, .langs"; // .step has its own timeline observer
+const easeOut = "cubic-bezier(.16,1,.3,1)"; // expo-out - no overshoot
+// section-level reveals only: one quiet entrance per block, not per element
+const REVEAL = ".sec-head, .dossier, .channel, .clock-story, .record-shelf, .film-frame, .movement-note"; // .step has its own timeline observer
 
 export function initMotion(): void {
   if (!motionOK() || !("IntersectionObserver" in window)) return;
@@ -27,23 +28,13 @@ export function initMotion(): void {
         animate(
           e.target as HTMLElement,
           { opacity: 1, transform: "translateY(0px)" },
-          { duration: 0.44, easing: springy }
+          { duration: 0.3, easing: easeOut }
         );
       }
     },
     { rootMargin: "0px 0px -4% 0px" }
   );
   els.forEach((el) => io.observe(el));
-}
-
-// springy pop for the palette dialog on open
-export function springIn(el: HTMLElement): void {
-  if (!motionOK()) return;
-  animate(
-    el,
-    { opacity: [0, 1], transform: ["scale(.97) translateY(6px)", "scale(1) translateY(0px)"] },
-    { duration: 0.28, easing: springy }
-  );
 }
 
 // stagger freshly rendered widget content in
@@ -54,7 +45,7 @@ export function staggerIn(container: ParentNode): void {
     animate(
       item,
       { opacity: [0, 1], transform: ["translateY(7px)", "translateY(0px)"] },
-      { duration: 0.32, delay: i * 0.05, easing: "ease-out" }
+      { duration: 0.3, delay: i * 0.05, easing: easeOut }
     );
   });
 }

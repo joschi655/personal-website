@@ -29,7 +29,7 @@ export function initGridfield(): void {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let w = 0, h = 0, dpr = 1;
   let nodes: Node[] = [], edges: Edge[] = [], pulses: Pulse[] = [];
-  let colors = { line: "#1E2830", muted: "#93A1AB", signal: "#5E8BFF", warn: "#FFB454" };
+  let colors = { line: "#242921", muted: "#99A092", signal: "#E8A33D", warn: "#E0684B" };
   let progress = 0, impulse = 0, pointerX = -999, pointerY = -999, pointerStrength = 0;
   let raf = 0, last = 0;
 
@@ -110,7 +110,7 @@ export function initGridfield(): void {
 
     ctx.lineWidth = 1.1;
     ctx.strokeStyle = lab ? signal : colors.muted;
-    ctx.globalAlpha = lab ? .28 + impulse * .14 : .20 + impulse * .09;
+    ctx.globalAlpha = lab ? .30 + impulse * .14 : .24 + impulse * .09;
     edges.forEach((edge) => {
       const a0 = point(nodes[edge.a]), b0 = point(nodes[edge.b]);
       const a = { x: a0.x, y: a0.y - shifted };
@@ -126,7 +126,7 @@ export function initGridfield(): void {
     nodes.forEach((node, i) => {
       const p = point(node);
       const near = Math.max(0, 1 - Math.hypot(p.x - pointerX, p.y - pointerY) / 180) * pointerStrength;
-      ctx.globalAlpha = .30 + near * .46 + (i % 7 === 0 ? .14 : 0);
+      ctx.globalAlpha = .34 + near * .46 + (i % 7 === 0 ? .14 : 0);
       ctx.fillRect(p.x - node.size, p.y - shifted - node.size, node.size * 2, node.size * 2);
     });
 
@@ -135,7 +135,7 @@ export function initGridfield(): void {
       if (!edge) return;
       const a0 = point(nodes[edge.a]), b0 = point(nodes[edge.b]);
       const p = bezierPoint(a0, b0, reduced ? ((i + 1) / (pulses.length + 1)) : pulse.t);
-      ctx.globalAlpha = lab ? .88 : .58 + impulse * .32;
+      ctx.globalAlpha = lab ? .88 : .62 + impulse * .32;
       ctx.beginPath();
       ctx.arc(p.x, p.y - shifted, lab ? 2.3 : 1.8, 0, Math.PI * 2);
       ctx.fill();

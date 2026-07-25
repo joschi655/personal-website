@@ -53,7 +53,7 @@ export function initKookooClock(): void {
   const setHint = () => {
     if (!hint) return;
     hint.textContent = armed
-      ? `on — you'll hear the ${birdFor(lastHour)} at ${pad((lastHour % 12) || 12)}:00, then a new bird every hour`
+      ? `on - you'll hear the ${birdFor(lastHour)} at ${pad((lastHour % 12) || 12)}:00, then a new bird every hour`
       : "each full hour sings its own bird - off until you turn it on";
   };
 

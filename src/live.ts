@@ -39,7 +39,7 @@ async function renderMusic(): Promise<void> {
   if (!body) return;
   const data = await fetchJSON<Music>(`api/music?range=${getRange()}`);
   if (!data || data.unavailable || !data.artists?.length) {
-    body.innerHTML = offline("spotify feed offline - honest, at least.");
+    body.innerHTML = offline("spotify feed offline right now.");
     return;
   }
   const plays = (n?: number) => (typeof n === "number" && n > 0 ? ` <span class="by">· ${n.toLocaleString("en-US")} plays</span>` : "");
@@ -53,8 +53,8 @@ async function renderMusic(): Promise<void> {
   const foot = $("[data-music-foot]");
   if (foot) {
     foot.innerHTML = data.source === "stats.fm"
-      ? `source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> - full history, real counts. yes, I track everything.`
-      : `source: my actual spotify · cached on my server`;
+      ? `source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> · full listening history, real counts`
+      : `source: my actual spotify, cached on my server`;
   }
   staggerIn(body);
 }
@@ -64,9 +64,9 @@ async function renderServer(): Promise<void> {
   if (!body) return;
   const data = await fetchJSON<Status>("api/status");
   if (!data || typeof data.uptime_seconds !== "number") {
-    body.innerHTML = offline("api unreachable. the box may be thinking.");
+    body.innerHTML = offline("api unreachable right now.");
     const manifest = $("[data-manifest-server]");
-    if (manifest) manifest.textContent = "own Ubuntu box · honestly offline";
+    if (manifest) manifest.textContent = "own Ubuntu box · offline right now";
     return;
   }
   const uptime = fmtUptime(data.uptime_seconds);
@@ -137,9 +137,9 @@ export function initLive(): void {
     const health = await fetchJSON<{ ok?: boolean }>("api/health", 4000);
     announceApi(Boolean(health?.ok));
     if (!health?.ok) {
-      // keep the honest offline defaults that are already in the HTML
+      // keep the offline defaults that are already in the HTML
       const manifest = $("[data-manifest-server]");
-      if (manifest) manifest.textContent = "own Ubuntu box · honestly offline";
+      if (manifest) manifest.textContent = "own Ubuntu box · offline right now";
       return;
     }
     void renderMusic();

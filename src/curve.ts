@@ -11,7 +11,7 @@ export function initCurve(canvas: HTMLCanvasElement): void {
   if (!ctx) return;
 
   let w = 0;
-  let h = 120;
+  let h = 120; // real value read from CSS in resize()
   let split = 0;
   let dpr = Math.max(1, window.devicePixelRatio || 1);
   let phase = 0;
@@ -29,6 +29,7 @@ export function initCurve(canvas: HTMLCanvasElement): void {
   const resize = () => {
     const rect = canvas.getBoundingClientRect();
     w = rect.width;
+    h = rect.height || h;
     split = w * 0.76;
     dpr = Math.max(1, window.devicePixelRatio || 1);
     canvas.width = Math.round(w * dpr);
@@ -71,9 +72,19 @@ export function initCurve(canvas: HTMLCanvasElement): void {
 
   const draw = () => {
     ctx.clearRect(0, 0, w, h);
-    const ink = css("--ink") || "#E8EDF2";
-    const signal = css("--signal") || "#5E8BFF";
+    const ink = css("--ink") || "#E9E9E0";
+    const signal = css("--signal") || "#E8A33D";
+    const line = css("--line") || "#242921";
     const nowY = loadAt(split);
+
+    // "now" is real: a hairline at the junction carrying the actual local time
+    ctx.strokeStyle = line;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(split, 0);
+    ctx.lineTo(split, h);
+    ctx.stroke();
 
     // past - solid, ending exactly on the junction
     ctx.beginPath();
@@ -97,12 +108,17 @@ export function initCurve(canvas: HTMLCanvasElement): void {
     ctx.lineTo(w, loadAt(w));
     ctx.stroke();
 
-    // "now" pulse at the boundary
+    // "now" pulse at the boundary, labeled with the actual local time
     ctx.setLineDash([]);
     ctx.beginPath();
     ctx.fillStyle = signal;
     ctx.arc(split, nowY, 4, 0, Math.PI * 2);
     ctx.fill();
+    const t = new Date();
+    const hh = String(t.getHours()).padStart(2, "0");
+    const mm = String(t.getMinutes()).padStart(2, "0");
+    ctx.font = '10px "IBM Plex Mono", monospace';
+    ctx.fillText(`${hh}:${mm}`, split + 9, nowY - 9);
   };
 
   const loop = () => {
