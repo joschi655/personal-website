@@ -1,0 +1,72 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]: kookoo singvögel · one bird per hour
+  - heading "The hourly birdsong clock" [level=1] [ref=f1e3]
+  - paragraph [ref=f1e4]: Every full hour, the matching songbird sings — the real recording, straight from the clock on the wall.
+  - img "KooKoo Singvögel wall clock with twelve illustrated native songbirds" [ref=f1e6]
+  - generic [ref=f1e7]:
+    - generic [ref=f1e8]: 17:40:29
+    - paragraph [ref=f1e9]: "this hour sings: Rotkehlchen · European Robin"
+  - button "arm the hourly birdsong" [ref=f1e10] [cursor=pointer]
+  - generic [ref=f1e13]:
+    - generic [ref=f1e14]: song length
+    - group "song length" [ref=f1e15]:
+      - button "10s" [ref=f1e16] [cursor=pointer]
+      - button "30s" [pressed] [ref=f1e17] [cursor=pointer]
+      - button "full" [ref=f1e18] [cursor=pointer]
+  - paragraph [ref=f1e19]: off until you turn it on - browsers block surprise audio
+  - generic "Hour to bird index — click a row to hear the bird, click again to stop" [ref=f1e20]:
+    - button "01:00 - Amsel (Blackbird) - play song" [ref=f1e21] [cursor=pointer]:
+      - generic [ref=f1e22]: 01:00
+      - generic [ref=f1e23]: Amsel
+      - generic [ref=f1e24]: Blackbird
+    - button "02:00 - Singdrossel (Song Thrush) - play song" [ref=f1e25] [cursor=pointer]:
+      - generic [ref=f1e26]: 02:00
+      - generic [ref=f1e27]: Singdrossel
+      - generic [ref=f1e28]: Song Thrush
+    - button "03:00 - Mönchsgrasmücke (Blackcap) - play song" [ref=f1e29] [cursor=pointer]:
+      - generic [ref=f1e30]: 03:00
+      - generic [ref=f1e31]: Mönchsgrasmücke
+      - generic [ref=f1e32]: Blackcap
+    - button "04:00 - Gartengrasmücke (Garden Warbler) - play song" [ref=f1e33] [cursor=pointer]:
+      - generic [ref=f1e34]: 04:00
+      - generic [ref=f1e35]: Gartengrasmücke
+      - generic [ref=f1e36]: Garden Warbler
+    - button "05:00 - Rotkehlchen (European Robin) - play song" [ref=f1e37] [cursor=pointer]:
+      - generic [ref=f1e38]: 05:00
+      - generic [ref=f1e39]: Rotkehlchen
+      - generic [ref=f1e40]: European Robin
+    - button "06:00 - Nachtigall (Nightingale) - play song" [ref=f1e41] [cursor=pointer]:
+      - generic [ref=f1e42]: 06:00
+      - generic [ref=f1e43]: Nachtigall
+      - generic [ref=f1e44]: Nightingale
+    - button "07:00 - Blaukehlchen (Bluethroat) - play song" [ref=f1e45] [cursor=pointer]:
+      - generic [ref=f1e46]: 07:00
+      - generic [ref=f1e47]: Blaukehlchen
+      - generic [ref=f1e48]: Bluethroat
+    - button "08:00 - Gartenrotschwanz (Common Redstart) - play song" [ref=f1e49] [cursor=pointer]:
+      - generic [ref=f1e50]: 08:00
+      - generic [ref=f1e51]: Gartenrotschwanz
+      - generic [ref=f1e52]: Common Redstart
+    - button "09:00 - Halsbandschnäpper (Collared Flycatcher) - play song" [ref=f1e53] [cursor=pointer]:
+      - generic [ref=f1e54]: 09:00
+      - generic [ref=f1e55]: Halsbandschnäpper
+      - generic [ref=f1e56]: Collared Flycatcher
+    - button "10:00 - Fitis (Willow Warbler) - play song" [ref=f1e57] [cursor=pointer]:
+      - generic [ref=f1e58]: 10:00
+      - generic [ref=f1e59]: Fitis
+      - generic [ref=f1e60]: Willow Warbler
+    - button "11:00 - Heidelerche (Woodlark) - play song" [ref=f1e61] [cursor=pointer]:
+      - generic [ref=f1e62]: 11:00
+      - generic [ref=f1e63]: Heidelerche
+      - generic [ref=f1e64]: Woodlark
+    - button "12:00 - Pirol (Golden Oriole) - play song" [ref=f1e65] [cursor=pointer]:
+      - generic [ref=f1e66]: 12:00
+      - generic [ref=f1e67]: Pirol
+      - generic [ref=f1e68]: Golden Oriole
+  - contentinfo [ref=f1e69]:
+    - paragraph [ref=f1e70]:
+      - text: recordings ©
+      - link "kookoo.eu" [ref=f1e71] [cursor=pointer]:
+        - /url: https://www.kookoo.eu
+      - text: · self-hosted, no trackers
+    - paragraph [ref=f1e72]: drop this folder anywhere — audio + image load relative, works offline

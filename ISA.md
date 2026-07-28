@@ -6,8 +6,8 @@ phase: complete
 progress: 285/285
 mode: build
 started: 2026-07-10T15:34:02Z
-updated: 2026-07-25T13:00:00Z
-iteration: deploy automation + webroot leak fix (2026-07-25, E2) — deploy.ts ships an allowlist over ssh and verifies against the live site; preflight found deployment-notes.md + nginx-snippet.conf publicly served and pruned them. De-AI-ification pass (6d3e293) is now LIVE on aiwerke.de/joschi/ with paper mode as default
+updated: 2026-07-27T15:45:00Z
+iteration: birdclock night quiet (2026-07-27, E2) — the hourly song is held back while the sun is down or the hour is outside 07:00-22:00; manual clicks unaffected. 24/24 solar checks pass, browser-verified with a stubbed clock. NOT deployed yet.
 ---
 
 # ISA — personal-website (aiwerke.de/joschi/)
@@ -399,6 +399,26 @@ Follow-up batch (2026-07-11, owner answers + 2 new asks):
 - [x] ISC-286: DEPLOYED — static (sudo-staging) + API (server.ts → /opt/joschi-api, restart); live 2.2.0, SHA parity local==prod on all 5 files (index.html/styles.css/dist/app.js/kabale.jpg/server.ts); live browser: github forks shown, "all" reveals portrait playlists, siblings compact, 0 console errors, 0 non-aiwerke requests
 - [x] ISC-287: github widget shows 5 recent repos (owner 2026-07-18): /github slice 3→5, VERSION 2.3.0, live.ts renders ≤5; DEPLOYED (app.js?v=10), SHA parity index.html/app.js/server.ts, origin returns 5 (browser 5 via cache:no-store; the widget's plain fetch carries public,max-age=300 so a returning visitor within 5min may briefly see the prior count — pre-existing widget-cache behavior, self-heals). Local commit d859944 (NOT pushed).
 
+### T — De-slopification: assistant voice removed, Jira/SQL corrected, film thumbnail (2026-07-27, owner feedback: "the website should be from my point of view and not from the AIs point of view")
+- [x] ISC-288: AI planning assistant copy names ONE source — Jira data read from a SQL mirror; "combining agentic Jira access with an SQL-backed context layer" gone
+- [x] ISC-289: planning schematic draws one source box ("Jira data / SQL mirror"), not sibling Jira + SQL boxes; single vertical line to the planning helper
+- [x] ISC-290: Path-section `--verbose` bullet matches the corrected framing (SQL mirror, not "agentic Jira access and SQL-backed planning context")
+- [x] ISC-291: both `proof-private` spans removed ("private by design - scope shown…", "private by design - architecture only…")
+- [x] ISC-292: `.proof-private` CSS rule + its justifying comment deleted from styles.css (no dead selector left behind)
+- [x] ISC-293: figcaptions carry no publish-safety language — "public-safe system sketch" → "report pipeline", "public-safe responsibility map" → "planning workflow"
+- [x] ISC-294: "architecture, from the public README" → "aggregator architecture" (no provenance citation for his own project)
+- [x] ISC-295: both schematic runtime labels read `runtime: Cloud Foundry on BTP`
+- [x] ISC-296: stats.fm footer reads "full listening history" — "real counts" removed
+- [x] ISC-297: genuineness-insistence swept sitewide — "real data", "real model output", "the real n8n workflow" (alt), "this one actually runs", "not placeholder album art", "real artifacts" (styles.css header), "real project artifacts" (README) all gone
+- [x] ISC-298: build-process narration removed — "Client data stays off the portfolio"
+- [x] ISC-299: two SVG `aria-label`s no longer say "Public-safe architecture sketch"
+- [x] ISC-300: film thumbnail is `assets/projects/travel-film.webp`, encoded from `assets/Thumbnail.jpeg` at 900×675 / 146 KB (in line with sibling assets)
+- [x] ISC-301: film `alt` describes the actual frame (llamas below Cotopaxi), and the overlay no longer says "Bolivia" under an Ecuadorian volcano
+- [x] ISC-302: `assets/Thumbnail.jpeg` (1.4 MB source) added to deploy EXCLUDES so it never ships to the public webroot
+- [x] ISC-303: Anti: no replacement sentence reintroduces the assistant's voice — zero hits sitewide for the banned pattern set
+- [x] ISC-304: Anti: no rendering regression — planning schematic and film frame verified in-browser, 0 console errors
+- [x] ISC-305: the rule is durable — project `CLAUDE.md` § THE AUTHOR RULE, global `~/.claude/CLAUDE.md` Ghostwriter rule, Algorithm v6.3.0 VERIFY Ghostwriter check, two memory files
+
 ## Test Strategy
 
 | isc | type | check | threshold | tool |
@@ -515,6 +535,8 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 
 - 2026-07-17 · Taste-audit iteration (E3, `/design-taste-frontend` skill, read-mostly): two REAL shipped defects found and fixed locally, NOT yet deployed: (a) `header.hero{padding:… 0 56px}` shorthand (specificity 0,1,1) zeroed `.wrap`'s horizontal padding — hero glued to left edge below ~1030px AND misaligned 24px vs sections on desktop; fix = padding-block only, verified 28px@390 / 24px@1280, h1 now flush with sec-heads; (b) boot-line uptime rendered `0d` when <1 day — now falls back to hours. `dist/app.js` rebuilt (`--outfile=dist/app.js`). Owner-decision findings (NOT auto-applied, advisor-confirmed): 33 em-dashes (skill bans; but they're the owner's voice — signal, not defect; blind find-replace would worsen prose), zero real images sitewide (my stance: hurts — Off-screen claims real life with no proof; 2-3 B&W-treated photos recommended), Off-screen = banned 3-equal-cards pattern. Declined owner-pasted `hero-ascii-one` component: ships UnicornStudio watermark-STRIPPING code (license violation) + third-party CDN script breaking the site's no-trackers promise + requires React/shadcn against the framework-free constraint. `entropy.tsx`: vanilla-TS port offered pending license check + owner OK. Deviations: Interceptor absent on L6KK2H61WP (documented gotcha) → Playwright per v2-run precedent; delegation floor 0/2 show-math: read-only audit + two 2-line fixes, Forge/Cato would re-read the same 636 lines with no write artifact to check.
 
+- 2026-07-27 · De-slopification iteration (E3, owner feedback batch). Owner named five defects; a three-lens sweep (reader / author / provenance) found six more of the same class, all fixed in one pass. Delegation floor 0/2 with show-math: this session carries an explicit "do not call the Agent tool unless requested" harness instruction which outranks the CLAUDE.md E3 Forge auto-include, and the work was fully-specified surgical string replacements — Forge would re-read the same file to reproduce edits already enumerated. Interceptor unavailable (L6KK2H61WP, documented skill gotcha) → Playwright per the v2-run precedent; planning schematic + film frame verified in-browser at 1440×1000, 0 console errors. Runtime wording `Cloud Foundry on BTP` applied to BOTH schematics though the owner named it once — the CX reporting app is explicitly Cloud Foundry, the planning assistant previously said only "SAP BTP"; FLAGGED to owner in case that one runs on a different BTP runtime. Film overlay said "from 03:36 · Bolivia" but the new still is Cotopaxi (Ecuador) — changed to "South America" rather than silently shipping a contradiction; oEmbed confirms the film is his own "Uyuni desert Tour".
+
 ## Changelog
 
 - 2026-07-11 · **conjectured:** `section{padding:72px 0}` provides the page's vertical rhythm (v2 launch assumption — it "looked right" because content margins faked ~60px of air). **refuted_by:** computed-style probe on the live page — the same elements carry `class="wrap"`, and `.wrap{padding:0 24px}` outranks the element selector, so every section's vertical padding was 0; the designed 144px rhythm never rendered anywhere. **learned:** when container and rhythm roles merge onto one node, colliding padding shorthands silently kill one role — verify computed style, never authored CSS; and a rule that changes nothing when deleted is a specificity corpse. **criterion_now:** ISC-186 (live computed padding-top ≥64px probe).
@@ -538,7 +560,18 @@ Note: Interceptor (mandated verifier) is not installed on this machine; Playwrig
 
 - 2026-07-11 · conjectured: single-line ellipsis truncation is the right treatment for long music titles at every width (v2 design decision). refuted by: owner mobile feedback + reproduction - ellipsis is paint-time and cannot constrain grid track min-content; with 1fr = minmax(auto,1fr) the nowrap li inflated the track to 512px at 390px viewport, body overflow-x:hidden silently clipped the page (both "margins too small" and "title stretched" were this one bug). learned: intrinsic sizing must be constrained at the ingestion point (min-width:0 on grid children); truncation-vs-wrap is a per-breakpoint content decision - metadata-rich rows should wrap on narrow screens. criterion now: ISC-201/203/205/207 (scrollWidth==innerWidth at all widths, wrap =<760px, min-width:0 shipped, zero elements past right edge).
 
+- 2026-07-27 · **conjectured:** describing a private project honestly requires telling the reader *why* it's private — hence "private by design - architecture only, no screenshots or repository" and "public-safe system sketch" as marks of good faith. **refuted_by:** owner review — *"they literally just tell me it's public safe because I told you to not leak internal info, but there's no need to tell that to the viewers of the website… it's supposed to be my work, and I would never comment on where I took info of my own projects from."* He reported the same failure previously on MCP-CX-Operations: he asked for a change and then found the assistant commenting about that change inside the product. **learned:** the product has an author, and it is not the assistant. A constraint the principal states in conversation is a fact about the *conversation*, never content for the *product* — restating it on the page swaps the narrator from him to me, which is what reads as AI. The absence of a repo link already communicates confidentiality; the sentence explaining the absence only communicates that something else wrote the page. Same root cause produces the genuineness tic ("real counts", "real model output", "actually runs"): only a ghostwriter needs to insist the owner's own data is real. **criterion_now:** ISC-303 (Anti: zero assistant-voice hits sitewide) + ISC-305 (rule persisted to four surfaces) + the Ghostwriter check in Algorithm v6.3.0 VERIFY.
+
 ## Verification
+
+### De-slopification iteration (2026-07-27)
+
+- ISC-288/289/290: Read index.html 222-250 — one `sch-box` at x=128 labelled "Jira data / SQL mirror", single `<line x1="200" y1="96" x2="200" y2="142">`; copy reads "reads the Jira data from a SQL mirror"
+- ISC-291..299/303: `grep -rn "public-safe\|private by design\|proof-private\|public README\|real counts\|real model\|real data\|real n8n\|real artifacts\|real project\|actually runs\|placeholder album\|off the portfolio\|no screenshots" index.html styles.css README.md impressum.html` → "CLEAN — zero hits"
+- ISC-295: `grep -n "runtime:" index.html` → lines 217 and 248, both "runtime: Cloud Foundry on BTP"
+- ISC-300/301: browser probe → `currentSrc` `…/travel-film.webp`, natural 900×675, box 435×326, complete true; `ls -la` 146628 bytes
+- ISC-302: Read deploy.ts:39 — `EXCLUDES = ["birdclock/README.md", "birdclock/tools", "assets/Thumbnail.jpeg"]`
+- ISC-304: Playwright screenshots of both regions render correctly; `browser_console_messages` → Errors: 0, Warnings: 0
 
 ### Curve-fix iteration (2026-07-11)
 
@@ -674,3 +707,72 @@ Follow-up batch (2026-07-25) — de-AI-ification pass (owner: "make the website 
 **Cloudflare transform discovered:** the zone has Email Obfuscation on, so live HTML is never byte-identical to what was uploaded (`mailto:` → `/cdn-cgi/l/email-protection#…` plus an injected `email-decode.min.js`). The verifier normalises both sides rather than weakening the check.
 
 Verification evidence: `bun run deploy --prune` → staged, installed, `pruned: deployment-notes.md, nginx-snippet.conf, README.md, script.js`; `bun run deploy --verify` → 10/10 probes green. Origin `ls /var/www/html/joschi/` = exactly the 5 manifest entries. `curl` on the four strays → 404 (script.js served one more edge HIT with `age: 260`, `max-age=14400`, gone at origin). Live `api/status` → `uptime_seconds: 732856`; `api/music` → real Spotify artists; `api/github` → today's push. Playwright on the live URL: 0 console errors, greeting renders in the new amber.
+
+### V — Birdclock night quiet (2026-07-27, owner: "the real clock wouldn't work at night so the webapp should also not wake anyone")
+
+The wall clock has a photoresistor. The page has no sensor worth relying on, so the dark is
+computed: NOAA sunrise/sunset for the clock's home plus a 07:00–22:00 awake window. The
+window is the load-bearing half — at midsummer the sun here is up at 05:14, so a pure
+daylight rule (and the hardware itself) would sing a Nightingale into the bedroom at five.
+Manual gestures are untouched: a click is a decision, and decisions play at any hour.
+
+- [x] ISC-400: `sunTimes(d)` returns sunrise/sunset as local decimal hours, computed in-page (NOAA declination + hour angle)
+- [x] ISC-401: Munich 21 Jun sunrise/sunset within 10 min of published (got 05:13/21:17, want 05:14/21:19)
+- [x] ISC-402: Munich 21 Dec sunrise/sunset within 10 min of published (got 08:01/16:22, want 08:03/16:22)
+- [x] ISC-403: Munich 20 Mar sunrise/sunset within 10 min of published (got 06:18/18:26, want 06:16/18:24)
+- [x] ISC-404: polar night (cosH ≥ 1) returns `{up:false}` — no NaN reaches the caller
+- [x] ISC-405: midnight sun (cosH ≤ −1) returns `{up:true}` — no NaN reaches the caller
+- [x] ISC-406: southern-hemisphere latitude produces finite times, not NaN
+- [x] ISC-407: longitude uses the home meridian on the home standard offset, the timezone meridian otherwise
+- [x] ISC-408: the offset is taken from standard time (Jan/Jul max), so DST cannot shift the estimate 15°
+- [x] ISC-409: `quietAt()` is true whenever the sun is below the horizon
+- [x] ISC-410: `quietAt()` is true before 07:00 and from 22:00 even with the sun up (21 Jun 06:00 → quiet)
+- [x] ISC-411: `quietAt()` is false for a daylight hour inside the window (21 Jun 07:00 and 21:00 → sings)
+- [x] ISC-412: winter narrows correctly — 21 Dec 08:00 and 17:00 quiet, 09:00 and 16:00 sing
+- [x] ISC-413: hour rollover while armed and quiet issues zero `play()` calls (02:59→03:00 stub: `__plays` empty)
+- [x] ISC-414: hour rollover while armed and light plays as before (13:59→16:00 stub: 02/03/04.mp3)
+- [x] ISC-415: hour-row click plays at 03:00 — manual overrides the guard
+- [x] ISC-416: arm-button click plays its preview at 03:00 — manual overrides the guard
+- [x] ISC-417: hint names the resume time while quiet ("quiet until 07:00 - the birds don't sing in the dark")
+- [x] ISC-418: hint names the rest time while singing ("resting again from 21:00")
+- [x] ISC-419: toggle label reads "resting until 07:00" when armed during quiet hours
+- [x] ISC-420: toggle carries `.resting` — dot animation resolves to `none`, colour drops to `--muted`
+- [x] ISC-421: `nextHour()` walks the same predicate as the rollover, so label and behaviour cannot disagree
+- [x] ISC-422: `AmbientLightSensor` is read only when `permissions.query` already reports `granted` — never prompts
+- [x] ISC-423: a dark sensor reading adds quiet; a bright one never cancels the awake window
+- [x] ISC-424: sensor absent or permission name unknown → `.catch` keeps the computed rule, no error surfaces
+- [x] ISC-425: Anti: no network request added — resource hosts on the loaded page = `["127.0.0.1:3800"]` only
+- [x] ISC-426: Anti: the clock never freezes while quiet — readout advanced 03:00:13 → 03:00:15, second hand transforming
+- [x] ISC-427: Anti: zero console errors on the page (Playwright error capture = 0)
+- [x] ISC-428: Anti: no copy explains a constraint, cites a source, or insists content is genuine (Ghostwriter sweep of all 6 new strings)
+- [x] ISC-429: README documents the rule, the reason the awake window exists, and the manual-click exemption
+
+| isc | type | check | threshold | tool |
+|---|---|---|---|---|
+| 400–412 | logic | shipped source sliced out of index.html and run against published almanac times | ≤10 min error; no NaN | Bash (bun suncheck.ts) |
+| 413–416 | behavior | `HTMLMediaElement.play` spied, `Date` stubbed to force rollovers | play calls exactly where intended | Playwright evaluate |
+| 417–421 | ui | DOM text + computed style at stubbed times | strings match, animation `none` | Playwright evaluate + screenshot |
+| 422–424 | code | permission gate and catch path present | constructs present | Read + Grep |
+| 425–427 | quality | resource hosts, readout advance, console | 1 host, clock advances, 0 errors | Playwright evaluate |
+| 428 | content | Ghostwriter sweep of every new user-visible string | 0 hits | Read |
+| 429 | docs | README section present and accurate | manual read | Read |
+
+Verification evidence: `bun suncheck.ts` → 24/24 PASS, sunrise/sunset within 2 min of published Munich
+values across June/December/March, polar and southern-hemisphere guards finite. Browser: 02:59→03:00
+armed produced `__plays: []` with label "resting until 07:00"; the same page at 13:59→16:00 produced
+`short/02.mp3, short/03.mp3, short/04.mp3`; a row click and an arm click at 03:00 produced
+`short/06.mp3` and `short/03.mp3`. Live page unstubbed at 17:40: `quiet=0`, hint "resting again from
+21:00" (sunset 20:55 that day), 0 console errors, single resource host.
+
+**Deviation from the hardware, on purpose:** the photoresistor would let a lit room chime at 03:00.
+This one will not. The sensor path, where a browser has one, may only add quiet.
+
+**Decision — no geolocation, no prompts.** A `getCurrentPosition` call would make sunrise exact, and
+it buys nothing: the decision granularity is one full hour, and the 07:00–22:00 floor already absorbs
+a latitude error far larger than the timezone estimate can produce. The failure mode of a wrong
+latitude is extra quiet, never an extra song. A permission dialog on a bird clock costs more than it
+returns.
+
+**Show your math (E2 delegation floor):** no agent spawned. One file, one predicate, and the whole
+correctness surface is an almanac comparison a subagent would have had to hand back for checking
+anyway. Forge would have written the same NOAA block; the cost was in choosing the rule, not typing it.

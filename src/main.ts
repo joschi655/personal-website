@@ -1,10 +1,9 @@
 // entry - boot line, theme, title, scroll meter, timeline, konami, favicon, console
-import { motionOK, $, $$, initTheme, toggleLab } from "./state";
+import { motionOK, $, $$, initTheme, initThemeControls, toggleLab } from "./state";
 import { initCurve } from "./curve";
 import { initLive } from "./live";
 import { initPalette, openPalette } from "./palette";
 import { initDetailsMotion, initMotion } from "./motionfx";
-import { initEntropy } from "./entropy";
 import { initGridfield, type GridLoadDetail } from "./gridfield";
 import { initKookooClock } from "./clock";
 
@@ -43,18 +42,14 @@ function scrollMeter(): void {
   let lastY = window.scrollY;
   let lastT = performance.now();
   let impulse = 0;
-  let ticking = false;
 
-  const update = () => {
-    ticking = false;
+  const progress = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
     if (fill) fill.style.transform = `scaleX(${p.toFixed(4)})`;
+    return p;
   };
-  update();
-  window.addEventListener("scroll", () => {
-    if (!ticking) { ticking = true; requestAnimationFrame(update); }
-  }, { passive: true });
+  progress();
 
   if (!motionOK()) return; // reduced motion: the field stays static
   const sample = () => {
@@ -64,8 +59,7 @@ function scrollMeter(): void {
     lastT = now;
     const target = Math.min(1, v * .9);
     impulse = impulse * .68 + target * .32; // scroll “loads the grid”
-    const max = document.documentElement.scrollHeight - innerHeight;
-    const detail: GridLoadDetail = { progress: max > 0 ? Math.min(1, scrollY / max) : 0, impulse };
+    const detail: GridLoadDetail = { progress: progress(), impulse };
     dispatchEvent(new CustomEvent<GridLoadDetail>("joschi:grid-load", { detail }));
   };
   sample();
@@ -132,19 +126,22 @@ function favicon(): void {
   if (!ctx) return;
   let on = true;
   let apiUp = false;
+  const color = (name: string, fallback: string) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
   const draw = () => {
     ctx.clearRect(0, 0, 64, 64);
-    ctx.fillStyle = "#0E100D";
+    ctx.fillStyle = color("--bg", "#ECE9EF");
     ctx.beginPath();
     // @ts-expect-error roundRect is widely available; fallback below
     ctx.roundRect ? ctx.roundRect(0, 0, 64, 64, 12) : ctx.rect(0, 0, 64, 64);
     ctx.fill();
-    if (on) { ctx.fillStyle = "#E8A33D"; ctx.fillRect(14, 18, 14, 28); }
-    ctx.fillStyle = "#99A092"; ctx.fillRect(34, 38, 16, 8);
-    if (apiUp) { ctx.fillStyle = "#46B87E"; ctx.beginPath(); ctx.arc(52, 14, 6, 0, Math.PI * 2); ctx.fill(); }
+    if (on) { ctx.fillStyle = color("--signal", "#234E3B"); ctx.fillRect(14, 18, 14, 28); }
+    ctx.fillStyle = color("--muted", "#665E6A"); ctx.fillRect(34, 38, 16, 8);
+    if (apiUp) { ctx.fillStyle = color("--ok", "#2D694F"); ctx.beginPath(); ctx.arc(52, 14, 6, 0, Math.PI * 2); ctx.fill(); }
     link.href = c.toDataURL("image/png");
   };
   window.addEventListener("joschi:api", (e) => { apiUp = Boolean((e as CustomEvent).detail); draw(); });
+  window.addEventListener("joschi:theme", draw);
   draw();
   if (motionOK()) setInterval(() => { if (!document.hidden) { on = !on; draw(); } }, 1050);
 }
@@ -167,7 +164,7 @@ function consoleGreeting(): void {
     "  ⌘K            command palette\n" +
     "  ↑↑↓↓←→←→BA    lab mode\n" +
     "  curl -i https://aiwerke.de/joschi/api/coffee\n",
-    `${s};color:#E8A33D`, `${s};color:#E9E9E0`, `${s};color:#99A092`
+    `${s};color:#234E3B`, `${s};color:#211A28`, `${s};color:#665E6A`
   );
 }
 
@@ -179,6 +176,7 @@ konami();
 favicon();
 apidot();
 consoleGreeting();
+initThemeControls();
 initPalette();
 initLive();
 initMotion();
@@ -188,7 +186,6 @@ initKookooClock();
 
 const curveEl = document.querySelector<HTMLCanvasElement>("[data-curve]");
 if (curveEl) initCurve(curveEl);
-initEntropy();
 
 // no content is gated behind any of this - remove all JS and the page still tells the story
 export { openPalette };

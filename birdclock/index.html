@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>KooKoo Singvögel — hourly birdsong clock</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%F0%9F%90%A6%3C/text%3E%3C/svg%3E">
 <style>
   :root{
     --bg:#0A0E12;
@@ -40,7 +41,7 @@
   .clock-hands .minute-hand{left:calc(50% - 1px);width:2px;height:28%}
   .clock-hands .second-hand{left:calc(50% - .5px);width:1px;height:31%;background:var(--clock-second)}
 
-  /* readout + toggle, same idiom as the site */
+  /* readout + controls, same idiom as the site */
   .readout{font-family:var(--mono);margin-top:20px;text-align:center}
   .readout .time{font-size:1.5rem;font-variant-numeric:tabular-nums;letter-spacing:.04em}
   .readout .bird{color:var(--muted);font-size:.76rem;margin-top:6px}
@@ -51,16 +52,29 @@
   .chime-toggle .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .2s}
   .chime-toggle.on{border-color:var(--signal);color:var(--signal)}
   .chime-toggle.on .dot{background:var(--signal);animation:blink 2s steps(1) infinite}
+  /* armed, but the sun is down — dim and still, so "on" doesn't look like it's about to fire */
+  .chime-toggle.on.resting{border-color:var(--line);color:var(--muted)}
+  .chime-toggle.on.resting .dot{background:var(--muted);animation:none;opacity:.5}
   @keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.35}}
-  .hint{font-family:var(--mono);font-size:.64rem;color:var(--muted);margin-top:10px;letter-spacing:.02em;text-align:center;min-height:1.1em}
 
-  /* hour index: plain mono rows, click to hear */
+  /* song length — segmented, mono, same weight as the arm toggle */
+  .length{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:7px}
+  .length-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+  .seg button{appearance:none;border:0;border-right:1px solid var(--line);background:transparent;color:var(--muted);font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;padding:7px 15px;cursor:pointer;transition:color .18s,background .18s}
+  .seg button:last-child{border-right:0}
+  .seg button:hover{color:var(--ink)}
+  .seg button[aria-pressed="true"]{color:var(--signal);background:rgba(94,139,255,.1)}
+
+  .hint{font-family:var(--mono);font-size:.64rem;color:var(--muted);margin-top:12px;letter-spacing:.02em;text-align:center;min-height:1.1em;max-width:42ch}
+
+  /* hour index: plain mono rows, click to hear, click again to stop */
   .hours{
     margin-top:clamp(30px,5vw,44px);width:100%;max-width:560px;
     border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 94%,transparent);
   }
   .hours button{
-    display:flex;width:100%;align-items:baseline;gap:14px;
+    position:relative;display:flex;width:100%;align-items:baseline;gap:14px;
     padding:9px 16px;background:none;border:0;border-bottom:1px solid var(--line);
     color:var(--muted);font-family:var(--mono);font-size:.74rem;text-align:left;cursor:pointer;
     transition:color .15s,background .15s;
@@ -73,6 +87,11 @@
   .hours .de{flex:1 1 auto;min-width:0}
   .hours .en{color:var(--muted);font-size:.66rem}
   .hours button.playing .de{color:var(--signal)}
+  /* progress hairline along the bottom of the singing row */
+  .hours button.playing::after{
+    content:"";position:absolute;left:0;bottom:-1px;height:1px;
+    width:calc(var(--p,0) * 100%);background:var(--signal);
+  }
 
   footer{margin-top:36px;font-family:var(--mono);font-size:.62rem;color:var(--muted);text-align:center;line-height:1.8}
   footer a{color:var(--signal);text-decoration:none}
@@ -105,9 +124,19 @@
   <button type="button" class="chime-toggle" data-arm aria-pressed="false">
     <span class="dot"></span><span data-arm-label>arm the hourly birdsong</span>
   </button>
+
+  <div class="length">
+    <span class="length-label" id="length-label">song length</span>
+    <div class="seg" role="group" aria-labelledby="length-label" data-length>
+      <button type="button" data-dur="10" aria-pressed="false">10s</button>
+      <button type="button" data-dur="30" aria-pressed="true">30s</button>
+      <button type="button" data-dur="full" aria-pressed="false">full</button>
+    </div>
+  </div>
+
   <p class="hint" data-hint>off until you turn it on - browsers block surprise audio</p>
 
-  <div class="hours" data-hours aria-label="Hour to bird index — click a row to hear the bird"></div>
+  <div class="hours" data-hours aria-label="Hour to bird index — click a row to hear the bird, click again to stop"></div>
 
   <footer>
     <p>recordings © <a href="https://www.kookoo.eu" target="_blank" rel="noopener">kookoo.eu</a> · self-hosted, no trackers</p>
@@ -118,54 +147,276 @@
 (function(){
   "use strict";
   const BIRDS = [
-    { de:"Amsel",             en:"Blackbird" },
-    { de:"Singdrossel",       en:"Song Thrush" },
-    { de:"Mönchsgrasmücke",   en:"Blackcap" },
-    { de:"Gartengrasmücke",   en:"Garden Warbler" },
-    { de:"Rotkehlchen",       en:"European Robin" },
-    { de:"Nachtigall",        en:"Nightingale" },
-    { de:"Blaukehlchen",      en:"Bluethroat" },
-    { de:"Gartenrotschwanz",  en:"Common Redstart" },
-    { de:"Halsbandschnäpper", en:"Collared Flycatcher" },
-    { de:"Fitis",             en:"Willow Warbler" },
-    { de:"Heidelerche",       en:"Woodlark" },
-    { de:"Pirol",             en:"Golden Oriole" },
+    { de:"Amsel",             en:"Blackbird",           full:191 },
+    { de:"Singdrossel",       en:"Song Thrush",         full:302 },
+    { de:"Mönchsgrasmücke",   en:"Blackcap",            full:190 },
+    { de:"Gartengrasmücke",   en:"Garden Warbler",      full:57  },
+    { de:"Rotkehlchen",       en:"European Robin",      full:181 },
+    { de:"Nachtigall",        en:"Nightingale",         full:193 },
+    { de:"Blaukehlchen",      en:"Bluethroat",          full:51  },
+    { de:"Gartenrotschwanz",  en:"Common Redstart",     full:191 },
+    { de:"Halsbandschnäpper", en:"Collared Flycatcher", full:59  },
+    { de:"Fitis",             en:"Willow Warbler",      full:49  },
+    { de:"Heidelerche",       en:"Woodlark",            full:53  },
+    { de:"Pirol",             en:"Golden Oriole",       full:62  },
   ];
+
+  // Two asset tiers so a 10s setting doesn't pull a 5-minute file: `short` is a 33s cut
+  // (long enough for the 30s setting plus its fade), `full` is the whole recording.
+  const LENGTHS = { "10": 10, "30": 30, "full": Infinity };
+  const FADE_IN    = 0.25;  // just enough to kill the click on a hard-trimmed start
+  const FADE_CUT   = 1.8;   // landing a 10s/30s cut
+  const FADE_END   = 2.5;   // landing on the recording's own ending
+  const FADE_STOP  = 0.35;  // user interrupted — get out of the way quickly
+  const STORE_KEY  = "kookoo.length";
+
   const pad = n => String(n).padStart(2,"0");
   const idx = h => ((h % 12) || 12) - 1;               // hour → 0..11
-  const src = h => `assets/audio/${pad(idx(h)+1)}.mp3`;
+  const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
+  const src = (h, key) =>
+    `assets/audio/${LENGTHS[key] === Infinity ? "full" : "short"}/${pad(idx(h)+1)}.mp3`;
 
   const $ = s => document.querySelector(s);
   const hourHand=$("[data-hour]"), minHand=$("[data-minute]"), secHand=$("[data-second]");
   const timeEl=$("[data-time]"), birdEl=$("[data-bird]"), birdEn=$("[data-bird-en]");
   const armBtn=$("[data-arm]"), armLabel=$("[data-arm-label]"), hint=$("[data-hint]");
-  const hoursEl=$("[data-hours]");
+  const hoursEl=$("[data-hours]"), lengthEl=$("[data-length]");
 
-  let armed=false, lastHour=new Date().getHours();
-  const audio=new Audio();
+  let armed = false;
+  let lastHour = new Date().getHours();
+  let lengthKey = "30";
+  try { const s = localStorage.getItem(STORE_KEY); if (s && s in LENGTHS) lengthKey = s; } catch(e){}
+
+  const audio = new Audio();
+  audio.preload = "none";
+
+  // ---- the volume knob -------------------------------------------------------------
+  // iOS ignores writes to HTMLAudioElement.volume outright, so a fade done that way is
+  // silent on every iPhone. A Web Audio GainNode is the only knob that works there; the
+  // element's own volume is the fallback for anything that can't build the graph.
+  let gainNode = null, graphTried = false;
+  function ensureGraph(){
+    if (graphTried) return;
+    graphTried = true;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try {
+      const ctx = new AC();
+      // createMediaElementSource is once-per-element, which is why there is one Audio.
+      ctx.createMediaElementSource(audio).connect(gainNode = ctx.createGain()).connect(ctx.destination);
+      audio.addEventListener("play", () => { if (ctx.state === "suspended") ctx.resume(); });
+      if (ctx.state === "suspended") ctx.resume();
+    } catch(e){ gainNode = null; }   // routing failed — element volume it is
+  }
+  const setGain = v => {
+    const g = clamp01(v);
+    if (gainNode) gainNode.gain.value = g; else audio.volume = g;
+  };
+
+  // ---- playback --------------------------------------------------------------------
+  let playingHour = null;   // hour currently sounding, null when silent
+  let loadedKey = null;     // length setting the loaded file was chosen for
+  let cutAt = Infinity;     // media-time to bail out at early (user interrupt)
+  let raf = 0;
+
+  /** Media-time this playback should be over at. */
+  function playEnd(){
+    const limit = LENGTHS[lengthKey];
+    const dur = isFinite(audio.duration) && audio.duration > 0 ? audio.duration : Infinity;
+    return Math.min(limit === Infinity ? dur : limit, dur, cutAt);
+  }
+
+  /** How long the closing fade runs — never more than half of what's actually playing. */
+  function fadeLen(){
+    const natural = cutAt < Infinity ? FADE_STOP
+                  : LENGTHS[lengthKey] === Infinity ? FADE_END
+                  : FADE_CUT;
+    const end = playEnd();
+    return isFinite(end) ? Math.min(natural, end / 2) : natural;
+  }
+
+  function frame(){
+    raf = 0;
+    if (audio.paused) return;
+    const t = audio.currentTime, end = playEnd(), fade = fadeLen(), left = end - t;
+
+    let g = 1;
+    if (t < FADE_IN) g = t / FADE_IN;
+    // ^1.6 rather than linear: a straight amplitude ramp is heard as a fast drop that
+    // then hangs around, this one lands evenly.
+    if (left < fade) g = Math.min(g, Math.pow(clamp01(left / fade), 1.6));
+    setGain(g);
+
+    const row = playingHour !== null ? hoursEl.children[idx(playingHour)] : null;
+    if (row && isFinite(end)) row.style.setProperty("--p", String(clamp01(t / end)));
+
+    if (left <= 0.02){ stop(); return; }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function stop(){
+    if (raf) cancelAnimationFrame(raf), raf = 0;
+    audio.pause();
+    audio.currentTime = 0;
+    setGain(1);
+    cutAt = Infinity;
+    playingHour = null;
+    for (const r of hoursEl.children){ r.classList.remove("playing"); r.style.removeProperty("--p"); }
+  }
+
+  /** Ease out of whatever is sounding instead of chopping it off mid-note. */
+  function fadeOutAndStop(){
+    if (audio.paused){ stop(); return; }
+    cutAt = Math.min(cutAt, audio.currentTime + FADE_STOP);
+    if (!raf) raf = requestAnimationFrame(frame);
+  }
 
   function play(h){
-    audio.src = src(h);
+    ensureGraph();
+    if (raf) cancelAnimationFrame(raf), raf = 0;
+    cutAt = Infinity;
+    for (const r of hoursEl.children){ r.classList.remove("playing"); r.style.removeProperty("--p"); }
+
+    playingHour = h;
+    loadedKey = lengthKey;
+    audio.src = src(h, lengthKey);
     audio.currentTime = 0;
-    audio.play().catch(()=>{});
-    // mark the row while it sings
-    hoursEl.querySelectorAll("button").forEach(b=>b.classList.remove("playing"));
+    setGain(0);                          // start silent, frame() fades it up
     const row = hoursEl.children[idx(h)];
-    if(row){ row.classList.add("playing"); audio.onended = ()=>row.classList.remove("playing"); }
+    if (row) row.classList.add("playing");
+    // play() predates returning a promise; wrap so an older browser can't throw here.
+    Promise.resolve(audio.play()).then(() => { raf = requestAnimationFrame(frame); }, () => stop());
+  }
+
+  audio.addEventListener("ended", stop);   // natural end, if duration metadata was off
+
+  // ---- when the clock is allowed to sing on its own --------------------------------
+  // The wall clock has a photoresistor and stays quiet in a dark room. A browser has no
+  // light sensor worth relying on, so darkness is computed instead: sun below the horizon,
+  // plus an awake window. The window is not redundant — at midsummer the sun here is up at
+  // 05:14, and the hardware would happily wake the house with a Nightingale at five.
+  const HOME = { lat:48.14, lon:11.58, offset:-60 };   // where the clock hangs, in standard time
+  const WAKE = 7, SLEEP = 22;  // no automatic song outside this, however bright it is
+  const RAD = Math.PI / 180;
+  let sensorDark = false;      // set only where a real light sensor is readable
+
+  /** Standard-time UTC offset — DST would shift the estimated meridian a full 15°. */
+  function stdOffset(y){
+    return Math.max(new Date(y,0,1).getTimezoneOffset(), new Date(y,6,1).getTimezoneOffset());
+  }
+
+  /** Sunrise/sunset as local decimal hours (NOAA). `up` instead, where the sun does neither. */
+  function sunTimes(d){
+    // Same timezone as the clock's home means the home coordinates; a visitor further out
+    // gets their own meridian, which is a quarter-hour honest anywhere but Spain.
+    const std = stdOffset(d.getFullYear());
+    const lon = std === HOME.offset ? HOME.lon : -std / 4;
+    const n = Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
+                        - Date.UTC(d.getFullYear(), 0, 1)) / 864e5) + 1;
+    const g = 2 * Math.PI / 365 * (n - 0.5);       // fractional year, taken at midday
+    const eq = 229.18 * (0.000075 + 0.001868*Math.cos(g) - 0.032077*Math.sin(g)
+             - 0.014615*Math.cos(2*g) - 0.040849*Math.sin(2*g));
+    const dec = 0.006918 - 0.399912*Math.cos(g) + 0.070257*Math.sin(g)
+              - 0.006758*Math.cos(2*g) + 0.000907*Math.sin(2*g)
+              - 0.002697*Math.cos(3*g) + 0.00148*Math.sin(3*g);
+    // 90.833°, not 90: the horizon plus refraction plus the sun's own radius
+    const cosH = (Math.cos(90.833*RAD) - Math.sin(HOME.lat*RAD) * Math.sin(dec))
+               / (Math.cos(HOME.lat*RAD) * Math.cos(dec));
+    if (cosH >= 1)  return { up:false };           // polar night — never rises
+    if (cosH <= -1) return { up:true  };           // midnight sun — never sets
+    const ha = Math.acos(cosH) / RAD;
+    const noon = 720 - 4*lon - eq - d.getTimezoneOffset();   // local minutes past midnight
+    return { rise:(noon - 4*ha)/60, set:(noon + 4*ha)/60 };
+  }
+
+  /** Would the clock sing by itself at this moment? `live` also consults the light sensor. */
+  function quietAt(d, live){
+    const h = d.getHours() + d.getMinutes()/60;
+    if (h < WAKE || h >= SLEEP) return true;
+    if (live && sensorDark) return true;
+    const s = sunTimes(d);
+    if ("up" in s) return !s.up;
+    return h < s.rise || h >= s.set;
+  }
+
+  /** First full hour from now whose auto-state is `state` — null if there's none all day. */
+  function nextHour(state){
+    const t = new Date();
+    t.setMinutes(0,0,0);
+    for (let i = 0; i < 24; i++){
+      t.setHours(t.getHours() + 1);
+      if (quietAt(t) === state) return `${pad(t.getHours())}:00`;
+    }
+    return null;
+  }
+
+  // Where a real light sensor exists and is already permitted, believe it over the almanac —
+  // a dark room at noon is still a dark room. It may only add quiet, never cancel it.
+  if (window.AmbientLightSensor && navigator.permissions){
+    navigator.permissions.query({ name:"ambient-light-sensor" }).then(p => {
+      if (p.state !== "granted") return;
+      const s = new AmbientLightSensor({ frequency: 0.2 });
+      s.addEventListener("reading", () => { sensorDark = s.illuminance < 8; paint(); });
+      s.addEventListener("error", () => { sensorDark = false; });
+      s.start();
+    }).catch(()=>{});   // no such permission name — stay on the computed rule
+  }
+
+  // ---- controls --------------------------------------------------------------------
+  function lengthWord(){
+    return lengthKey === "full" ? "the full recording" : lengthKey + " seconds";
+  }
+
+  let wasQuiet = null;
+
+  /** Toggle and hint both read differently while the clock is resting — repaint together. */
+  function paint(){
+    const quiet = wasQuiet = quietAt(new Date(), true);
+    const resting = armed && quiet;
+    const back = nextHour(false);
+    document.body.dataset.quiet = quiet ? "1" : "0";
+
+    armBtn.classList.toggle("on", armed);
+    armBtn.classList.toggle("resting", resting);
+    armBtn.setAttribute("aria-pressed", String(armed));
+    armLabel.textContent = !armed   ? "arm the hourly birdsong"
+                         : resting  ? (back ? `resting until ${back}` : "resting until it gets light")
+                                    : "hourly birdsong is on";
+
+    hint.textContent = !armed      ? "off until you turn it on - browsers block surprise audio"
+                     : !resting    ? `on - sings ${lengthWord()} on every full hour, resting again from ${nextHour(true)}`
+                     : sensorDark  ? "the room is dark - nothing sings until there's light again"
+                     : back        ? `quiet until ${back} - the birds don't sing in the dark`
+                                   : "quiet for as long as it stays dark";
   }
 
   function setArmed(state){
-    armed=state;
-    armBtn.classList.toggle("on",armed);
-    armBtn.setAttribute("aria-pressed",String(armed));
-    armLabel.textContent = armed ? "hourly birdsong is on" : "arm the hourly birdsong";
-    hint.textContent = armed
-      ? "on - the clock sings on every full hour"
-      : "off until you turn it on - browsers block surprise audio";
+    armed = state;
+    paint();
   }
   armBtn.addEventListener("click",()=>{
     setArmed(!armed);
-    if(armed) play(new Date().getHours()); else audio.pause();
+    if(armed) play(new Date().getHours());   // the arming gesture unlocks audio + previews
+    else fadeOutAndStop();
+  });
+
+  function setLength(key){
+    if (!(key in LENGTHS)) return;
+    lengthKey = key;
+    try { localStorage.setItem(STORE_KEY, key); } catch(e){}
+    for (const b of lengthEl.children) b.setAttribute("aria-pressed", String(b.dataset.dur === key));
+    paint();
+    if (playingHour === null) return;
+    // Changing length mid-song should be audible now, not an hour from now.
+    if (loadedKey !== null && src(playingHour, loadedKey) !== src(playingHour, key)) {
+      play(playingHour);                 // different tier — restart from the new file
+    } else if (audio.currentTime >= playEnd()) {
+      fadeOutAndStop();                  // shortened past where we already are: bow out
+    }                                    // otherwise the running loop just picks up the new end
+  }
+  lengthEl.addEventListener("click", e => {
+    const btn = e.target.closest("button[data-dur]");
+    if (btn) setLength(btn.dataset.dur);
   });
 
   // hour index rows
@@ -174,7 +425,10 @@
     row.type="button";
     row.innerHTML=`<span class="hr">${pad(i+1)}:00</span><span class="de">${b.de}</span><span class="en">${b.en}</span>`;
     row.setAttribute("aria-label",`${pad(i+1)}:00 - ${b.de} (${b.en}) - play song`);
-    row.addEventListener("click",()=>play(i+1));
+    row.addEventListener("click",()=>{
+      if (playingHour === i+1) fadeOutAndStop();   // click the singing row to stop it
+      else play(i+1);
+    });
     hoursEl.appendChild(row);
   });
 
@@ -192,9 +446,15 @@
     minHand.style.transform=`rotate(${m*6+s*.1}deg)`;
     secHand.style.transform=`rotate(${s*6}deg)`;
     timeEl.textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
-    if(h!==lastHour){ lastHour=h; markNow(h); if(armed) play(h); }
+    // The hour turns and the hands keep moving in the dark — only the song is held back.
+    if(h!==lastHour){
+      lastHour=h; markNow(h);
+      if(armed && !quietAt(now,true)) play(h);
+      paint();
+    } else if (quietAt(now,true) !== wasQuiet) paint();
   }
 
+  setLength(lengthKey);
   markNow(lastHour);
   tick();
   setInterval(tick,1000);

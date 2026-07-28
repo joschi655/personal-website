@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="dark">
+<html lang="de" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Impressum &amp; Datenschutz - Oskar Breitfeld</title>
 <meta name="description" content="Impressum und Datenschutzerklärung für aiwerke.de/joschi/" />
 <meta name="robots" content="noindex" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E12'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%235E8BFF'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%2393A1AB'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2">
+<meta name="theme-color" content="#ECE9EF" />
+<script>
+try {
+  const savedTheme = localStorage.getItem("joschi-theme");
+  if (savedTheme === "dark" || savedTheme === "light") {
+    document.documentElement.dataset.theme = savedTheme;
+    document.querySelector('meta[name="theme-color"]').content = savedTheme === "dark" ? "#17131C" : "#ECE9EF";
+  }
+} catch {}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ECE9EF'/%3E%3Crect x='14' y='18' width='14' height='28' fill='%23234E3B'/%3E%3Crect x='34' y='38' width='16' height='8' fill='%23665E6A'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/plexsans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css?v=17">
 <style>
-  .legal{padding:clamp(48px,8vh,90px) 0 80px;max-width:70ch}
+  .legal{position:relative;z-index:2;padding:clamp(48px,8vh,90px) 0 80px;max-width:70ch}
   .legal h1{font-size:clamp(2rem,6vw,3rem);margin-bottom:8px}
   .legal h2{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:42px 0 12px}
   .legal p,.legal li{color:var(--muted);font-size:.95rem}
@@ -43,8 +52,8 @@
   <h2>Cloudflare</h2>
   <p>Die Seite wird über einen Cloudflare-Tunnel ausgeliefert. Dabei verarbeitet Cloudflare (Cloudflare, Inc.) technisch bedingt Verbindungsdaten als Auftragsverarbeiter. Details: <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">cloudflare.com/privacypolicy</a>.</p>
 
-  <h2>Google Fonts</h2>
-  <p>Diese Seite lädt Schriftarten von Google Fonts (Google Ireland Ltd.). Dabei wird deine IP-Adresse an Google übermittelt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (einheitliche Darstellung). Details: <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">policies.google.com/privacy</a>.</p>
+  <h2>Schriftarten</h2>
+  <p>Alle verwendeten Schriftarten werden lokal von diesem Server ausgeliefert. Beim Laden der Seite wird keine Verbindung zu Google Fonts oder einem anderen Schriftanbieter hergestellt.</p>
 
   <h2>Live-Widgets (Spotify, GitHub, Server-Status)</h2>
   <p>Die „live"-Kacheln zeigen ausschließlich <b>Daten über den Betreiber selbst</b> (meine eigenen Spotify-Top-Künstler, meine eigene GitHub-Aktivität, die Laufzeit meines eigenen Servers). Dein Browser ruft dafür nur eine API auf diesem Server auf (<span class="mono" style="text-transform:none">/joschi/api/…</span>). Es werden dabei <b>keine Daten über dich</b> an Spotify oder GitHub übermittelt - diese Dienste kontaktiert ausschließlich mein Server.</p>

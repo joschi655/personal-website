@@ -29,10 +29,10 @@ const COMMANDS: Cmd[] = [
   { name: "cd offscreen", aliases: ["offscreen", "goto offscreen"], desc: "jump to off-screen", run: (c) => jump("offscreen", c) },
   { name: "cd contact", aliases: ["contact", "say hello", "goto contact"], desc: "jump to say hello", run: (c) => jump("contact", c) },
   { name: "cd ~", aliases: ["home", "cd", "top"], desc: "back to the top", run: (c) => jump("top", c) },
-  { name: "theme", aliases: ["light", "dark", "paper"], desc: "toggle dark / paper mode", keep: true,
+  { name: "theme", aliases: ["light", "dark", "paper"], desc: "toggle light / dark mode", keep: true,
     run: (c) => c.print(toggleTheme() === "light"
-      ? "switched to paper mode. easy on the eyes, hard on the vibe."
-      : "welcome back to the control room.", "out-ok") },
+      ? "switched to light mode."
+      : "switched to dark mode.", "out-ok") },
   { name: "music", aliases: ["range"], desc: "cycle the spotify time range", keep: true,
     run: (c) => c.print(`range → ${RANGE_LABEL[cycleRange()]}`) },
   { name: "lab", aliases: ["lab mode"], desc: "toggle lab mode (experiments)", keep: true,
@@ -59,7 +59,7 @@ const COMMANDS: Cmd[] = [
     run: (c) => c.print([
       "display:   self-hosted Archivo + IBM Plex",
       "runtime:   vanilla TypeScript bundled by Bun",
-      "signals:   seeded canvas field + two hand-built simulations",
+      "signals:   seeded canvas field + hand-built load curve",
       "data:      relative API calls to my own Ubuntu box",
       "tracking:  none - your visit is not a dataset",
       "fallback:  remove all JS and the story still works",
@@ -91,7 +91,7 @@ const COMMANDS: Cmd[] = [
       "Shell:     bash + bun",
       "Packages:  energy, ml, automation, n8n, mcp",
       "Editor:    whatever ships fastest",
-      `Theme:     ${currentTheme() === "dark" ? "control room" : "paper"}`,
+      `Theme:     ${currentTheme() === "dark" ? "aubergine night" : "lavender paper"}`,
     ].join("\n")) },
   { name: "history", desc: "how I got here", keep: true,
     run: (c) => c.print([

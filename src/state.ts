@@ -24,23 +24,60 @@ export async function fetchJSON<T = unknown>(path: string, timeoutMs = 6000): Pr
 }
 
 // ---- theme ----
+export type Theme = "light" | "dark";
+
 const THEME_KEY = "joschi-theme";
+const THEME_COLOR: Record<Theme, string> = {
+  light: "#ECE9EF",
+  dark: "#17131C",
+};
+
+const isTheme = (value: string | null): value is Theme =>
+  value === "light" || value === "dark";
+
+const syncThemeControls = (theme: Theme): void => {
+  const next: Theme = theme === "light" ? "dark" : "light";
+  $$<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+    button.textContent = next;
+    button.setAttribute("aria-label", `Switch to ${next} theme`);
+    button.title = `Switch to ${next} theme`;
+  });
+};
+
+export function setTheme(theme: Theme, persist = true): Theme {
+  document.documentElement.dataset.theme = theme;
+  document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute("content", THEME_COLOR[theme]);
+  syncThemeControls(theme);
+  if (persist) {
+    try { localStorage.setItem(THEME_KEY, theme); } catch { /* private mode */ }
+  }
+  window.dispatchEvent(new CustomEvent<Theme>("joschi:theme", { detail: theme }));
+  return theme;
+}
 
 export function initTheme(): void {
-  const saved = localStorage.getItem(THEME_KEY);
-  if (saved === "light" || saved === "dark") {
-    document.documentElement.dataset.theme = saved;
-  }
+  let saved: string | null = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch { /* private mode */ }
+  const initial = isTheme(saved)
+    ? saved
+    : (document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+  setTheme(initial, false);
 }
 
-export function toggleTheme(): string {
-  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  document.documentElement.dataset.theme = next;
-  try { localStorage.setItem(THEME_KEY, next); } catch { /* private mode */ }
-  return next;
+export function initThemeControls(): void {
+  syncThemeControls(currentTheme());
+  $$<HTMLButtonElement>("[data-theme-toggle]").forEach((button) =>
+    button.addEventListener("click", () => toggleTheme()));
+  window.addEventListener("joschi:theme", (event) =>
+    syncThemeControls((event as CustomEvent<Theme>).detail));
 }
 
-export const currentTheme = (): string => document.documentElement.dataset.theme ?? "light";
+export function toggleTheme(): Theme {
+  return setTheme(currentTheme() === "dark" ? "light" : "dark");
+}
+
+export const currentTheme = (): Theme =>
+  document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 
 // ---- lab mode ----
 export function toggleLab(force?: boolean): boolean {

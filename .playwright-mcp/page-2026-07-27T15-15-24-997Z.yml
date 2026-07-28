@@ -1,0 +1,267 @@
+- generic [active] [ref=e1]:
+  - link "skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - text: joschi@aiwerke:~$
+      - generic [ref=e5]: ▮
+    - generic [ref=e6]:
+      - generic [ref=e7]: ●
+      - button "Switch to dark theme" [ref=e8] [cursor=pointer]: dark
+      - button "Open command palette" [ref=e9] [cursor=pointer]: ⌘K
+  - banner [ref=e11]:
+    - generic [ref=e12]: Munich · energy, processes & machine learning
+    - paragraph [ref=e13]:
+      - text: b
+      - generic [ref=e14]: ▮
+    - heading "I build fixes for whatever annoys me." [level=1] [ref=e15]
+    - generic [ref=e16]:
+      - paragraph [ref=e17]:
+        - text: I’m Oskar Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning.
+        - emphasis [ref=e18]: I didn’t study computer science - I learn by building.
+        - text: And I genuinely hate stupid repetitive tasks - automating them became the obvious career.
+      - complementary "Site and profile manifest" [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - term [ref=e22]: current
+            - definition [ref=e23]: M.Sc. Energy & Process Engineering · TUM
+          - generic [ref=e24]:
+            - term [ref=e25]: work
+            - definition [ref=e26]: AI automation → power-grid forecasting
+          - generic [ref=e27]:
+            - term [ref=e28]: host
+            - definition [ref=e29]: own Ubuntu box · offline right now
+          - generic [ref=e30]:
+            - term [ref=e31]: source
+            - definition [ref=e32]:
+              - link "vanilla TypeScript ↗" [ref=e33] [cursor=pointer]:
+                - /url: https://github.com/joschi655/personal-website
+              - text: · zero trackers
+    - generic [ref=e34]:
+      - generic [ref=e35]: Measured
+      - generic [ref=e36]: Forecast →
+      - 'img "Stylized electrical load curve: measured past as a solid line, forecast as a dashed line" [ref=e37]'
+      - paragraph [ref=e38]: "sim: a day of load"
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]: live from my own ubuntu box
+        - generic [ref=e42]: or an offline card when the box is down
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - generic [ref=e46]: what I actually listen to
+            - group "Spotify time range" [ref=e47]:
+              - button "4w" [ref=e48] [cursor=pointer]
+              - button "6m" [pressed] [ref=e49] [cursor=pointer]
+              - button "all" [ref=e50] [cursor=pointer]
+          - paragraph [ref=e52]: spotify feed warming up, or offline.
+          - generic [ref=e53]:
+            - text: "source:"
+            - link "stats.fm" [ref=e54] [cursor=pointer]:
+              - /url: https://stats.fm/joschi_oskar
+            - text: · full listening history
+        - generic [ref=e55]:
+          - generic [ref=e56]: this server
+          - paragraph [ref=e59]: uptime appears when the api answers.
+          - generic [ref=e60]: served from my own machine, tunneled through cloudflare
+        - generic [ref=e61]:
+          - generic [ref=e62]: last seen pushing
+          - paragraph [ref=e65]: recent activity appears when the api answers.
+          - generic [ref=e66]: github.com/joschi655
+  - main [ref=e67]:
+    - generic [ref=e68]:
+      - heading "Path" [level=2] [ref=e70]
+      - generic [ref=e71]:
+        - generic [ref=e72]:
+          - generic [ref=e73]: START
+          - heading "Chemical Engineering" [level=3] [ref=e74]
+          - paragraph [ref=e75]: "The foundation: processes, materials, energy - and where software can improve complex systems."
+          - group [ref=e76]:
+            - generic "[+] --verbose" [ref=e77] [cursor=pointer]
+            - text: ▸ ▸
+        - generic [ref=e78]:
+          - generic [ref=e79]: NOW
+          - heading "M.Sc. Energy and Process Engineering · TUM" [level=3] [ref=e80]
+          - paragraph [ref=e81]: Energy and processes, with growing focus on what data can predict and optimize.
+          - group [ref=e82]:
+            - generic "[+] --verbose" [ref=e83] [cursor=pointer]
+            - text: ▸ ▸ ▸
+        - generic [ref=e84]:
+          - generic [ref=e85]: WORK
+          - heading "SAP - AI Innovation, Connectors & Automations" [level=3] [ref=e86]
+          - paragraph [ref=e87]: Agentic AI workflows with LLMs, Claude, MCP servers, RAG - automation people actually use.
+          - group [ref=e88]:
+            - generic "[+] --verbose" [ref=e89] [cursor=pointer]
+            - text: ▸ ▸ ▸
+        - generic [ref=e90]:
+          - generic [ref=e91]: NEXT
+          - heading "Power Grid Load Forecasting with ML" [level=3] [ref=e92]
+          - paragraph [ref=e93]: "Forecasting for the grid: exactly the energy × ML intersection I want to work in."
+          - group [ref=e94]:
+            - generic "[+] --verbose" [ref=e95] [cursor=pointer]
+            - text: ▸ ▸
+    - generic [ref=e96]:
+      - heading "What I build" [level=2] [ref=e98]
+      - generic [ref=e99]:
+        - article [ref=e100]:
+          - generic [ref=e101]:
+            - heading "Spotify queue bot" [level=3] [ref=e102]
+            - paragraph [ref=e103]: A shared Spotify link hijacks the speaker and kills the queue. Every time.
+            - paragraph [ref=e104]: "Built: forward the song via WhatsApp and the bot appends it cleanly. No interruptions, no hijacked speaker - it has survived every party since."
+            - link "see the LinkedIn post about the flow ↗" [ref=e105] [cursor=pointer]:
+              - /url: https://www.linkedin.com/posts/johannes-breitfeld_kann-mir-jemand-helfen-ich-hatte-vor-gut-activity-7479938472460595201-40r7
+          - figure "production workflow · n8n" [ref=e106]:
+            - img "The n8n workflow behind the WhatsApp-to-Spotify queue bot, with dozens of connected processing nodes" [ref=e107]
+        - article [ref=e109]:
+          - generic [ref=e110]:
+            - heading "Cloud-9" [level=3] [ref=e111]
+            - paragraph [ref=e112]: Spot instances are cheap - until the wrong choice interrupts a workload or quietly costs more.
+            - paragraph [ref=e113]: "Built: a cloud optimizer ranking EC2 spot instances by price and interruption risk, forecasting prices with ML, and generating deployable infrastructure."
+            - link "open the live product ↗" [ref=e114] [cursor=pointer]:
+              - /url: https://cloud-9opt.com/
+          - figure "product surface · cloud-9opt.com" [ref=e115]:
+            - img "Cloud-9 product overview showing its AWS cost optimization interface and live platform statistics" [ref=e116]
+        - article [ref=e118]:
+          - generic [ref=e119]:
+            - heading "Agentic CX operations reporting" [level=3] [ref=e120]
+            - paragraph [ref=e121]: Management reporting from live planning data is repetitive, time-consuming, and too important to leave to free-form model output.
+            - paragraph [ref=e122]: "My contribution: turned an existing internal prototype into the deployed version on SAP BTP Cloud Foundry with the Agents SDK. Agents retrieve live Jira data; a deterministic pipeline validates and renders the final reports."
+          - figure "report pipeline" [ref=e123]:
+            - 'img "Architecture sketch: live Jira data flows through Agents SDK tools into a validated data contract and a deterministic report builder on Cloud Foundry" [ref=e124]':
+              - generic [ref=e125]: agentic retrieval
+              - generic [ref=e126]: deterministic delivery
+              - generic [ref=e128]: Jira
+              - generic [ref=e130]: Agents SDK
+              - generic [ref=e132]: validated data
+              - generic [ref=e138]: fixed report contract
+              - generic [ref=e139]: management report
+              - generic [ref=e140]: "runtime: Cloud Foundry on BTP"
+        - article [ref=e142]:
+          - generic [ref=e143]:
+            - heading "AI planning assistant" [level=3] [ref=e144]
+            - paragraph [ref=e145]: All the planning context sits in Jira, and there was no API to it - so every dependency question turned into an afternoon of manual digging.
+            - paragraph [ref=e146]: "Built: a semester-planning assistant for the Business Suite Portfolio Management team. It reads the Jira data from a SQL mirror and runs purpose-built report and dependency workflows on top of it."
+          - figure "planning workflow" [ref=e147]:
+            - 'img "Architecture sketch: a SQL mirror of Jira feeds an agentic planning workflow that produces planning briefs and dependency views" [ref=e148]':
+              - generic [ref=e149]: planning context
+              - generic [ref=e150]: purpose-built workflows
+              - generic [ref=e152]: Jira data
+              - generic [ref=e153]: SQL mirror
+              - generic [ref=e156]: agentic retrieval
+              - generic [ref=e157]: planning helper
+              - generic [ref=e162]: planning briefs
+              - generic [ref=e163]: dependency views
+              - generic [ref=e164]: "runtime: Cloud Foundry on BTP"
+        - article [ref=e166]:
+          - generic [ref=e167]:
+            - heading "check24-MCP" [level=3] [ref=e168]
+            - paragraph [ref=e169]: Comparison portals have data everywhere and no coherent interface for AI agents.
+            - paragraph [ref=e170]: "Built: one MCP surface across CHECK24 verticals, with host-specific adapters, conformance checks, routing, and observability - deployed on Cloudflare Workers. Won the CHECK24 GenDev scholarship."
+            - link "read the repository ↗" [ref=e171] [cursor=pointer]:
+              - /url: https://github.com/joschi655/check24-MCP
+          - figure "aggregator architecture" [ref=e172]:
+            - 'img "Architecture sketch: ChatGPT and Claude connect through host adapters to a generic aggregator core that routes to hotel, flight, cars, and energy verticals" [ref=e173]':
+              - generic [ref=e175]: ChatGPT
+              - generic [ref=e177]: Claude
+              - generic [ref=e181]: Apps SDK adapter
+              - generic [ref=e183]: Claude adapter
+              - generic [ref=e187]: generic aggregator core
+              - generic [ref=e188]: routing, linting, tracing
+              - generic [ref=e197]: hotel
+              - generic [ref=e198]: flight
+              - generic [ref=e199]: cars
+              - generic [ref=e200]: energy
+              - generic [ref=e201]: deployed on Cloudflare Workers
+        - article [ref=e203]:
+          - generic [ref=e204]:
+            - heading "Predicting pyrolysis yields" [level=3] [ref=e205]
+            - paragraph [ref=e206]: Lab experiments are expensive; the relationship between process conditions and product yields is hard to see.
+            - paragraph [ref=e207]: "Built: Random Forest and XGBoost models on 795 literature datapoints, grouped by paper to prevent leakage and checked with SHAP against the physics."
+            - link "read the 93-page thesis ↗" [ref=e208] [cursor=pointer]:
+              - /url: assets/pyrolysis-thesis.pdf?v=3
+          - figure "thesis figure 5.2 · SHAP beeswarm" [ref=e209]:
+            - img "SHAP beeswarm plots from the thesis comparing feature importance for oil, gas, and char yield predictions" [ref=e210]
+      - generic "Additional work and experiments" [ref=e212]:
+        - article [ref=e213]:
+          - heading "AI tools for clients" [level=3] [ref=e214]
+          - paragraph [ref=e215]: DSGVO-compliant RAG support, browser automation for a medical practice, and n8n/MCP workflows.
+          - link "Malt profile ↗" [ref=e216] [cursor=pointer]:
+            - /url: https://en.malt.de/profile/johannesbreitfeld
+        - article [ref=e217]:
+          - heading "Claude Builders Club @ TUM" [level=3] [ref=e218]
+          - paragraph [ref=e219]: Co-founded the relaunch and represented Claude on campus - helping students build with AI instead of only chatting with it.
+          - link "club site ↗" [ref=e220] [cursor=pointer]:
+            - /url: https://claudebuildersclub-muc.github.io/
+        - article [ref=e221]:
+          - heading "My first Blender game" [level=3] [ref=e222]
+          - paragraph [ref=e223]: A jump-and-run level made after scavenging PC parts as a kid. No plan, just curiosity, stubbornness, and far too many moved vertices.
+    - generic [ref=e224]:
+      - heading "Off-screen" [level=2] [ref=e226]
+      - generic [ref=e227]:
+        - article [ref=e228]:
+          - link "KooKoo Singvögel clock showing 17:15 local time - open the KooKoo website" [ref=e229] [cursor=pointer]:
+            - /url: https://www.kookoo.eu
+            - img "KooKoo Singvögel wall clock with twelve illustrated native songbirds" [ref=e230]
+          - generic [ref=e231]:
+            - text: first company · age 14
+            - heading "KooKoo, clocks & songbirds" [level=3] [ref=e232]
+            - paragraph [ref=e233]:
+              - text: Still in school, I ran a student company repairing and refurbishing wall clocks - diagnosing faults, soldering, and replacing electrical parts.
+              - link "KooKoo’s Singvögel clock ↗" [ref=e234] [cursor=pointer]:
+                - /url: https://www.kookoo.eu
+              - text: is still part of the story.
+            - button "arm the hourly birdsong" [ref=e235] [cursor=pointer]
+            - paragraph [ref=e238]: each full hour sings its own bird - off until you turn it on
+        - article [ref=e239]:
+          - generic [ref=e240]:
+            - heading "Music I actually keep" [level=3] [ref=e241]
+            - paragraph [ref=e242]: The one interface I use without shortcuts. Playlists I built years ago and still put on.
+            - link "01:00 School - Supertramp ↗" [ref=e243] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=Ip0f5sxtfAQ&t=60s
+              - generic [ref=e244]: 01:00
+              - text: School - Supertramp ↗
+          - generic [ref=e245]:
+            - link "Kabale und Liebe playlist cover Kabale und Liebe" [ref=e246] [cursor=pointer]:
+              - /url: https://open.spotify.com/playlist/4JqeuQiXZ9IVwVREJK4pjJ
+              - img "Kabale und Liebe playlist cover" [ref=e247]
+              - generic [ref=e248]: Kabale und Liebe
+            - link "Most listened of all time playlist cover all-time favourites" [ref=e249] [cursor=pointer]:
+              - /url: https://open.spotify.com/playlist/2rNjwkBwLkkJPTZCk00LBu
+              - img "Most listened of all time playlist cover" [ref=e250]
+              - generic [ref=e251]: all-time favourites
+            - link "Na Procura playlist cover Na Procura" [ref=e252] [cursor=pointer]:
+              - /url: https://open.spotify.com/playlist/3vC6wneh7CpkjTYIqdqzhY
+              - img "Na Procura playlist cover" [ref=e253]
+              - generic [ref=e254]: Na Procura
+            - link "Space Music playlist cover Space Music" [ref=e255] [cursor=pointer]:
+              - /url: https://open.spotify.com/playlist/53uKmYqdMv76jbJGYMLMPG
+              - img "Space Music playlist cover" [ref=e256]
+              - generic [ref=e257]: Space Music
+        - 'link "A still from Oskar''s South America travel film: llamas grazing on green highland pasture below the snow-capped Cotopaxi volcano ▶ PLAY / UYUNI from 03:36 · South America ↗" [ref=e258] [cursor=pointer]':
+          - /url: https://www.youtube.com/watch?v=vwkghahJ578&t=216s
+          - 'img "A still from Oskar''s South America travel film: llamas grazing on green highland pasture below the snow-capped Cotopaxi volcano" [ref=e259]'
+          - generic [ref=e260]:
+            - generic [ref=e261]: ▶ PLAY / UYUNI
+            - generic [ref=e262]: from 03:36 · South America ↗
+        - generic [ref=e263]:
+          - text: ↗
+          - paragraph [ref=e264]: Traveling, skiing, swimming, hiking - movement after too many hours in front of a monitor.
+      - paragraph [ref=e265]: "languages: German, English, Spanish - and collecting more"
+  - contentinfo [ref=e266]:
+    - heading "Say hello." [level=2] [ref=e267]
+    - paragraph [ref=e268]: If something keeps annoying you, or a process should obviously be automated - that’s where I’m most useful.
+    - generic [ref=e269]:
+      - link "GitHub →" [ref=e270] [cursor=pointer]:
+        - /url: https://github.com/joschi655
+      - link "LinkedIn →" [ref=e271] [cursor=pointer]:
+        - /url: https://www.linkedin.com/in/johannes-breitfeld/
+      - link "CV (PDF) →" [ref=e272] [cursor=pointer]:
+        - /url: assets/cv.pdf?v=3
+      - link "Email →" [ref=e273] [cursor=pointer]:
+        - /url: mailto:jo.breitfeld@gmail.com
+    - paragraph [ref=e274]:
+      - generic [ref=e275]: Oskar Breitfeld · Munich
+      - generic [ref=e276]: no cookies, no trackers, one teapot
+      - link "Impressum & Datenschutz" [ref=e277] [cursor=pointer]:
+        - /url: impressum.html
+      - generic [ref=e278]: press ⌘K

@@ -1,7 +1,7 @@
 # joschi - control room
 
-Personal site at **https://aiwerke.de/joschi/** - a dark, power-grid-flavored one-pager with
-real project artifacts, a ⌘K command palette, and live widgets fed by a tiny Bun API on my own server.
+Personal site at **https://aiwerke.de/joschi/** - a light aubergine-and-forest, power-grid-flavored one-pager with
+project artifacts, a ⌘K command palette, and live widgets fed by a tiny Bun API on my own server.
 No frameworks, no npm, no trackers. `bun build` and vanilla everything.
 
 ## Layout
@@ -9,9 +9,9 @@ No frameworks, no npm, no trackers. `bun build` and vanilla everything.
 | Path | What |
 |---|---|
 | `index.html` | The page. All content works with JS disabled. |
-| `styles.css` | Design system - dark control room + light "paper mode" (`data-theme`). |
+| `styles.css` | Design system - light lavender paper + matte aubergine, with a coordinated dark mode (`data-theme`). |
 | `src/main.ts` | Entry: boot line, shared grid-load signal, title-cwd, timeline, konami, favicon. |
-| `src/gridfield.ts` | Seeded power-flow canvas - scroll/pointer reactive, static under reduced motion. |
+| `src/gridfield.ts` | Seeded power-flow canvas - scroll reactive but pointer-independent, static under reduced motion. |
 | `src/clock.ts` | Browser-local KooKoo clock readout and live analog dial. |
 | `src/palette.ts` | ⌘K command palette (signature element) - 39 commands, fuzzy matched. |
 | `src/curve.ts` | Animated load-curve canvas (measured + forecast; cursor is the anomaly). |

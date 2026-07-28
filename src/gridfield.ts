@@ -29,8 +29,8 @@ export function initGridfield(): void {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let w = 0, h = 0, dpr = 1;
   let nodes: Node[] = [], edges: Edge[] = [], pulses: Pulse[] = [];
-  let colors = { line: "#242921", muted: "#99A092", signal: "#E8A33D", warn: "#E0684B" };
-  let progress = 0, impulse = 0, pointerX = -999, pointerY = -999, pointerStrength = 0;
+  let colors = { line: "#C9C1CE", muted: "#665E6A", signal: "#234E3B", warn: "#9B4F61" };
+  let progress = 0, impulse = 0;
   let raf = 0, last = 0;
 
   const readColors = () => {
@@ -84,15 +84,6 @@ export function initGridfield(): void {
     build();
   };
 
-  const point = (n: Node): { x: number; y: number } => {
-    if (pointerStrength < .01) return n;
-    const dx = n.x - pointerX;
-    const dy = n.y - pointerY;
-    const d = Math.max(1, Math.hypot(dx, dy));
-    const push = Math.max(0, 1 - d / 180) * 11 * pointerStrength;
-    return { x: n.x + dx / d * push, y: n.y + dy / d * push };
-  };
-
   const bezierPoint = (a: { x: number; y: number }, b: { x: number; y: number }, t: number) => {
     const mid = (a.x + b.x) / 2;
     const u = 1 - t;
@@ -110,9 +101,9 @@ export function initGridfield(): void {
 
     ctx.lineWidth = 1.1;
     ctx.strokeStyle = lab ? signal : colors.muted;
-    ctx.globalAlpha = lab ? .30 + impulse * .14 : .24 + impulse * .09;
+    ctx.globalAlpha = lab ? .28 + impulse * .12 : .18 + impulse * .07;
     edges.forEach((edge) => {
-      const a0 = point(nodes[edge.a]), b0 = point(nodes[edge.b]);
+      const a0 = nodes[edge.a], b0 = nodes[edge.b];
       const a = { x: a0.x, y: a0.y - shifted };
       const b = { x: b0.x, y: b0.y - shifted };
       const mid = (a.x + b.x) / 2;
@@ -124,16 +115,14 @@ export function initGridfield(): void {
 
     ctx.fillStyle = signal;
     nodes.forEach((node, i) => {
-      const p = point(node);
-      const near = Math.max(0, 1 - Math.hypot(p.x - pointerX, p.y - pointerY) / 180) * pointerStrength;
-      ctx.globalAlpha = .34 + near * .46 + (i % 7 === 0 ? .14 : 0);
-      ctx.fillRect(p.x - node.size, p.y - shifted - node.size, node.size * 2, node.size * 2);
+      ctx.globalAlpha = .28 + (i % 7 === 0 ? .12 : 0);
+      ctx.fillRect(node.x - node.size, node.y - shifted - node.size, node.size * 2, node.size * 2);
     });
 
     pulses.forEach((pulse, i) => {
       const edge = edges[pulse.edge];
       if (!edge) return;
-      const a0 = point(nodes[edge.a]), b0 = point(nodes[edge.b]);
+      const a0 = nodes[edge.a], b0 = nodes[edge.b];
       const p = bezierPoint(a0, b0, reduced ? ((i + 1) / (pulses.length + 1)) : pulse.t);
       ctx.globalAlpha = lab ? .88 : .62 + impulse * .32;
       ctx.beginPath();
@@ -148,7 +137,6 @@ export function initGridfield(): void {
     if (document.hidden) return;
     const dt = Math.min(.05, (now - last) / 1000 || .016);
     last = now;
-    pointerStrength += ((pointerX < -100 ? 0 : 1) - pointerStrength) * .08;
     pulses.forEach((pulse) => {
       pulse.t += dt * (pulse.speed + impulse * .13);
       if (pulse.t > 1) {
@@ -176,8 +164,6 @@ export function initGridfield(): void {
   new MutationObserver(draw).observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
   if (reduced) return;
-  addEventListener("pointermove", (event) => { pointerX = event.clientX; pointerY = event.clientY; }, { passive: true });
-  document.documentElement.addEventListener("pointerleave", () => { pointerX = -999; pointerY = -999; });
   addEventListener("joschi:grid-load", ((event: CustomEvent<GridLoadDetail>) => {
     progress = event.detail.progress;
     impulse = event.detail.impulse;

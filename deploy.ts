@@ -29,10 +29,26 @@ const STAGE = "/tmp/joschi-stage";
 const API_STAGE = "/tmp/joschi-api-stage";
 
 /** Everything the public webroot is allowed to contain. Nothing else ships. */
-const MANIFEST = ["index.html", "impressum.html", "styles.css", "dist", "assets"];
+const MANIFEST = ["index.html", "impressum.html", "styles.css", "dist", "assets", "birdclock"];
+
+/**
+ * Paths inside a manifest DIRECTORY that must not ship. The manifest is a top-level
+ * allowlist, so a directory entry otherwise drags its whole subtree along — including
+ * birdclock/README.md and the encoder, which are repo docs and belong nowhere public.
+ * Kept in rsync filter syntax; the LEAKS probe below re-checks these over HTTP.
+ */
+const EXCLUDES = ["birdclock/README.md", "birdclock/tools", "assets/Thumbnail.jpeg"];
 
 /** Files whose live bytes must match local bytes after a deploy. */
-const HASH_CHECKS = ["index.html", "impressum.html", "styles.css", "dist/app.js"];
+const HASH_CHECKS = [
+  "index.html",
+  "impressum.html",
+  "styles.css",
+  "dist/app.js",
+  "birdclock/index.html",
+  "birdclock/birds.json",
+  "birdclock/assets/audio/short/06.mp3",
+];
 
 // ---- flags ----
 const argv = process.argv.slice(2);
@@ -153,7 +169,11 @@ if (DO_STATIC && !VERIFY_ONLY) {
     await $`ssh ${HOST} ${`mkdir -p ${STAGE}`}`.quiet();
     // --delete on the STAGE only: keeps staging identical to the manifest,
     // so a file removed from the repo cannot linger and get re-published.
-    const up = await $`rsync -a --delete --itemize-changes ${MANIFEST} ${`${HOST}:${STAGE}/`}`.nothrow();
+    // --delete-excluded extends that to EXCLUDES: without it, an excluded path that a
+    // previous run had already staged would sit there forever and still get installed.
+    const excludeArgs = EXCLUDES.flatMap((p) => ["--exclude", `/${p}`]);
+    const up =
+      await $`rsync -a --delete --delete-excluded --itemize-changes ${excludeArgs} ${MANIFEST} ${`${HOST}:${STAGE}/`}`.nothrow();
     if (up.exitCode !== 0) {
       bad("rsync to staging failed");
       process.exit(1);
@@ -273,7 +293,20 @@ if (DRY) {
   else fail(`api/coffee → ${teapot?.status ?? "no response"} (expected 418)`);
 
   // Anti-check: nothing that isn't in the manifest may be reachable.
-  const LEAKS = ["deployment-notes.md", "nginx-snippet.conf", "README.md", "ISA.md", "WORKLOG.md", "package.json", "deploy.ts", "script.js"];
+  const LEAKS = [
+    "deployment-notes.md",
+    "nginx-snippet.conf",
+    "README.md",
+    "ISA.md",
+    "WORKLOG.md",
+    "package.json",
+    "deploy.ts",
+    "script.js",
+    // birdclock/ ships as a whole directory, so its docs are only kept out by EXCLUDES —
+    // probe them, or the exclusion is a claim rather than a fact.
+    "birdclock/README.md",
+    "birdclock/tools/encode.ts",
+  ];
   for (const leak of LEAKS) {
     const res = await fetchLive(leak);
     if (!res || res.status !== 200) continue;
