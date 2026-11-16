@@ -10,7 +10,13 @@ updated: 2026-07-27T15:45:00Z
 iteration: birdclock night quiet (2026-07-27, E2) — the hourly song is held back while the sun is down or the hour is outside 07:00-22:00; manual clicks unaffected. 24/24 solar checks pass, browser-verified with a stubbed clock. NOT deployed yet.
 ---
 
-# ISA — personal-website (aiwerke.de/joschi/)
+# ISA — personal-website
+
+> Current hosting supersedes the historical server-static requirements below:
+> GitHub Pages at https://joschi655.github.io/personal-website/, automatically
+> deployed on pushes to `main`. `/joschi/` redirects to Pages; only the optional
+> widget API remains on Ubuntu. See README.md and deployment-notes.md.
+> API URLs resolve to Ubuntu when running on Pages, and stay relative locally.
 
 ## Problem
 

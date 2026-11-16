@@ -1,4 +1,18 @@
-# Deployment — aiwerke.de/joschi/ (v2, Control Room)
+# Deployment — GitHub Pages + optional Ubuntu widgets
+
+## Current hosting
+
+- Portfolio: https://joschi655.github.io/personal-website/ (GitHub Pages).
+- Publish: push to `main`; `.github/workflows/pages.yml` builds and deploys an allowlisted artifact.
+- Old `/joschi/` URLs: nginx 302 redirects preserving paths and query parameters.
+- Exception: `/joschi/api/` still proxies to `joschi-api.service` on 127.0.0.1:31890.
+- Widget CORS allows `https://joschi655.github.io`. No Cloudflared or DNS changes.
+- Server rollback backups: `/var/backups/joschi-pages/nginx-before.conf` and `api-before.ts`.
+  Restore each to its original path, test nginx before reloading, and restart the widget API.
+- The static Ubuntu webroot remains intact but is no longer the publication target.
+- Edit/publish instructions: README.md. The historical deployment instructions below are retained only for reference.
+
+## Historical Ubuntu static hosting
 
 Stand: 2026-07-11. Verifizierter Ist-Zustand des Servers (per ssh geprüft, nicht geraten):
 
