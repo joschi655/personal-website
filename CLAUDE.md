@@ -1,6 +1,6 @@
 # personal-website — aiwerke.de/joschi/
 
-System of record: `ISA.md`. Work log: `WORKLOG.md`. Static hosting: GitHub Pages at https://joschi655.github.io/personal-website/. Publish: commit and push to `main` (Pages workflow). `bun deploy.ts` and the old VS Code tasks are legacy Ubuntu static deployment, not the current publishing path. Optional widget API remains on Ubuntu at https://aiwerke.de/joschi/api/.
+System of record: `ISA.md`. Work log: `WORKLOG.md`. Static hosting: GitHub Pages with custom domain https://aiwerke.de/ (`www` redirects to apex). Publish: commit and push to `main` (Pages workflow). `bun deploy.ts` and the old VS Code tasks are legacy Ubuntu static deployment, not the current publishing path. Optional widget API remains on Ubuntu at https://website-api.aiwerke.de/.
 
 ## THE AUTHOR RULE — read before writing a single line of copy
 

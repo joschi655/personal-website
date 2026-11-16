@@ -11,8 +11,8 @@ export const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNod
 
 // GitHub Pages hosts the portfolio; optional widgets stay on the Ubuntu box.
 export const apiURL = (path: string): string =>
-  window.location.hostname === "joschi655.github.io"
-    ? new URL(path, "https://aiwerke.de/joschi/").href
+  ["joschi655.github.io", "aiwerke.de", "www.aiwerke.de"].includes(window.location.hostname)
+    ? new URL(path.replace(/^api\//, ""), "https://website-api.aiwerke.de/").href
     : path;
 export async function fetchJSON<T = unknown>(path: string, timeoutMs = 6000): Promise<T | null> {
   try {

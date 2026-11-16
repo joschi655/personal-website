@@ -186,7 +186,7 @@ function parsePort(rawPort: string | undefined): number {
 
 function buildBaseHeaders(cacheControl: string): Headers {
   return new Headers({
-    "Access-Control-Allow-Origin": "https://joschi655.github.io",
+    "Access-Control-Allow-Origin": "https://aiwerke.de",
     "Cache-Control": cacheControl,
     "Content-Type": "application/json",
     "Cross-Origin-Resource-Policy": "cross-origin",

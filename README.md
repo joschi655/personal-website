@@ -1,6 +1,6 @@
 # joschi - control room
 
-Personal site at **https://joschi655.github.io/personal-website/** - a light aubergine-and-forest, power-grid-flavored one-pager with
+Personal site at **https://aiwerke.de/** - a light aubergine-and-forest, power-grid-flavored one-pager with
 project artifacts, a ⌘K command palette, and live widgets fed by a tiny Bun API on my own server.
 No frameworks, no npm, no trackers. `bun build` and vanilla everything.
 
@@ -34,7 +34,7 @@ bun dev/serve.ts         # site on http://127.0.0.1:3800 with api proxy
 
 ## API - `joschi-api`
 
-Bun service, binds `127.0.0.1:31890`, exposed only through nginx at `/joschi/api/`.
+Bun service, binds `127.0.0.1:31890`, exposed through the Cloudflare Tunnel at `website-api.aiwerke.de`.
 
 | Endpoint | Returns |
 |---|---|
@@ -51,7 +51,7 @@ refresh token into `api/.env`, scope `user-top-read` only).
 ## Edit and publish
 
 The static portfolio runs on **GitHub Pages**, not on the Ubuntu server.
-`https://aiwerke.de/joschi/` redirects here. Cloudflare only tunnels the optional
+`https://aiwerke.de/` is the primary address; `www` redirects to it. Cloudflare only tunnels the optional
 widget API from Ubuntu; it does not host the site. If Ubuntu is offline the page,
 project images, CV, and bird clock still work; widgets show their offline state.
 
@@ -81,9 +81,9 @@ website files. This GitHub repository itself is public.
 
 ### Widget backend (Ubuntu only)
 
-`api/server.ts` runs as `joschi-api.service`, behind the existing
-`https://aiwerke.de/joschi/api/` route. Browser calls from Pages use that absolute
-URL and the API allows `https://joschi655.github.io` through CORS. Local development
+`api/server.ts` runs as `joschi-api.service` at
+`https://website-api.aiwerke.de/`. Browser calls use that absolute
+URL and the API allows `https://aiwerke.de` through CORS. Local development
 still uses the relative API proxy. Secrets stay in `/etc/joschi-api.env`.
 Changes to backend code require a separate reviewed server deployment; pushing
 website content does not restart or modify the server.
