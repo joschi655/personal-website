@@ -4,7 +4,7 @@
 
 - Portfolio: https://aiwerke.de/ (GitHub Pages custom domain); `www` redirects to the apex.
 - Publish: push to `main`; `.github/workflows/pages.yml` builds and deploys an allowlisted artifact, including `CNAME`.
-- DNS: apex and www CNAME to `joschi655.github.io`, DNS-only, managed in Cloudflare.
+- DNS: apex uses GitHub's four A records (`185.199.108.153` through `185.199.111.153`); www CNAME to `joschi655.github.io`. All DNS-only, managed in Cloudflare.
 - Widget API: https://website-api.aiwerke.de/ via the existing Cloudflare Tunnel to 127.0.0.1:31890.
 - Widget CORS allows `https://aiwerke.de`. Unrelated tunnel routes are unchanged.
 - Custom-domain cutover backups: `~/backups/personal-domain/` (DNS JSON, tunnel config, API source).
