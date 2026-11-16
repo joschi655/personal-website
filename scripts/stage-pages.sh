@@ -7,4 +7,6 @@ cp -R assets dist _site/
 mkdir -p _site/birdclock
 cp birdclock/index.html birdclock/birds.json _site/birdclock/
 cp -R birdclock/assets _site/birdclock/
+mkdir -p _site/joschi
+cp scripts/legacy-redirect.html _site/joschi/index.html
 touch _site/.nojekyll

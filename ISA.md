@@ -13,10 +13,10 @@ iteration: birdclock night quiet (2026-07-27, E2) — the hourly song is held ba
 # ISA — personal-website
 
 > Current hosting supersedes the historical server-static requirements below:
-> GitHub Pages at https://joschi655.github.io/personal-website/, automatically
-> deployed on pushes to `main`. `/joschi/` redirects to Pages; only the optional
-> widget API remains on Ubuntu. See README.md and deployment-notes.md.
-> API URLs resolve to Ubuntu when running on Pages, and stay relative locally.
+> GitHub Pages at https://aiwerke.de/ (custom domain; `www` redirects to apex),
+> automatically deployed on pushes to `main`. Optional widgets use
+> https://website-api.aiwerke.de/ on Ubuntu; main page hosting is independent.
+> See README.md and deployment-notes.md. Local API URLs stay relative.
 
 ## Problem
 

@@ -2,11 +2,13 @@
 
 ## Current hosting
 
-- Portfolio: https://joschi655.github.io/personal-website/ (GitHub Pages).
-- Publish: push to `main`; `.github/workflows/pages.yml` builds and deploys an allowlisted artifact.
-- Old `/joschi/` URLs: nginx 302 redirects preserving paths and query parameters.
-- Exception: `/joschi/api/` still proxies to `joschi-api.service` on 127.0.0.1:31890.
-- Widget CORS allows `https://joschi655.github.io`. No Cloudflared or DNS changes.
+- Portfolio: https://aiwerke.de/ (GitHub Pages custom domain); `www` redirects to the apex.
+- Publish: push to `main`; `.github/workflows/pages.yml` builds and deploys an allowlisted artifact, including `CNAME`.
+- DNS: apex and www CNAME to `joschi655.github.io`, DNS-only, managed in Cloudflare.
+- Widget API: https://website-api.aiwerke.de/ via the existing Cloudflare Tunnel to 127.0.0.1:31890.
+- Widget CORS allows `https://aiwerke.de`. Unrelated tunnel routes are unchanged.
+- Custom-domain cutover backups: `~/backups/personal-domain/` (DNS JSON, tunnel config, API source).
+- Old `/joschi/` URLs are legacy paths; use the root domain for new links.
 - Server rollback backups: `/var/backups/joschi-pages/nginx-before.conf` and `api-before.ts`.
   Restore each to its original path, test nginx before reloading, and restart the widget API.
 - The static Ubuntu webroot remains intact but is no longer the publication target.
