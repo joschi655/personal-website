@@ -420,6 +420,19 @@ footer h2{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,5vw,
   padding:9px 16px;color:var(--ink);transition:border-color .15s,color .15s;
 }
 .links a:hover{border-color:var(--signal);color:var(--signal);text-decoration:none}
+.cv-request{margin-top:36px;max-width:640px;border:1px solid var(--line);border-radius:6px;padding:22px 24px;background:var(--surface)}
+.cv-request h3{font-family:var(--display);font-size:1.15rem;margin:0 0 4px}
+.cv-request>p{font-size:.88rem;margin:0 0 14px}
+.cv-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.cv-fields label{display:flex;flex-direction:column;gap:5px;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.cv-fields input{font:inherit;font-family:var(--mono);font-size:.85rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:9px 10px;min-width:0}
+.cv-fields input:focus{outline:none;border-color:var(--signal)}
+.cv-request button{margin-top:16px;font-family:var(--mono);font-size:.82rem;border:1px solid var(--line);border-radius:99px;padding:9px 16px;color:var(--ink);background:transparent;cursor:pointer;transition:border-color .15s,color .15s}
+.cv-request button:hover{border-color:var(--signal);color:var(--signal)}
+.cv-hint{font-size:.75rem;margin:10px 0 0}
+.cv-request .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.cv-request button:disabled{opacity:.5;cursor:wait}
+@media (max-width:620px){.cv-fields{grid-template-columns:1fr}}
 .foot-note{margin-top:40px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
 .foot-note a{color:var(--muted)}
 

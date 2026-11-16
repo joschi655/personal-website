@@ -1,5 +1,16 @@
 # WORKLOG — personal-website
 
+## 2026-11-16 — Content refresh: name, Industry AI, new projects, CV on request
+
+- **Name:** Johannes Breitfeld everywhere (title, meta, hero, footer, Impressum, palette, console). Owner decision; CLAUDE.md updated.
+- **Path:** STUDY (M.Sc., finishing April 2027) · WORK (SAP Product Management Cloud ERP, 2025-2026) · NOW (SAP Industry AI: forecasting for the DER platform + master's thesis) · NEXT (full-time from May 2027). Bachelor's thesis (gas-phase co-electrolysis test rig) added under START. Palette `history` matches.
+- **Projects:** second side-channel block: chemical-recycling venture (unnamed), EEG-Kompass (links EEGbot repo), own AI infrastructure (links claudex-lb).
+- **Lab:** fixie workshop in past tense (retired 2026).
+- **CV:** `assets/cv.pdf` removed. Contact section has a "Request my CV" form (name, email, optional company/purpose, honeypot). It POSTs to FormSubmit's AJAX endpoint, which mails the owner with Reply-To = visitor; on failure it falls back to a prefilled mailto. FormSubmit needs a one-time activation click in the owner's inbox after the first submission. Palette `cv` scrolls to the form. Datenschutz section for the form added to impressum.html.
+- **Author rule:** removed "real counts" from the stats.fm footer in live.ts.
+- **Not touched:** domain, Pages settings, nginx, API CORS (another agent is migrating aiwerke.de). Rebased onto the domain-move commit 20c2195: kept its URLs (og:url https://aiwerke.de/, website-api.aiwerke.de) and hosting text, rebuilt dist/app.js from the merged sources.
+- Verified locally in Chrome (Interceptor): new sections render, form labels single-line, bundle runs, no 4xx on assets.
+
 ## 2026-07-27 — Birdclock: the clock now knows it's night
 
 Owner: *"the real clock wouldn't work at night… the webapp should also not wake anyone.

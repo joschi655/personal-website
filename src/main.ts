@@ -97,7 +97,7 @@ function titleCwd(): void {
     Object.keys(map).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
   document.addEventListener("visibilitychange", () => {
-    document.title = document.hidden ? "[ctrl+z] suspended - oskar" : BASE;
+    document.title = document.hidden ? "[ctrl+z] suspended - johannes" : BASE;
   });
 }
 
@@ -158,7 +158,7 @@ function consoleGreeting(): void {
   const s = "font-family:monospace";
   console.log(
     "%cjoschi@aiwerke:~$ %cwhoami\n" +
-    "%coskar breitfeld - builds fixes for whatever annoys him.\n\n" +
+    "%cjohannes breitfeld - builds fixes for whatever annoys him.\n\n" +
     "you opened dev tools. respect.\n" +
     "things to try:\n" +
     "  ⌘K            command palette\n" +
@@ -166,6 +166,52 @@ function consoleGreeting(): void {
     "  curl -i https://aiwerke.de/joschi/api/coffee\n",
     `${s};color:#234E3B`, `${s};color:#211A28`, `${s};color:#665E6A`
   );
+}
+
+// ---- CV request: FormSubmit mails the request to me with Reply-To = visitor ----
+const CV_ENDPOINT = "https://formsubmit.co/ajax/jo.breitfeld@gmail.com";
+
+function cvRequest(): void {
+  const form = document.querySelector<HTMLFormElement>("[data-cv-form]");
+  const hint = document.querySelector<HTMLElement>("[data-cv-hint]");
+  const button = form?.querySelector<HTMLButtonElement>("button[type=submit]");
+  if (!form || !hint || !button) return;
+  const say = (t: string) => { hint.textContent = t; };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const v = (n: string) => (form.elements.namedItem(n) as HTMLInputElement | null)?.value.trim() ?? "";
+    if (v("_honey")) return; // bots fill hidden fields
+    const name = v("name"), email = v("email"), company = v("company"), purpose = v("purpose");
+    const subject = `CV request - ${name}${company ? ` (${company})` : ""}`;
+    button.disabled = true;
+    say("sending…");
+    try {
+      const res = await fetch(CV_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name, email, company: company || "-", purpose: purpose || "-",
+          _replyto: email, _subject: subject, _template: "table", _captcha: "false",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || String((data as { success?: unknown }).success) !== "true") throw new Error("not delivered");
+      form.reset();
+      say(`Thanks, ${name.split(" ")[0]} - I’ll send my CV to ${email}.`);
+    } catch {
+      // Fallback: a prefilled mail the visitor sends themselves.
+      const details = [`Name: ${name}`, `Email: ${email}`];
+      if (company) details.push(`Company: ${company}`);
+      if (purpose) details.push(`What for: ${purpose}`);
+      const body = ["Hi Johannes,", "", "I'd like to receive your CV.", "", ...details].join("\n");
+      say("Couldn’t send it from here - your mail app opens with the request instead.");
+      window.location.href = `mailto:jo.breitfeld@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    } finally {
+      button.disabled = false;
+    }
+  });
 }
 
 boot();
@@ -176,6 +222,7 @@ konami();
 favicon();
 apidot();
 consoleGreeting();
+cvRequest();
 initThemeControls();
 initPalette();
 initLive();

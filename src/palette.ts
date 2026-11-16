@@ -72,8 +72,8 @@ const COMMANDS: Cmd[] = [
     run: (c) => { open_("https://claudebuildersclub-muc.github.io/"); c.print("opening the club I co-founded (relaunched, technically) - students building with claude, not just chatting."); } },
   { name: "malt", aliases: ["freelance"], desc: "open my malt freelance profile", keep: true,
     run: (c) => { open_("https://en.malt.de/profile/johannesbreitfeld"); c.print("opening malt - bring an annoying process."); } },
-  { name: "cv", aliases: ["resume", "lebenslauf"], desc: "the formal version of this website (pdf)", keep: true,
-    run: (c) => { open_("assets/cv.pdf?v=3"); c.print("opening the cv - same person, more bullet points."); } },
+  { name: "cv", aliases: ["resume", "lebenslauf"], desc: "request the formal version of this website", keep: true,
+    run: (c) => { c.close(); document.getElementById("cv-request")?.scrollIntoView({ behavior: "smooth" }); (document.querySelector<HTMLInputElement>("[data-cv-form] input[name=name]"))?.focus({ preventScroll: true }); } },
   { name: "thesis", aliases: ["pyrolysis"], desc: "semester thesis pdf - graded 1.0", keep: true,
     run: (c) => { open_("assets/pyrolysis-thesis.pdf?v=3"); c.print("opening the thesis - ML on plastic pyrolysis yields. graded 1.0."); } },
   { name: "linkedin", desc: "open linkedin", keep: true,
@@ -81,7 +81,7 @@ const COMMANDS: Cmd[] = [
   { name: "email", aliases: ["mail"], desc: "write me", keep: true,
     run: (c) => { window.location.href = "mailto:jo.breitfeld@gmail.com"; c.print("drafting mail - bring an annoying problem."); } },
   { name: "whoami", desc: "who is this guy", keep: true,
-    run: (c) => c.print("oskar breitfeld - builds fixes for whatever annoys him.\ncurrently annoyed by: manual work.") },
+    run: (c) => c.print("johannes breitfeld - builds fixes for whatever annoys him.\ncurrently annoyed by: manual work.") },
   { name: "neofetch", desc: "system profile", keep: true,
     run: (c) => c.print([
       "joschi@aiwerke",
@@ -96,15 +96,16 @@ const COMMANDS: Cmd[] = [
   { name: "history", desc: "how I got here", keep: true,
     run: (c) => c.print([
       "START  chemical engineering",
-      "NOW    TUM - energy & process engineering",
+      "STUDY  TUM - energy & process engineering",
       "WORK   SAP - ai automation",
-      "NEXT   power grid load forecasting (thesis)",
+      "NOW    SAP industry ai - forecasting for energy systems (thesis)",
+      "NEXT   full-time from may 2027",
     ].join("\n")) },
   { name: "forecast", desc: "tomorrow's personal load forecast", keep: true,
     run: (c) => c.print("tomorrow: 60% chance of a new side project.\nconfidence interval: none.") },
   { name: "grid", desc: "grid frequency check", keep: true,
     run: (c) => c.print("frequency nominal at 50.00 Hz. europe may continue.", "out-ok") },
-  { name: "ping oskar", aliases: ["ping", "ping joschi"], desc: "reachability check", keep: true,
+  { name: "ping johannes", aliases: ["ping", "ping joschi", "ping oskar"], desc: "reachability check", keep: true,
     run: (c) => c.print("pong from munich · latency depends on coffee.") },
   { name: "piano", desc: "switch output device", keep: true,
     run: (c) => c.print("switching output device → piano\nthe one interface I play without shortcuts.") },
@@ -115,15 +116,15 @@ const COMMANDS: Cmd[] = [
   { name: "rm -rf bugs", aliases: ["rm bugs"], desc: "remove all bugs", keep: true,
     run: (c) => c.print("removing bugs… done.\n3 new bugs were spawned by the removal script. classic.") },
   { name: "make sandwich", aliases: ["sandwich"], desc: "xkcd 149 compliance check", keep: true,
-    run: (c) => c.print("make: *** no rule to make target 'sandwich'.\ndid you mean `sudo hire oskar`?") },
-  { name: "sudo hire oskar", aliases: ["hire", "sudo hire", "sudo hire joschi"], desc: "escalate privileges properly", keep: true,
+    run: (c) => c.print("make: *** no rule to make target 'sandwich'.\ndid you mean `sudo hire johannes`?") },
+  { name: "sudo hire johannes", aliases: ["hire", "sudo hire", "sudo hire joschi", "sudo hire oskar"], desc: "escalate privileges properly", keep: true,
     run: (c) => {
       c.print("permission granted.\nopening a channel - bring the most annoying process you own.", "out-ok");
       if (motionOK()) {
         document.body.classList.add("crt-flash");
         setTimeout(() => document.body.classList.remove("crt-flash"), 500);
       }
-      setTimeout(() => { window.location.href = "mailto:jo.breitfeld@gmail.com?subject=sudo%20hire%20oskar"; }, 900);
+      setTimeout(() => { window.location.href = "mailto:jo.breitfeld@gmail.com?subject=sudo%20hire%20johannes"; }, 900);
     } },
   { name: "konami", desc: "a hint", keep: true,
     run: (c) => c.print("↑ ↑ ↓ ↓ ← → ← → B A - or just type `lab`.\nshortcuts are the point.") },

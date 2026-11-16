@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oskar Breitfeld - control room · fixes for annoying problems</title>
-<meta name="description" content="Oskar Breitfeld - energy engineering, AI automation, machine learning. A personal control room with live data from my own server: what I build, what I listen to, what runs." />
-<meta property="og:title" content="Oskar Breitfeld - control room" />
-<meta property="og:description" content="From chemical engineering to SAP AI automation to ML load forecasting. A site that behaves the way I work: press ⌘K." />
+<title>Johannes Breitfeld - control room · fixes for annoying problems</title>
+<meta name="description" content="Johannes Breitfeld - energy engineering, AI automation, machine learning. A personal control room with live data from my own server: what I build, what I listen to, what runs." />
+<meta property="og:title" content="Johannes Breitfeld - control room" />
+<meta property="og:description" content="From chemical engineering to SAP AI automation to load forecasting for SAP's DER platform. A site that behaves the way I work: press ⌘K." />
 <meta property="og:url" content="https://aiwerke.de/" />
 <meta property="og:type" content="website" />
 <meta name="theme-color" content="#ECE9EF" />
@@ -45,11 +45,11 @@ try {
   <p class="boot" data-boot aria-hidden="true">boot: energy <span class="ok">✓</span> ml <span class="ok">✓</span> automation <span class="ok">✓</span></p>
   <h1>I build fixes for whatever <span class="accent">annoys me.</span></h1>
   <div class="hero-intro">
-    <p class="lede">I’m Oskar Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science - I learn by building.</em> <span class="dim">And I genuinely hate stupid repetitive tasks - automating them became the obvious career.</span></p>
+    <p class="lede">I’m Johannes Breitfeld. As a kid I wanted to become some kind of crazy inventor; today I connect energy engineering with automation, AI, and machine learning. <em>I didn’t study computer science - I learn by building.</em> <span class="dim">And I genuinely hate stupid repetitive tasks - automating them became the obvious career.</span></p>
     <aside class="manifest" aria-label="Site and profile manifest">
       <dl>
         <div><dt>current</dt><dd>M.Sc. Energy &amp; Process Engineering · TUM</dd></div>
-        <div><dt>work</dt><dd>AI automation → power-grid forecasting</dd></div>
+        <div><dt>work</dt><dd>SAP Industry AI · forecasting for energy systems</dd></div>
         <div><dt>host</dt><dd data-manifest-server>GitHub Pages · Ubuntu live widgets</dd></div>
         <div><dt>source</dt><dd><a href="https://github.com/joschi655/personal-website" target="_blank" rel="noopener">vanilla TypeScript ↗</a> · zero trackers</dd></div>
       </dl>
@@ -113,12 +113,13 @@ try {
         <summary class="mono step-sum">--verbose</summary>
         <ul class="step-facts">
           <li>B.Sc. Chemical Engineering, TUM (2020 - 2024)</li>
+          <li>Bachelor’s thesis: set-up of a gas-phase co-electrolysis test rig</li>
           <li>LES project: algorithmic wind-park simulation + battery &amp; electrolysis modeling - team award for best presentation</li>
         </ul>
       </details>
     </div>
     <div class="step">
-      <div class="yr">NOW</div>
+      <div class="yr">STUDY</div>
       <h3>M.Sc. Energy and Process Engineering · TUM</h3>
       <p>Energy and processes, with growing focus on what data can predict and optimize.</p>
       <details class="step-more">
@@ -126,13 +127,14 @@ try {
         <ul class="step-facts">
           <li>Semester thesis: ML-based prediction of plastic pyrolysis yields - grade 1.0</li>
           <li>795 datapoints from 127 papers; Paper-Level GroupKFold to kill the data leakage prior work shipped with</li>
+          <li>Finishing April 2027</li>
           <li>SHAP analysis confirming the models agree with the physics</li>
         </ul>
       </details>
     </div>
     <div class="step">
       <div class="yr">WORK</div>
-      <h3>SAP - AI Innovation, Connectors &amp; Automations</h3>
+      <h3>SAP Product Management Cloud ERP · 2025 - 2026</h3>
       <p>Agentic AI workflows with LLMs, Claude, MCP servers, RAG - automation people actually use.</p>
       <details class="step-more">
         <summary class="mono step-sum">--verbose</summary>
@@ -144,14 +146,27 @@ try {
       </details>
     </div>
     <div class="step">
-      <div class="yr">NEXT</div>
-      <h3>Power Grid Load Forecasting with ML</h3>
-      <p>Forecasting for the grid: exactly the energy × ML intersection I want to work in.</p>
+      <div class="yr">NOW</div>
+      <h3>SAP Industry AI · Forecasting for energy systems</h3>
+      <p>Helping build forecasting into SAP’s platform for distributed energy resources - and writing my master’s thesis on it.</p>
       <details class="step-more">
         <summary class="mono step-sum">--verbose</summary>
         <ul class="step-facts">
-          <li>Master’s thesis: ML-based load prediction for power grids</li>
-          <li>The target intersection, professionally: energy systems × machine learning</li>
+          <li>From measured series to a forecast on SAP AI Core: data requirements, forecast path, quality evidence</li>
+          <li>Master’s thesis: day-ahead load forecasts at 15-minute resolution, single households up to 1,000-household portfolios</li>
+          <li>Gradient boosting vs. pretrained time-series and tabular foundation models (Chronos-2, TabPFN, SAP RPT), on one fixed benchmark</li>
+        </ul>
+      </details>
+    </div>
+    <div class="step">
+      <div class="yr">NEXT</div>
+      <h3>Full-time from May 2027</h3>
+      <p>AI and data tools for technical teams: AI platforms, engineering data, forecasting.</p>
+      <details class="step-more">
+        <summary class="mono step-sum">--verbose</summary>
+        <ul class="step-facts">
+          <li>Where engineering data, machine learning and software meet</li>
+          <li><a href="#contact">Get in touch or request my CV ↓</a></li>
         </ul>
       </details>
     </div>
@@ -325,6 +340,23 @@ try {
       <p>A jump-and-run level made after scavenging PC parts as a kid. No plan, just curiosity, stubbornness, and far too many moved vertices.</p>
     </article>
   </div>
+
+  <div class="sidechannels" aria-label="Ventures and infrastructure">
+    <article class="channel">
+      <h3>Software for chemical recycling</h3>
+      <p>Co-founded an early-stage venture with a partner from the pyrolysis industry. I build the prediction and decision software: from feedstock and reactor type to expected oil quality, emissions and the plant components a project needs.</p>
+    </article>
+    <article class="channel">
+      <h3>EEG-Kompass</h3>
+      <p>Open-source Claude Code plugin for German renewable-energy law: guided workflows, deterministic calculators, legal retrieval and MCP servers.</p>
+      <a href="https://github.com/joschi655/EEGbot" target="_blank" rel="noopener">repository ↗</a>
+    </article>
+    <article class="channel">
+      <h3>My own AI infrastructure</h3>
+      <p>An Ubuntu box running an LLM gateway for coding agents, scheduled agents and n8n pipelines. Two merged pull requests upstream.</p>
+      <a href="https://github.com/joschi655/claudex-lb" target="_blank" rel="noopener">gateway fork ↗</a>
+    </article>
+  </div>
 </section>
 
 <section class="wrap" id="offscreen">
@@ -365,7 +397,7 @@ try {
     </article>
 
     <a class="film-frame" href="https://www.youtube.com/watch?v=vwkghahJ578&amp;t=216s" target="_blank" rel="noopener">
-      <img src="assets/projects/travel-film.webp" alt="A still from Oskar's South America travel film: llamas grazing on green highland pasture below the snow-capped Cotopaxi volcano" width="900" height="675" loading="lazy" decoding="async">
+      <img src="assets/projects/travel-film.webp" alt="A still from my South America travel film: llamas grazing on green highland pasture below the snow-capped Cotopaxi volcano" width="900" height="675" loading="lazy" decoding="async">
       <span class="film-overlay"><b>PLAY / UYUNI</b><small>from 03:36 · South America ↗</small></span>
     </a>
     <div class="movement-note">
@@ -389,7 +421,7 @@ try {
     </div>
     <div class="card">
       <h3>Fixie workshop</h3>
-      <p class="built">Buying neglected fixed-gear bikes, rebuilding, reselling. Analog engineering - the only project here with zero uptime monitoring.</p>
+      <p class="built">Bought neglected fixed-gear bikes, rebuilt and resold them. Analog engineering - the only project here that never had uptime monitoring. Retired in 2026.</p>
     </div>
   </div>
 </section>
@@ -398,15 +430,28 @@ try {
 
 <footer class="wrap" id="contact">
   <h2>Say hello.</h2>
-  <p class="lede" style="margin-top:0">If something keeps annoying you, or a process should obviously be automated - that’s where I’m most useful.</p>
+  <p class="lede" style="margin-top:0">If something keeps annoying you, or a process should obviously be automated - that’s where I’m most useful. Looking for a full-time role from May 2027.</p>
   <div class="links">
     <a href="https://github.com/joschi655" target="_blank" rel="noopener">GitHub →</a>
     <a href="https://www.linkedin.com/in/johannes-breitfeld/" target="_blank" rel="noopener">LinkedIn →</a>
-    <a href="assets/cv.pdf?v=3" target="_blank" rel="noopener">CV (PDF) →</a>
     <a href="mailto:jo.breitfeld@gmail.com">Email →</a>
   </div>
+  <form class="cv-request" id="cv-request" data-cv-form>
+    <h3>Request my CV</h3>
+    <p class="dim">Tell me who you are and I’ll send it to you.</p>
+    <div class="cv-fields">
+      <label><span>Name</span><input name="name" autocomplete="name" required maxlength="80"></label>
+      <label><span>Email</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+      <label><span>Company <span class="dim">(optional)</span></span><input name="company" autocomplete="organization" maxlength="120"></label>
+      <label><span>What for <span class="dim">(optional)</span></span><input name="purpose" maxlength="200" placeholder="e.g. role, team, project"></label>
+    </div>
+    <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button type="submit">Request CV →</button>
+    <p class="cv-hint dim" data-cv-hint>Your request reaches me by email; I’ll reply with the CV. <a href="impressum.html">Privacy</a></p>
+    <noscript><p class="dim">Or write to <a href="mailto:jo.breitfeld@gmail.com?subject=CV%20request">jo.breitfeld@gmail.com</a> with your name and company.</p></noscript>
+  </form>
   <p class="foot-note mono">
-    <span>Oskar Breitfeld · Munich</span>
+    <span>Johannes Breitfeld · Munich</span>
     <span>no cookies, no trackers, one teapot</span>
     <a href="impressum.html">Impressum &amp; Datenschutz</a>
     <span>press <kbd>⌘K</kbd></span>
@@ -415,6 +460,6 @@ try {
 
 <button class="fab" data-open-palette aria-label="Open command palette">⌘K</button>
 
-<script type="module" src="dist/app.js?v=16"></script>
+<script type="module" src="dist/app.js?v=17"></script>
 </body>
 </html>

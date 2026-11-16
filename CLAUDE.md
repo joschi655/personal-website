@@ -45,4 +45,5 @@ describing design intent are fine; source comments justifying a redaction are no
   through a **SQL database mirroring Jira**. Jira and SQL are not two sources — SQL *is* how
   Jira was read. A Jira MCP exists now, but it did not when this was built.
 - **Runtime wording:** `runtime: Cloud Foundry on BTP`. Not "SAP BTP Cloud Foundry", not "SAP BTP".
-- **Name on the site:** Oskar Breitfeld (owner decision 2026-07-11).
+- **Name on the site:** Johannes Breitfeld (owner decision 2026-11-16, replaces "Oskar Breitfeld" from 2026-07-11; matches CV, LinkedIn and email).
+- **CV:** not published as a PDF. Visitors request it through the form in the contact section (FormSubmit, mail to the owner with Reply-To set to the visitor).

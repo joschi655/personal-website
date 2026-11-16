@@ -53,7 +53,7 @@ async function renderMusic(): Promise<void> {
   const foot = $("[data-music-foot]");
   if (foot) {
     foot.innerHTML = data.source === "stats.fm"
-      ? `source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> · full listening history, real counts`
+      ? `source: <a href="https://stats.fm/joschi_oskar" target="_blank" rel="noopener">stats.fm</a> · full listening history`
       : `source: my actual spotify, cached on my server`;
   }
   staggerIn(body);
