@@ -1,6 +1,6 @@
 # joschi - control room
 
-Personal site at **https://aiwerke.de/joschi/** - a light aubergine-and-forest, power-grid-flavored one-pager with
+Personal site at **https://joschi655.github.io/personal-website/** - a light aubergine-and-forest, power-grid-flavored one-pager with
 project artifacts, a ⌘K command palette, and live widgets fed by a tiny Bun API on my own server.
 No frameworks, no npm, no trackers. `bun build` and vanilla everything.
 
@@ -48,26 +48,49 @@ Secrets live in `api/.env` (gitignored) locally and `/etc/joschi-api.env` (chmod
 server - never in the repo. One-time Spotify OAuth: `bun api/spotify-auth.ts` (writes the
 refresh token into `api/.env`, scope `user-top-read` only).
 
-## Deploy
+## Edit and publish
+
+The static portfolio runs on **GitHub Pages**, not on the Ubuntu server.
+`https://aiwerke.de/joschi/` redirects here. Cloudflare only tunnels the optional
+widget API from Ubuntu; it does not host the site. If Ubuntu is offline the page,
+project images, CV, and bird clock still work; widgets show their offline state.
+
+1. Edit `index.html` for biography, experience, projects, and links.
+2. Put new images or PDFs in `assets/`; change `styles.css` for styling.
+3. Edit `src/` for interactions, then run `bun install --frozen-lockfile && bun run build`.
+4. Commit and push to `main`. The **Publish personal website** GitHub Action builds
+   and publishes automatically. Wait for its green deployment before checking the site.
+
+You can also edit `index.html` directly with GitHub's pencil button and commit to
+`main`; no SSH, server copy, or manual build is needed for publication.
 
 ```bash
-bun run deploy              # build → rsync → verify against the live site
-bun run deploy --dry-run    # print every action, write nothing
-bun run deploy --prune      # also remove webroot files not in the manifest
-bun run deploy --all        # static + api/server.ts + systemctl restart
-bun run deploy --verify     # probes only
+git pull --ff-only
+# edit files
+bun install --frozen-lockfile
+bun run build
+git add index.html styles.css src/ dist/ assets/
+git commit -m "Update portfolio information"
+git push origin main
 ```
 
-In VS Code: **⇧⌘B** runs *Deploy site (live)*. `Deploy — dry run`, `Deploy — verify live` and
-`Deploy site + API` sit next to it in the task list (`.vscode/tasks.json`).
+The Pages artifact is an explicit allowlist assembled by `scripts/stage-pages.sh`:
+HTML, CSS, `dist/`, `assets/`, and the standalone `birdclock/` page and assets.
+Backend source, `.env` files, notes, and agent configuration are not published as
+website files. This GitHub repository itself is public.
 
-`deploy.ts` uploads an **allowlist** (`index.html`, `impressum.html`, `styles.css`, `dist/`,
-`assets/`) — never the repo root, so `api/.env`, `src/`, `ISA.md` and the deployment notes
-cannot reach a public webroot. It stages over ssh, installs with sudo as `www-data`, then
-verifies by hashing what the live site actually serves (HTML normalised for Cloudflare's
-email obfuscation) plus `api/health` and the 418. Any failed probe exits non-zero.
+### Widget backend (Ubuntu only)
 
-It never touches nginx, cloudflared, or `/etc/joschi-api.env`.
+`api/server.ts` runs as `joschi-api.service`, behind the existing
+`https://aiwerke.de/joschi/api/` route. Browser calls from Pages use that absolute
+URL and the API allows `https://joschi655.github.io` through CORS. Local development
+still uses the relative API proxy. Secrets stay in `/etc/joschi-api.env`.
+Changes to backend code require a separate reviewed server deployment; pushing
+website content does not restart or modify the server.
 
-Server layout and the one-time setup live in `deployment-notes.md`. Rollback: `git tag v1`
-holds the previous site; API off = widgets degrade honestly, page still works.
+### Legacy server deploy
+
+`deploy.ts` and the old VS Code deploy tasks target the retired static Ubuntu
+webroot; they are **not** the Pages publishing path. Use commit + push instead.
+The existing server files are preserved for rollback. Do not change Cloudflared
+or DNS to publish routine content updates.

@@ -1,7 +1,7 @@
 // live widgets - real data from my own server, or an honest offline state
-// endpoints are RELATIVE (api/…) so they work at /joschi/ and locally
+// apiURL resolves optional widgets to Ubuntu when the page is on GitHub Pages.
 
-import { $, $$, fetchJSON, getRange, setRange, announceApi, RANGE_LABEL, type MusicRange } from "./state";
+import { $, $$, apiURL, fetchJSON, getRange, setRange, announceApi, RANGE_LABEL, type MusicRange } from "./state";
 import { staggerIn } from "./motionfx";
 
 type Music = {
@@ -66,7 +66,7 @@ async function renderServer(): Promise<void> {
   if (!data || typeof data.uptime_seconds !== "number") {
     body.innerHTML = offline("api unreachable right now.");
     const manifest = $("[data-manifest-server]");
-    if (manifest) manifest.textContent = "own Ubuntu box · offline right now";
+    if (manifest) manifest.textContent = "GitHub Pages · widget server offline";
     return;
   }
   const uptime = fmtUptime(data.uptime_seconds);
@@ -74,7 +74,7 @@ async function renderServer(): Promise<void> {
     `<div class="big">${uptime} <span class="u">uptime</span></div>` +
     `<p class="offline">I reboot more often than this box does.</p>`;
   const manifest = $("[data-manifest-server]");
-  if (manifest) manifest.textContent = `own Ubuntu box · up ${uptime}`;
+  if (manifest) manifest.textContent = `GitHub Pages · Ubuntu up ${uptime}`;
   // feed the boot line its one real number
   const boot = $("[data-boot]");
   if (boot && !$("[data-boot-uptime]", boot)) {
@@ -106,7 +106,7 @@ async function renderGithub(): Promise<void> {
 
 export async function pingCoffee(): Promise<string> {
   try {
-    const res = await fetch("api/coffee");
+    const res = await fetch(apiURL("api/coffee"));
     const j = (await res.json()) as { error?: string; hint?: string };
     return `HTTP ${res.status} - ${j.error ?? "no coffee"}. ${j.hint ?? ""}`;
   } catch {
@@ -117,7 +117,7 @@ export async function pingCoffee(): Promise<string> {
 export async function fetchUptimeLine(): Promise<string> {
   const data = await fetchJSON<Status>("api/status");
   return data && typeof data.uptime_seconds === "number"
-    ? `up ${fmtUptime(data.uptime_seconds)} - served from my own ubuntu box`
+    ? `up ${fmtUptime(data.uptime_seconds)} - widget backend on my own Ubuntu box`
     : "api unreachable - uptime unknown. suspicious.";
 }
 
@@ -139,7 +139,7 @@ export function initLive(): void {
     if (!health?.ok) {
       // keep the offline defaults that are already in the HTML
       const manifest = $("[data-manifest-server]");
-      if (manifest) manifest.textContent = "own Ubuntu box · offline right now";
+      if (manifest) manifest.textContent = "GitHub Pages · widget server offline";
       return;
     }
     void renderMusic();

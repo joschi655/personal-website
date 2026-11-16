@@ -186,10 +186,10 @@ function parsePort(rawPort: string | undefined): number {
 
 function buildBaseHeaders(cacheControl: string): Headers {
   return new Headers({
-    "Access-Control-Allow-Origin": "https://aiwerke.de",
+    "Access-Control-Allow-Origin": "https://joschi655.github.io",
     "Cache-Control": cacheControl,
     "Content-Type": "application/json",
-    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Resource-Policy": "cross-origin",
     "Referrer-Policy": "no-referrer",
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",

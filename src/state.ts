@@ -9,12 +9,16 @@ export const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode
 export const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document): T[] =>
   Array.from(root.querySelectorAll<T>(sel));
 
-// all API calls are RELATIVE - works at /joschi/ in prod and / locally
+// GitHub Pages hosts the portfolio; optional widgets stay on the Ubuntu box.
+export const apiURL = (path: string): string =>
+  window.location.hostname === "joschi655.github.io"
+    ? new URL(path, "https://aiwerke.de/joschi/").href
+    : path;
 export async function fetchJSON<T = unknown>(path: string, timeoutMs = 6000): Promise<T | null> {
   try {
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), timeoutMs);
-    const res = await fetch(path, { signal: ctl.signal });
+    const res = await fetch(apiURL(path), { signal: ctl.signal });
     clearTimeout(t);
     if (!res.ok && res.status !== 418) return null;
     return (await res.json()) as T;
